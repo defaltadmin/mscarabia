@@ -137,6 +137,8 @@
 <section id="home" class="hero">
   <div class="hero-bg"></div>
   <div class="hero-grid"></div>
+  <div class="grain-overlay"></div>
+  <div class="hero-particles" id="hero-particles"></div>
   <div class="container hero-content">
     <div class="reveal">
       <div class="hero-pill">
@@ -219,6 +221,8 @@
 <!-- Services Section -->
 <section id="services" class="services">
   <div class="services-bg"></div>
+  <div class="glow-orb glow-orb-red" style="width:400px;height:400px;top:-100px;right:-100px"></div>
+  <div class="glow-orb glow-orb-blue" style="width:300px;height:300px;bottom:-50px;left:-80px;animation-delay:2s"></div>
   <div class="container">
     <div class="section-header reveal">
       <div class="section-pill">
@@ -397,19 +401,19 @@
         <div class="mq-form-grid">
           <div class="form-group">
             <label class="form-label" for="mq_name" data-i18n="mq_name">Your Name</label>
-            <input type="text" id="mq_name" name="mq_name" required class="form-input" data-i18n-placeholder="mq_name">
+            <input type="text" id="mq_name" name="mq_name" required class="form-input" autocomplete="name" data-i18n-placeholder="mq_name">
           </div>
           <div class="form-group">
             <label class="form-label" for="mq_email" data-i18n="mq_email">Your Email</label>
-            <input type="email" id="mq_email" name="mq_email" required class="form-input" data-i18n-placeholder="mq_email">
+            <input type="email" id="mq_email" name="mq_email" required class="form-input" autocomplete="email" data-i18n-placeholder="mq_email">
           </div>
           <div class="form-group">
-            <label class="form-label" data-i18n="mq_employees">Number of workers</label>
+            <label class="form-label" for="mq_employees" data-i18n="mq_employees">Number of workers</label>
             <div class="range-value" id="mq_employees_val">50</div>
             <input type="range" id="mq_employees" name="mq_employees" min="1" max="1001" step="1" value="50" class="range-slider">
           </div>
           <div class="form-group">
-            <label class="form-label" data-i18n="mq_duration">Contract duration</label>
+            <label class="form-label" for="mq_duration" data-i18n="mq_duration">Contract duration</label>
             <div class="range-value" id="mq_duration_val">3 months</div>
             <label class="form-checkbox">
               <input type="checkbox" id="mq_permanent" name="mq_permanent">
@@ -418,8 +422,8 @@
             <input type="range" id="mq_duration" name="mq_duration" min="1" max="25" step="1" value="3" class="range-slider">
           </div>
           <div class="form-group" style="grid-column:1/-1">
-            <label class="form-label" data-i18n="mq_profession">Profession(s)</label>
-            <div class="prof-grid">
+            <label class="form-label" id="mq_profession_label" data-i18n="mq_profession">Profession(s)</label>
+            <div class="prof-grid" role="group" aria-labelledby="mq_profession_label">
               <label class="form-checkbox"><input type="checkbox" name="mq_profession" value="cleaner"><span data-i18n="mq_prof_cleaner">Cleaner</span></label>
               <label class="form-checkbox"><input type="checkbox" name="mq_profession" value="general_labor"><span data-i18n="mq_prof_general_labor">General Labor</span></label>
               <label class="form-checkbox"><input type="checkbox" name="mq_profession" value="security_hse"><span data-i18n="mq_prof_security_hse">Security & HSE</span></label>
@@ -430,13 +434,13 @@
             </div>
           </div>
           <div class="form-group">
-            <label class="form-label" data-i18n="mq_budget">Budget per person per month</label>
-            <div class="range-value" id="mq_budget_val">15</div>
-            <div class="range-unit" data-i18n="mq_budget_per">SAR / person / month</div>
+            <label class="form-label" for="mq_budget" data-i18n="mq_budget">Budget per person per month</label>
+            <div class="range-value" id="mq_budget_val"><span class="sar-symbol">﷼</span> 15</div>
+            <div class="range-unit"><span class="sar-symbol">﷼</span> <span data-i18n="mq_budget_per">/ person / month</span></div>
             <input type="range" id="mq_budget" name="mq_budget" min="1" max="80" step="1" value="15" class="range-slider">
           </div>
           <div class="form-group">
-            <label class="form-label" data-i18n="mq_nationality">Preferred nationality</label>
+            <label class="form-label" for="mq_nationality" data-i18n="mq_nationality">Preferred nationality</label>
             <select id="mq_nationality" name="mq_nationality" class="form-select">
               <option value="any" data-i18n="mq_not_specified">Not specified</option>
               <option value="bd" data-i18n="mq_nat_bd">Bangladesh</option>
@@ -450,7 +454,7 @@
             </select>
           </div>
           <div class="form-group">
-            <label class="form-label" data-i18n="mq_start_date">Desired start date</label>
+            <label class="form-label" for="mq_start_date" data-i18n="mq_start_date">Desired start date</label>
             <input type="date" id="mq_start_date" name="mq_start_date" required class="form-input">
           </div>
           <div class="form-group">
@@ -476,6 +480,8 @@
 
 <!-- About Section -->
 <section id="about" class="about">
+  <div class="glow-orb glow-orb-purple" style="width:350px;height:350px;top:10%;right:-100px;animation-delay:3s"></div>
+  <div class="glow-orb glow-orb-red" style="width:250px;height:250px;bottom:10%;left:-60px;animation-delay:5s"></div>
   <div class="container">
     <div class="about-grid">
       <div class="reveal">
@@ -620,15 +626,15 @@
         <form onsubmit="handleContactSubmit(event)" class="contact-form">
           <div class="form-group">
             <label for="name" class="form-label" data-i18n="form_name">Full Name</label>
-            <input type="text" id="name" name="name" required class="form-input" data-i18n-placeholder="form_name_placeholder">
+            <input type="text" id="name" name="name" required class="form-input" autocomplete="name" data-i18n-placeholder="form_name_placeholder">
           </div>
           <div class="form-group">
             <label for="email" class="form-label" data-i18n="form_email">Email Address</label>
-            <input type="email" id="email" name="email" required class="form-input" data-i18n-placeholder="form_email_placeholder">
+            <input type="email" id="email" name="email" required class="form-input" autocomplete="email" data-i18n-placeholder="form_email_placeholder">
           </div>
           <div class="form-group">
-            <label class="form-label" data-i18n="form_service">Service Interest</label>
-            <select name="service" class="form-select">
+            <label class="form-label" for="service" data-i18n="form_service">Service Interest</label>
+            <select name="service" id="service" class="form-select">
               <option value="" data-i18n="option_select_service">Select a service</option>
               <option value="managed-it" data-i18n="option_managed_it">Managed IT Services</option>
               <option value="mdm" data-i18n="option_mdm">MDM Licensing</option>

@@ -164,7 +164,7 @@
       mq_transport: 'Transportation included',
       mq_nationality: 'Preferred nationality',
       mq_budget: 'Ideal budget per person per month',
-      mq_budget_per: 'SAR / person / month',
+      mq_budget_per: '/ person / month',
       mq_start_date: 'Desired start date',
       mq_submit: 'Request Quote',
       mq_notice_sending: 'Sending your request...',
@@ -744,8 +744,8 @@
       var budget = parseInt(budgetSlider.value);
       if (budgetVal) budgetVal.textContent = toArabicNumbers(String(budget));
 
-      if (totalVal) totalVal.textContent = 'SAR ' + toArabicNumbers(String(budget * workers));
-      if (totalBreakdown) totalBreakdown.textContent = toArabicNumbers(String(workers)) + ' workers \u00d7 SAR ' + toArabicNumbers(String(budget));
+      if (totalVal) totalVal.innerHTML = '<span class="sar-symbol">\ufdf3</span> ' + toArabicNumbers(String(budget * workers));
+      if (totalBreakdown) totalBreakdown.innerHTML = toArabicNumbers(String(workers)) + ' workers \u00d7 <span class="sar-symbol">\ufdf3</span> ' + toArabicNumbers(String(budget));
     }
 
     if (employeesSlider) employeesSlider.addEventListener('input', update);
@@ -1019,6 +1019,27 @@
   window.toggleContrast = toggleContrast;
 
   // ============================================
+  // Hero Particles
+  // ============================================
+  function initParticles() {
+    var container = document.getElementById('hero-particles');
+    if (!container) return;
+    var count = window.innerWidth < 768 ? 20 : 40;
+    for (var i = 0; i < count; i++) {
+      var p = document.createElement('div');
+      p.className = 'hero-particle';
+      p.style.left = Math.random() * 100 + '%';
+      p.style.animationDuration = (8 + Math.random() * 12) + 's';
+      p.style.animationDelay = (Math.random() * 10) + 's';
+      p.style.width = (2 + Math.random() * 4) + 'px';
+      p.style.height = p.style.width;
+      var colors = ['rgba(229, 32, 32, 0.3)', 'rgba(59, 130, 246, 0.2)', 'rgba(139, 92, 246, 0.15)', 'rgba(6, 182, 212, 0.15)'];
+      p.style.background = colors[Math.floor(Math.random() * colors.length)];
+      container.appendChild(p);
+    }
+  }
+
+  // ============================================
   // Initialize
   // ============================================
   document.addEventListener('DOMContentLoaded', function () {
@@ -1030,6 +1051,7 @@
     initBackToTop();
     initReveal();
     initModals();
+    initParticles();
     typeWriter();
     applyStatNums();
   });
