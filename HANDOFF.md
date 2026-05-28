@@ -18,7 +18,7 @@ curl -s https://mscarabia.com/ | grep -c "challenges.cloudflare.com/turnstile"  
 curl -s https://mscarabia.com/ | grep -c "safe-area-inset"  # Should be 2
 ```
 
-**Pending env var**: `TURNSTILE_SECRET` needs adding in CF Pages dashboard → Settings → Environment Variables → value `0x4AAAAAADXw8o_yjHMNXtHzNwb1usIYaIk`. Without it, Turnstile is gracefully skipped (forms still work but bots aren't blocked).
+**Pending env var**: `TURNSTILE_SECRET` needs adding in CF Pages dashboard → Settings → Environment Variables. Get the secret from CF Dashboard → Turnstile → your widget. Without it, Turnstile is gracefully skipped (forms still work but bots aren't blocked).
 
 ---
 
