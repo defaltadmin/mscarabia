@@ -592,13 +592,19 @@ mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transpa
 .marquee-track {
 display: flex;
 width: max-content;
-animation: marquee 45s linear infinite;
+animation: marquee 50s linear infinite;
 will-change: transform;
+transform: translateZ(0);
 }
 .marquee-track:hover { animation-play-state: paused; }
 @keyframes marquee {
 0% { transform: translateX(0); }
 100% { transform: translateX(-50%); }
+}
+/* Snap-stop on hover: smooth deceleration via CSS transition on pause */
+.marquee-track:hover {
+animation-play-state: paused;
+transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 [dir="rtl"] .marquee-track { animation-direction: reverse; }
 .marquee-set {
@@ -682,6 +688,23 @@ gap: 1rem;
 }
 @media (min-width: 768px) { .svc-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 1024px) { .svc-grid { grid-template-columns: repeat(3, 1fr); } }
+.svc-item.svc-featured {
+grid-column: 1 / -1;
+}
+@media (min-width: 1024px) {
+.svc-item.svc-featured { grid-column: 1 / 3; }
+}
+.svc-item.svc-featured .svc-head {
+padding: 2rem;
+}
+.svc-item.svc-featured .svc-icon {
+width: 56px;
+height: 56px;
+background: linear-gradient(135deg, rgba(230, 57, 70, 0.15), rgba(59, 130, 246, 0.1));
+}
+.svc-item.svc-featured .svc-name {
+font-size: 1.2rem;
+}
 .svc-item {
 background: rgba(255, 255, 255, 0.02);
 backdrop-filter: blur(12px);
@@ -752,7 +775,7 @@ background: rgba(230, 57, 70, 0.15);
 .svc-body {
 display: grid;
 grid-template-rows: 0fr;
-transition: grid-template-rows 0.5s var(--ease);
+transition: grid-template-rows 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .svc-item.open .svc-body {
 grid-template-rows: 1fr;
@@ -1210,7 +1233,16 @@ gap: 2.5rem;
 }
 @media (min-width: 1024px) { .contact-grid { grid-template-columns: 1fr 1fr; } }
 .contact-info { display: flex; flex-direction: column; gap: 1.5rem; }
-.c-info-item { display: flex; gap: 1rem; }
+.c-info-item {
+display: flex;
+gap: 1rem;
+padding: 1rem;
+border-radius: var(--radius-md);
+transition: all 0.3s var(--ease);
+}
+.c-info-item:hover {
+background: rgba(255, 255, 255, 0.02);
+}
 .c-info-icon {
 width: 44px;
 height: 44px;
@@ -1744,7 +1776,7 @@ backdrop-filter: none !important;
       <p class="sec-sub" data-i18n="services_sub">End-to-end services designed to accelerate your digital transformation and ensure operational excellence.</p>
     </div>
     <div class="svc-grid r">
-      <div class="svc-item">
+      <div class="svc-item svc-featured">
         <div class="svc-head" onclick="toggleSvc(this)" onkeydown="if(event.key==='Enter'||event.key===' '){toggleSvc(this);event.preventDefault()}" role="button" tabindex="0" aria-expanded="false">
           <div class="svc-icon"><span class="material-symbols-outlined">computer</span></div>
           <div class="svc-info"><div class="svc-name" data-i18n="svc1_title">Managed IT Services</div><div class="svc-brief" data-i18n="svc1_desc">24/7 proactive monitoring, support, and maintenance.</div></div>
