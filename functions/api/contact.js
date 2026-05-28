@@ -1,7 +1,7 @@
 /**
  * Cloudflare Pages Function — Contact Form Handler
  * Accepts POST from contact form and manpower quote form
- * Sends email via MailChannels API (free for Cloudflare)
+ * Sends email via Resend API
  */
 
 const ALLOWED_ORIGIN = 'https://mscarabia.com';
@@ -84,7 +84,7 @@ export async function onRequestPost(context) {
       await env.RATE_LIMIT_KV.put(key, String((parseInt(count) || 0) + 1), { expirationTtl: 3600 });
     }
 
-    let emailSubject, emailBody;
+    let emailSubject, emailBody, replyToEmail;
 
     if (type === 'manpower') {
       const name = sanitize(formData.get('mq_name'));
@@ -112,6 +112,7 @@ export async function onRequestPost(context) {
         });
       }
 
+      replyToEmail = email;
       emailSubject = `Manpower Quote Request - ${workers} workers from ${name}`;
       emailBody = [
         `=== MANPOWER QUOTE REQUEST ===`,
@@ -152,6 +153,7 @@ export async function onRequestPost(context) {
         });
       }
 
+      replyToEmail = email;
       emailSubject = `Contact from ${name} - ${service}`;
       emailBody = [
         `=== CONTACT FORM SUBMISSION ===`,
@@ -170,12 +172,21 @@ export async function onRequestPost(context) {
       ].join('\n');
     }
 
+    if (!env.RESEND_API_KEY) {
+      console.error('RESEND_API_KEY not configured');
+      return new Response(JSON.stringify({ success: false, error: 'Email service not configured' }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json', ...corsHeaders },
+      });
+    }
+
     const emailResult = await sendEmail({
       to: env.CONTACT_EMAIL || 'info@mscarabia.com',
       from: env.FROM_EMAIL || 'noreply@mscarabia.com',
       subject: emailSubject,
       body: emailBody,
-      replyTo: sanitize(formData.get('email') || formData.get('mq_email')),
+      replyTo: replyToEmail,
+      apiKey: env.RESEND_API_KEY,
     });
 
     if (emailResult.success) {
@@ -183,9 +194,14 @@ export async function onRequestPost(context) {
         headers: { 'Content-Type': 'application/json', ...corsHeaders },
       });
     } else {
-      throw new Error(emailResult.error || 'Failed to send email');
+      console.error('Resend error:', emailResult.error);
+      return new Response(JSON.stringify({ success: false, error: 'Failed to send email' }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json', ...corsHeaders },
+      });
     }
   } catch (error) {
+    console.error('Contact form error:', error);
     return new Response(JSON.stringify({ success: false, error: 'Server error' }), {
       status: 500,
       headers: { 'Content-Type': 'application/json', ...corsHeaders },
@@ -199,21 +215,25 @@ export async function onRequestOptions() {
   });
 }
 
-async function sendEmail({ to, from, subject, body, replyTo }) {
+async function sendEmail({ to, from, subject, body, replyTo, apiKey }) {
   try {
-    const response = await fetch('https://api.mailchannels.net/tx/v1/send', {
+    const response = await fetch('https://api.resend.com/emails', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`,
+      },
       body: JSON.stringify({
-        personalizations: [{ to: [{ email: to }], ...(replyTo ? { reply_to: { email: replyTo } } : {}) }],
-        from: { email: from, name: 'MSC Arabia Website' },
+        from: from,
+        to: [to],
         subject: subject,
-        content: [{ type: 'text/plain', value: body }],
+        text: body,
+        ...(replyTo ? { reply_to: replyTo } : {}),
       }),
     });
-    if (response.ok || response.status === 202) return { success: true };
+    if (response.ok) return { success: true };
     const text = await response.text();
-    return { success: false, error: `MailChannels ${response.status}: ${text}` };
+    return { success: false, error: `Resend ${response.status}: ${text}` };
   } catch (error) {
     return { success: false, error: error.message };
   }
