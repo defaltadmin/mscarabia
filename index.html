@@ -112,7 +112,7 @@
 
   --text-primary: #e8eaf0;
   --text-secondary: #8b93a8;
-  --text-muted: #5a6275;
+  --text-muted: #6b7590;
 
   --border: rgba(255, 255, 255, 0.06);
   --border-hover: rgba(255, 255, 255, 0.12);
@@ -1708,7 +1708,7 @@ ul, ol { list-style: none; }
       <a href="#about" data-i18n="nav_about">About</a>
       <div class="lang-toggle" onclick="toggleLang()" role="button" tabindex="0" aria-label="Toggle language">
         <span class="lang-label" id="lang-label">AR</span>
-        <button class="lang-sw" id="lang-switch" aria-checked="false" onclick="event.stopPropagation();toggleLang()"><span class="lang-sw-knob"></span></button>
+        <button class="lang-sw" id="lang-switch" role="switch" aria-checked="false" onclick="event.stopPropagation();toggleLang()"><span class="lang-sw-knob"></span></button>
       </div>
     </div>
     <a href="#contact" class="nav-cta" data-i18n="nav_cta">Get in Touch</a>
@@ -1724,7 +1724,7 @@ ul, ol { list-style: none; }
     <a href="#contact" data-i18n="nav_contact" onclick="closeMobileMenu()">Contact</a>
     <div class="lang-toggle" style="margin-top:0.75rem;padding:0.5rem 0" onclick="toggleLang()" role="button" tabindex="0">
       <span class="lang-label" id="lang-label-m">AR</span>
-      <button class="lang-sw" id="lang-switch-mobile" aria-checked="false" onclick="event.stopPropagation();toggleLang()"><span class="lang-sw-knob"></span></button>
+      <button class="lang-sw" id="lang-switch-mobile" role="switch" aria-checked="false" onclick="event.stopPropagation();toggleLang()"><span class="lang-sw-knob"></span></button>
     </div>
   </div>
 </div>
@@ -1769,7 +1769,7 @@ ul, ol { list-style: none; }
 <section id="clients" class="clients">
   <div class="wrap">
     <p class="clients-label" data-i18n="clients_tag">Trusted by Saudi Arabia's Leading Organisations</p>
-    <div class="marquee-wrap">
+    <noscript><div style="text-align:center;padding:1rem;color:#8b93a8;font-size:0.85rem">Amsa Hospitality · TSS Advertising · Kudu · EHIC · Hellmann Logistics</div></noscript><div class="marquee-wrap">
       <div class="marquee-track" id="marquee-track">
         <div class="marquee-set" data-clients-set></div>
         <div class="marquee-set" data-clients-set aria-hidden="true"></div>
@@ -1788,7 +1788,7 @@ ul, ol { list-style: none; }
     </div>
     <div class="svc-grid r">
       <div class="svc-item">
-        <div class="svc-head" onclick="toggleSvc(this)" role="button" tabindex="0" aria-expanded="false">
+        <div class="svc-head" onclick="toggleSvc(this)" onkeydown="if(event.key==='Enter'||event.key===' '){toggleSvc(this);event.preventDefault()}" role="button" tabindex="0" aria-expanded="false">
           <div class="svc-icon"><span class="material-symbols-outlined">computer</span></div>
           <div class="svc-info"><div class="svc-name" data-i18n="svc1_title">Managed IT Services</div><div class="svc-brief" data-i18n="svc1_desc">24/7 proactive monitoring, support, and maintenance.</div></div>
           <div class="svc-arrow"><span class="material-symbols-outlined">expand_more</span></div>
@@ -1800,7 +1800,7 @@ ul, ol { list-style: none; }
         </div></div>
       </div>
       <div class="svc-item">
-        <div class="svc-head" onclick="toggleSvc(this)" role="button" tabindex="0" aria-expanded="false">
+        <div class="svc-head" onclick="toggleSvc(this)" onkeydown="if(event.key==='Enter'||event.key===' '){toggleSvc(this);event.preventDefault()}" role="button" tabindex="0" aria-expanded="false">
           <div class="svc-icon"><span class="material-symbols-outlined">devices</span></div>
           <div class="svc-info"><div class="svc-name" data-i18n="svc2_title">MDM Licensing</div><div class="svc-brief" data-i18n="svc2_desc">Mobile Device Management solutions for enterprise mobility.</div></div>
           <div class="svc-arrow"><span class="material-symbols-outlined">expand_more</span></div>
@@ -1812,7 +1812,7 @@ ul, ol { list-style: none; }
         </div></div>
       </div>
       <div class="svc-item">
-        <div class="svc-head" onclick="toggleSvc(this)" role="button" tabindex="0" aria-expanded="false">
+        <div class="svc-head" onclick="toggleSvc(this)" onkeydown="if(event.key==='Enter'||event.key===' '){toggleSvc(this);event.preventDefault()}" role="button" tabindex="0" aria-expanded="false">
           <div class="svc-icon"><span class="material-symbols-outlined">local_fire_department</span></div>
           <div class="svc-info"><div class="svc-name" data-i18n="svc3_title">Fire Safety Engineering</div><div class="svc-brief" data-i18n="svc3_desc">Certified fire safety systems design, installation, and maintenance.</div></div>
           <div class="svc-arrow"><span class="material-symbols-outlined">expand_more</span></div>
@@ -1824,7 +1824,7 @@ ul, ol { list-style: none; }
         </div></div>
       </div>
       <div class="svc-item">
-        <div class="svc-head" onclick="toggleSvc(this)" role="button" tabindex="0" aria-expanded="false">
+        <div class="svc-head" onclick="toggleSvc(this)" onkeydown="if(event.key==='Enter'||event.key===' '){toggleSvc(this);event.preventDefault()}" role="button" tabindex="0" aria-expanded="false">
           <div class="svc-icon"><span class="material-symbols-outlined">groups</span></div>
           <div class="svc-info"><div class="svc-name" data-i18n="svc4_title">Manpower Solutions</div><div class="svc-brief" data-i18n="svc4_desc">Skilled professionals for positions across Saudi Arabia.</div></div>
           <div class="svc-arrow"><span class="material-symbols-outlined">expand_more</span></div>
@@ -1836,7 +1836,7 @@ ul, ol { list-style: none; }
         </div></div>
       </div>
       <div class="svc-item">
-        <div class="svc-head" onclick="toggleSvc(this)" role="button" tabindex="0" aria-expanded="false">
+        <div class="svc-head" onclick="toggleSvc(this)" onkeydown="if(event.key==='Enter'||event.key===' '){toggleSvc(this);event.preventDefault()}" role="button" tabindex="0" aria-expanded="false">
           <div class="svc-icon"><span class="material-symbols-outlined">shopping_cart</span></div>
           <div class="svc-info"><div class="svc-name" data-i18n="svc5_title">Hardware & Software</div><div class="svc-brief" data-i18n="svc5_desc">Procurement and deployment of enterprise-grade solutions.</div></div>
           <div class="svc-arrow"><span class="material-symbols-outlined">expand_more</span></div>
@@ -1848,7 +1848,7 @@ ul, ol { list-style: none; }
         </div></div>
       </div>
       <div class="svc-item">
-        <div class="svc-head" onclick="toggleSvc(this)" role="button" tabindex="0" aria-expanded="false">
+        <div class="svc-head" onclick="toggleSvc(this)" onkeydown="if(event.key==='Enter'||event.key===' '){toggleSvc(this);event.preventDefault()}" role="button" tabindex="0" aria-expanded="false">
           <div class="svc-icon"><span class="material-symbols-outlined">cloud</span></div>
           <div class="svc-info"><div class="svc-name" data-i18n="svc6_title">Cloud Services</div><div class="svc-brief" data-i18n="svc6_desc">Scalable cloud infrastructure with migration and optimization.</div></div>
           <div class="svc-arrow"><span class="material-symbols-outlined">expand_more</span></div>
@@ -2004,7 +2004,7 @@ ul, ol { list-style: none; }
     <div class="contact-grid">
       <div class="contact-info r">
         <div class="c-info-item"><div class="c-info-icon"><span class="material-symbols-outlined">location_on</span></div><div><h3 data-i18n="contact_addr_title">Office Address</h3><p><span data-i18n="contact_addr_line1">6787 Abdulrahman Al Nasser, Al Khaleej Dist.</span><br><span data-i18n="contact_addr_line2">Riyadh 13223, Saudi Arabia</span></p></div></div>
-        <div class="c-info-item"><div class="c-info-icon"><span class="material-symbols-outlined">email</span></div><div><h3 data-i18n="contact_email_title">Email</h3><a href="mailto:info@mscarabia.com">info@mscarabia.com</a></div></div>
+        <div class="c-info-item"><div class="c-info-icon"><span class="material-symbols-outlined">call</span></div><div><h3>Phone</h3><a href="tel:+966551675320">+966 55 167 5320</a></div></div><div class="c-info-item"><div class="c-info-icon"><span class="material-symbols-outlined">email</span></div><div><h3 data-i18n="contact_email_title">Email</h3><a href="mailto:info@mscarabia.com">info@mscarabia.com</a></div></div>
       </div>
       <div class="contact-card r r-d1">
         <form onsubmit="handleContactSubmit(event)" class="contact-form">
@@ -3202,7 +3202,7 @@ ul, ol { list-style: none; }
     h = canvas.offsetHeight;
     canvas.width = w * dpr;
     canvas.height = h * dpr;
-    ctx.scale(dpr, dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
 
   function Blob(x, y, r, color, vx, vy) {
@@ -3244,7 +3244,10 @@ ul, ol { list-style: none; }
     ];
   }
 
-  function draw(t) {
+  var startTime = null;
+  function draw(ts) {
+    if (!startTime) startTime = ts;
+    var t = ts - startTime;
     ctx.clearRect(0, 0, w, h);
 
     // Base gradient

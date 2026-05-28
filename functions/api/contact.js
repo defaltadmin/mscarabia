@@ -11,6 +11,11 @@ function sanitize(str) {
   return str.replace(/[\r\n]/g, ' ').trim().substring(0, 2000);
 }
 
+function isValidEmail(str) {
+  if (typeof str !== 'string' || !str) return false;
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(str);
+}
+
 const corsHeaders = {
   'Access-Control-Allow-Origin': ALLOWED_ORIGIN,
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
@@ -77,6 +82,12 @@ export async function onRequestPost(context) {
           headers: { 'Content-Type': 'application/json', ...corsHeaders },
         });
       }
+      if (!isValidEmail(email)) {
+        return new Response(JSON.stringify({ success: false, error: 'Invalid email address' }), {
+          status: 400,
+          headers: { 'Content-Type': 'application/json', ...corsHeaders },
+        });
+      }
 
       emailSubject = `Manpower Quote Request - ${workers} workers from ${name}`;
       emailBody = [
@@ -107,6 +118,12 @@ export async function onRequestPost(context) {
 
       if (!name || !email) {
         return new Response(JSON.stringify({ success: false, error: 'Name and email are required' }), {
+          status: 400,
+          headers: { 'Content-Type': 'application/json', ...corsHeaders },
+        });
+      }
+      if (!isValidEmail(email)) {
+        return new Response(JSON.stringify({ success: false, error: 'Invalid email address' }), {
           status: 400,
           headers: { 'Content-Type': 'application/json', ...corsHeaders },
         });
