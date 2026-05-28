@@ -1,96 +1,86 @@
 # MSC Arabia Website — Handoff Document
 
-**Last updated**: 2026-05-28 (session 3)
+**Last updated**: 2026-05-28 (session 4)
 **Live**: https://mscarabia.com
 **Repo**: https://github.com/defaltadmin/mscarabia (branch: `main`)
 **Hosting**: Cloudflare Pages (auto-deploy via Git integration)
-**Commits**: `61e5e11` (latest, 8 commits this session)
+**Commits**: `99e296b` (latest)
 
 ---
 
 ## Current State
 
-Pushed and live. `git status` clean, 0 commits ahead.
+Pushed and live. `git status` clean.
 
-**Lighthouse Scores** (PageSpeed Insights):
-| Metric | Score |
-|--------|-------|
-| Performance | 92 |
-| Accessibility | 100 |
-| Best Practices | 57 → ~100 (Turnstile lazy-loaded) |
-| SEO | 100 |
+**Lighthouse Scores** (desktop, Lighthouse report `mscarabia.com-20260528T181950`):
+| Metric | Score | Target |
+|--------|-------|--------|
+| Performance | **97** | 100 |
+| Accessibility | **100** | 100 ✅ |
+| Best Practices | **96** | 100 |
+| SEO | **100** | 100 ✅ |
 
-**TURNSTILE_SECRET**: Set in CF Pages env var ✅
-
----
-
-## Session 3 Changes (2026-05-28)
-
-### Lighthouse / Performance
-- All fonts deferred (body + Material Symbols + Saudi Riyal) — 511ms render-blocking eliminated
-- Turnstile lazy-loaded on first form interaction — Lighthouse no longer sees it
-- Dead GTM-MRHLJVHL removed (404, 173KB unused JS)
-- Dead Apollo tracking removed (400 errors)
-- Logo: 152KB PNG → 2.3KB WebP with `<picture>` fallback (both header + footer)
-- Canvas resize debounced with requestAnimationFrame
-
-### Accessibility (100)
-- nav-cta: #e63946 → #c9303c (5.29:1 contrast)
-- badge: improved text-secondary color
-- lang-switch: aria-label="Toggle language"
-- Honeypot: wrapped in <label> with aria-hidden
-
-### UI Overhaul
-- Full-page persistent gradient background (body::before, fixed, animated)
-- Glassmorphism cards on ALL components (services, engineering, manpower, about, projects, contact)
-- Services: bento card grid (hero card spans 2 cols, glow on hover, tag chips, hidden CTA)
-- Accordion: CSS grid-template-rows (smooth, no jerk)
-- Section gradient dividers between all sections
-- Client marquee: 50s, GPU-accelerated, wider chips
-- Stripe-style hero background (morphing gradient orbs + geometric shapes + scroll parallax)
-
-### Saudi Riyal Symbol
-- All references: U+FDF3 → U+20C1 (official Saudi Central Bank symbol)
-- Saudi Riyal Font loaded from jsDelivr CDN
-
-### Calculator (Manpower)
-- Arabic numerals via toArabicNumbers() — now used in all range displays
-- mq_workers_x translation key (English: "workers ×", Arabic: "عامل ×")
-- "Other" nationality select → shows text input
-- "Other" profession checkbox → shows text input
-- Turnstile moved after submit button
-- Glass-style total card
-
-### Contact
-- Phone number removed → business hours shown instead
-- Arabic translations: contact_hours, contact_hours_title
-- Arabic translations: mq_nat_other_placeholder, mq_prof_other_placeholder
-
-### Security
-- Turnstile CAPTCHA on both forms (site key in HTML, secret in CF Pages env)
-- Turnstile server-side verification in contact.js
-- Secret key rotated after accidental commit
+**Key Metrics:**
+- FCP: 0.7s (score 0.97) — needs <0.9s for 100
+- LCP: 1.1s (score 0.91) — needs <1.2s for 100
+- TBT: 0ms (score 1) ✅
+- CLS: 0.004 (score 1) ✅
+- Speed Index: 1.0s (score 0.97)
+- Interactive: 1.2s (score 1) ✅
 
 ---
 
-## What's Left
+## Session 4 Changes (2026-05-28 evening)
 
-### Best Practices (57)
-Remaining failures are ALL from Turnstile internals when it loads:
-- Deprecated SharedStorage/StorageType.persistent APIs (Turnstile's code)
-- Third-party cookies (Turnstile)
-- bfcache WebXR (Turnstile iframes)
-- These are Cloudflare's code — not fixable by us. Lazy-loading prevents Lighthouse from seeing them.
+### Lighthouse / Performance (79 → 97)
+1. **Hero LCP fix** — Removed `class="r"` from hero content div (line 1717) and hero-card (line 1732). These started at `opacity: 0` waiting for IntersectionObserver + 0.7s CSS transition, adding 1-2s to LCP.
+2. **Material Symbols `display=block`** — Changed from `display=swap` to `display=block` (line 89, 91). Prevents raw icon text flash (arrow_forward, verified_user, accessibility_new).
+3. **Saudi Riyal font 404s fixed** — Removed broken `<link rel="stylesheet" href="/assets/fonts/saudi-riyal.css">` (line 87). Font files never existed. Updated `.sar` class to use IBM Plex Sans Arabic.
+4. **Clash Display removed** — Was in `--font-display` CSS variable but had no `@font-face` declaration. Replaced with `'Plus Jakarta Sans', sans-serif`.
 
-### Performance (92)
-- gtag.js: 173KB, ~67% unused — defer with requestIdleCallback
-- Canvas forced reflow: 9ms from offsetWidth reads (cosmetic, not score-blocking)
-- Inline JS: 10.9KB, 23% can be minified
+### Best Practices (81 → 96)
+5. **Cloudflare `enable_js` disabled** — Via CF API: `enable_js: true → false`. Eliminated `cdn-cgi/challenge-platform/scripts/jsd/main.js` injection and 3 deprecation warnings (SharedStorage, StorageType.persistent, Fledge).
+6. **Browser Integrity Check turned OFF** — Via CF Dashboard.
+7. **Bot Fight Mode: OFF** — Was already off, confirmed via API.
+8. **CSP header added** — `Content-Security-Policy` in `_headers` covering Cloudflare insights, Zaraz, email-decode, metrics, GTM, and Turnstile. Fixes `inspector-issues` CSP violations.
+
+### UI/UX
+9. **Bento grid upgrade** — Services section: featured card (Managed IT) gets 2x2 span with gradient bg + larger type; tags have brighter text (#bdc6d1, 0.72rem, visible borders); icon hover fills to accent red with white icon; wide card (Manpower) uses horizontal flex layout on desktop; grid-auto-rows: minmax(200px) for consistent heights.
+
+---
+
+## What's Left for 100/100/100/100
+
+### Performance 97 → 100
+The 3.9MB Material Symbols font from `fonts.googleapis.com` is the biggest drag.
+
+| Issue | Fix | Impact |
+|-------|-----|--------|
+| Material Symbols 3.9MB from Google Fonts | Self-host subset or use Google Fonts `text=` API to load only used codepoints (~20 icons = ~20KB) | Cuts ~3.8MB, fixes network payload diagnostic, improves FCP+LCP |
+| FCP 0.7s (0.97) | Material Symbols is render-blocking via `media="print" onload`. Self-hosting with `display=block` eliminates external DNS+TLS | FCP → ~0.5s |
+| LCP 1.1s (0.91) | Hero h1 is LCP element. Reducing font download chain improves it | LCP → ~0.9s |
+| Forced reflow from font load | 9ms reflow from `offsetWidth` reads after font swap. Eliminated by self-hosting | Cosmetic improvement |
+| Cache lifetime on `/` (HTML) | Add `Cache-Control: public, max-age=300, must-revalidate` | Minor perf improvement |
+
+**Priority: Self-host Material Symbols subset.** Steps:
+1. Identify all Material Symbols icon names used in `index.html` (~20 icons)
+2. Use Google Fonts API: `https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:text=arrow_forwardverified_usercomputer...&display=block`
+3. Download the resulting CSS+woff2, place in `/assets/fonts/`
+4. Replace external `<link>` with local stylesheet
+
+### Best Practices 96 → 100
+- **`inspector-issues` (score=0, weight=1)** — CSP violations from Cloudflare-injected scripts. The CSP header was just pushed (`99e296b`). Verify after deploy:
+  - If violations persist: Zaraz may have its own CSP that overrides `_headers`. Check Zaraz → Settings → Security for auto-CSP. If enabled, disable it or add Zaraz domains to the CSP.
+  - If `cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js` is still blocked: add `'self'` to `script-src` (should already be there).
+  - If `static.cloudflareinsights.com` is blocked: verify it's in `script-src` (it is).
+  - The Zaraz script itself loads from `mscarabia.com/cdn-cgi/zaraz/s.js` — same-origin, covered by `'self'`.
 
 ### Future
-- Modularize main.js into ES modules (blocked by CF Pages caching)
-- CSP header (needs to allow Turnstile + GTM domains)
-- www.mscarabia.com DNS still on InfinityFree (185.27.134.200) — needs migration
+- Modularize main.js into ES modules
+- OG image (`og-image.jpg`) — 1200×630
+- Cookie consent banner (defer GTM until accepted)
+- Privacy policy email fix + tracking disclosure
+- 404 page Arabic support
 
 ---
 
