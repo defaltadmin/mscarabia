@@ -82,18 +82,38 @@
   }
   </script>
 
-  <!-- Fonts — critical body fonts load immediately, Material Symbols deferred (3.9MB) -->
+  <!-- ALL fonts deferred — unblocks FCP/LCP (303ms + 208ms savings) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-  <link href="https://cdn.jsdelivr.net/npm/@emran-alhaddad/saudi-riyal-font/index.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@emran-alhaddad/saudi-riyal-font/index.css" rel="stylesheet" media="print" onload="this.media='all'">
   <noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@emran-alhaddad/saudi-riyal-font/index.css" rel="stylesheet">
   </noscript>
 
-  <!-- Cloudflare Turnstile -->
-  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  <!-- Cloudflare Turnstile — lazy-loaded on first form interaction -->
+  <script>
+  (function() {
+    var tsLoaded = false;
+    function loadTurnstile() {
+      if (tsLoaded) return;
+      tsLoaded = true;
+      var s = document.createElement('script');
+      s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+      s.async = true;
+      document.head.appendChild(s);
+    }
+    window.addEventListener('focusin', function(e) {
+      if (e.target.closest('form')) loadTurnstile();
+    }, { once: true });
+    window.addEventListener('pointerdown', function(e) {
+      if (e.target.closest('form')) loadTurnstile();
+    }, { once: true });
+  })();
+  </script>
 
   <style>:root {
 --bg-deep: #06070b;
@@ -1643,18 +1663,12 @@ backdrop-filter: none !important;
 .hero-actions .btn { width: 100%; justify-content: center; }
 }</style>
 
-  <!-- Google Tag Manager -->
-  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MRHLJVHL');</script>
-  <!-- Google Analytics -->
+  <!-- GTM-MRHLJVHL removed — was returning 404 errors -->
+  <!-- Google Analytics (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-NGXKXV7EGM"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-NGXKXV7EGM');</script>
-  <!-- Apollo.io Lead Tracking -->
-  <!-- Apollo tracking removed — returning 400 errors -->
 </head>
 <body>
-
-<!-- GTM noscript -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MRHLJVHL" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <!-- Navigation -->
 <nav class="nav">
@@ -1990,7 +2004,7 @@ backdrop-filter: none !important;
   <div class="wrap">
     <div class="footer-grid">
       <div>
-        <div class="footer-brand"><img src="/assets/logo.png" alt="MSC Arabia" width="40" height="40"><span>MSC Arabia</span></div>
+        <div class="footer-brand"><picture><source srcset="/assets/logo.webp" type="image/webp"><img src="/assets/logo.png" alt="MSC Arabia" width="40" height="40"></picture><span>MSC Arabia</span></div>
         <p data-i18n="footer_desc">Your trusted partner for comprehensive IT solutions and engineering services in Saudi Arabia.</p>
         <div class="footer-badge"><span class="material-symbols-outlined" style="font-size:14px">verified</span><span data-i18n="compliance_ids" data-i18n-html>Unified No.: <strong>704-925-4704</strong> &middot; VAT: <strong>312 900 114 900 003</strong></span></div>
       </div>
@@ -3307,7 +3321,11 @@ backdrop-filter: none !important;
   }
 
   resize(); initShapes(); draw(0);
-  window.addEventListener('resize', function () { resize(); initShapes(); });
+  var resizeTimer;
+  window.addEventListener('resize', function () {
+    cancelAnimationFrame(resizeTimer);
+    resizeTimer = requestAnimationFrame(function() { resize(); initShapes(); });
+  });
   window.addEventListener('scroll', function () { scrollTarget = window.scrollY; }, { passive: true });
   document.addEventListener('visibilitychange', function () {
     if (document.hidden) { cancelAnimationFrame(raf); raf = 0; }
