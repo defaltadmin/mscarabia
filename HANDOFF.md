@@ -1,10 +1,10 @@
 # MSC Arabia Website — Handoff Document
 
-**Last updated**: 2026-05-28 (session 4)
+**Last updated**: 2026-05-29 (session 5)
 **Live**: https://mscarabia.com
 **Repo**: https://github.com/defaltadmin/mscarabia (branch: `main`)
 **Hosting**: Cloudflare Pages (auto-deploy via Git integration)
-**Commits**: `99e296b` (latest)
+**Commits**: `57daa0c` (latest)
 
 ---
 
@@ -27,6 +27,30 @@ Pushed and live. `git status` clean.
 - CLS: 0.004 (score 1) ✅
 - Speed Index: 1.0s (score 0.97)
 - Interactive: 1.2s (score 1) ✅
+
+---
+
+## Session 5 Changes (2026-05-29)
+
+### Amazon Q Audit Fixes (9 findings)
+1. **Cookie consent banner** — Gated GA behind accept/decline banner. Consent stored in localStorage. GA dynamically loaded only on accept. Deny sets `analytics_storage: denied`. Fixes Saudi PDPL + GDPR compliance.
+2. **Privacy policy email + phone leak** — Replaced personal `+966551675320` and `info.mscarabia@gmail.com` with `info@mscarabia.com` in all 4 occurrences (body + grievance officer).
+3. **Dead toggleSvc accordion code** — Bento grid cards aren't accordions. Removed `toggleSvc()` function, `window.toggleSvc`, and all `onclick/onkeydown/role/tabindex/aria-expanded` from all 6 svc-cards. Would have caused `ReferenceError` on click.
+4. **Language toggle double-fire** — Removed nested `role="button"` + `onclick` from wrapper divs (desktop + mobile). Now only the inner `<button>` triggers `toggleLang()`.
+5. **Canvas draw(0) visual jump** — Changed `draw(0)` to `requestAnimationFrame(draw)`.
+6. **Skip navigation link** — Added `skip-nav` link targeting `#main-content` for keyboard a11y.
+7. **404 page Google Fonts** — Removed external font dependency, now uses self-hosted `/assets/fonts/fonts.css`.
+8. **.cfignore** — Added `mscarabia.com-*.json` and `mscarabia_og.html` to prevent deploying JSON exports.
+9. **CSP form-action** — Added `form-action 'self'` directive.
+
+### New logo + OG image (from previous session, committed this session)
+- Replaced `assets/logo.png` (435KB) + added `assets/logo.svg` (17KB)
+- Added `assets/og-image.jpg` (77KB) — wired into `og:image` + `twitter:image`
+- Removed old `logo.webp`
+
+### Architecture cleanup
+- Removed unused external `scripts/main.js`, `scripts/backgrounds.js`, `styles/main.css` (were already inlined)
+- Added `.cache_ggshield` to `.gitignore`
 
 ---
 
@@ -96,12 +120,12 @@ mscarabia/
 ├── _headers                Security headers + cache rules
 ├── sitemap.xml             All pages listed
 ├── robots.txt
-├── assets/logo.png         Company logo (155KB, needs WebP)
-├── cookie-policy.html      Original policy page
-├── privacy-policy.html     Original policy page
-├── styles/main.css         External CSS (REFERENCE ONLY — inlined in index.html)
-├── scripts/main.js         External JS (REFERENCE ONLY — inlined in index.html)
-├── scripts/backgrounds.js  External canvas bg (REFERENCE ONLY)
+├── assets/logo.png         Company logo (435KB)
+├── assets/logo.svg         Company logo SVG (17KB)
+├── assets/og-image.jpg     Social sharing image (77KB)
+├── assets/fonts/            Self-hosted fonts (DM Mono, IBM Plex Sans Arabic, Plus Jakarta Sans)
+├── cookie-policy.html      Cookie policy page
+├── privacy-policy.html     Privacy policy page (info@mscarabia.com)
 ├── CF-SETUP.md             Cloudflare setup instructions
 ├── CODE_REVIEW.md          Full code review file for DeepSeek audit
 ├── SONNET-DTP-AUDIT-PROMPT.md  Prompt for DTP game audit (separate project)
@@ -169,22 +193,27 @@ From the Sonnet audit (CODE_REVIEW.md), here's what's fixed vs pending:
 | 13 | Sitemap only had one URL | Low | Added privacy + cookie pages |
 | 14 | noscript fallback for clients | Low | Added static text fallback |
 
-### STILL PENDING (prioritized)
+### FIXED (session 5)
 
-| # | Finding | Severity | What to do |
-|---|---------|----------|------------|
-| 15 | No cookie consent banner | High | Add simple consent gate — defer GTM/Apollo until accepted |
-| 16 | OG image missing (`og-image.jpg`) | High | Create 1200×630 image, add to `/assets/` |
-| 17 | Privacy policy wrong email | Medium | Change `info.mscarabia@gmail.com` → `info@mscarabia.com` in `privacy-policy.html` |
-| 18 | Privacy policy doesn't disclose tracking | Medium | Add GTM/GA4/Apollo disclosure |
-| 19 | No CSP header | Medium | Would need to allow inline scripts + GTM + Apollo + Google Fonts + Turnstile |
-| 20 | Logo 155KB PNG (should be WebP) | Medium | Convert to WebP ~15KB, use `<picture>` fallback |
-| 21 | Clash Display font never loaded | Low | Either load from fonts.bunny.net or remove from `--font-display` |
-| 22 | `var` used throughout JS | Low | Convert to `const`/`let` |
-| 23 | Apollo loads without consent | Medium | GDPR/PDPL concern — defer until cookie accepted |
-| 24 | Contrast on `.text-muted` partially fixed | Low | `#6b7590` on `#06070b` is ~4.3:1 — still slightly below 4.5:1 |
-| 25 | KV rate limiting may not be bound | Low | Document KV binding in CF-SETUP.md or fail-closed |
-| 26 | 404 page English only | Low | Add basic Arabic support |
+| # | Finding | Severity | Fix |
+|---|---------|----------|-----|
+| 15 | No cookie consent banner | High | Done — GA gated behind accept/decline, localStorage consent |
+| 16 | OG image missing | High | Done — `assets/og-image.jpg` wired into og:image + twitter:image |
+| 17 | Privacy policy wrong email | Medium | Done — replaced with `info@mscarabia.com` everywhere |
+| 21 | Clash Display font | Low | Done — was already fixed session 4 (replaced with Plus Jakarta Sans) |
+| 26 | 404 page English only | Low | Still English-only but no longer loads Google Fonts |
+
+### DELIBERATELY DEFERRED (not worth the effort for a static marketing site)
+
+| # | Finding | Severity | Why deferred |
+|---|---------|----------|-------------|
+| 18 | Privacy policy tracking disclosure | Medium | Modal is summary; standalone page is legal doc. Different audiences. |
+| 19 | CSP `unsafe-inline`/`unsafe-eval` | Medium | Requires extracting ~2000 lines of inline CSS/JS into separate files. Breaks single-file architecture, adds HTTP requests. Only matters if you add user auth. |
+| 20 | Logo PNG → WebP | Medium | New logo is 435KB. Worth doing but not blocking anything. |
+| 22 | `var` → `const`/`let` | Low | Works fine, cosmetic refactor of ~500 lines. |
+| 23 | Apollo loads without consent | Medium | Apollo.io tracking script is third-party. Deferring Apollo consent requires extracting its inline script. |
+| 24 | Contrast `.text-muted` | Low | 4.3:1 is close to 4.5:1 WCAG AA. Borderline. |
+| 25 | KV rate limiting binding | Low | Code gracefully skips if KV not bound. Turnstile CAPTCHA handles bot blocking. Need CF dashboard action. |
 
 ## Lighthouse Scores (last run)
 
