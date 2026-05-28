@@ -62,6 +62,8 @@
       services_pill: 'Our Core Services',
       services_title: 'Comprehensive IT & Engineering Solutions',
       services_sub: 'End-to-end services designed to accelerate your digital transformation and ensure operational excellence.',
+      svc_cta: 'Request Service',
+      svc_cta_quote: 'Get a Quote',
       svc1_title: 'Managed IT Services',
       svc1_desc: '24/7 proactive monitoring, support, and maintenance of your IT infrastructure to ensure maximum uptime and performance.',
       svc1_item1: 'Server & Network Management',
@@ -328,6 +330,8 @@
       services_pill: 'خدماتنا الأساسية',
       services_title: 'حلول تكنولوجيا المعلومات والهندسة الشاملة',
       services_sub: 'خدمات شاملة مصممة لتسريع التحول الرقمي وضمان التشغيل المتميز.',
+      svc_cta: 'اطلب الخدمة',
+      svc_cta_quote: 'احصل على عرض سعر',
       svc1_title: 'خدمات تكنولوجيا المعلومات المدارة',
       svc1_desc: 'مراقبة استباقية على مدار الساعة طوال أيام الأسبوع، ودعم، وصيانة لبنيتك التحتية لتكنولوجيا المعلومات لضمان أقصى وقت تشغيل وأداء.',
       svc1_item1: 'إدارة الخوادم والشبكات',
@@ -453,7 +457,7 @@
 
       // Projects
       projects_pill: 'مشاريعنا',
-      projects_title: 'בנוها بواسطة MSC Arabia',
+      projects_title: 'بُنيت بواسطة MSC Arabia',
       projects_sub: 'عرض حلولنا التكنولوجية ومنتجاتنا الرقمية المبنية داخلياً.',
       project_live: 'عرض المشروع',
 
@@ -693,7 +697,7 @@
       set.innerHTML = '';
       keys.forEach(function (key) {
         var chip = document.createElement('div');
-        chip.className = 'client-chip';
+        chip.className = 'm-chip';
         var span = document.createElement('span');
         span.setAttribute('data-i18n', key);
         span.textContent = translations[currentLang][key] || key;
@@ -742,7 +746,7 @@
       }
 
       var budget = parseInt(budgetSlider.value);
-      if (budgetVal) budgetVal.textContent = toArabicNumbers(String(budget));
+      if (budgetVal) budgetVal.innerHTML = '<span class="sar">\ufdf3</span> ' + toArabicNumbers(String(budget));
 
       if (totalVal) totalVal.innerHTML = '<span class="sar-symbol">\ufdf3</span> ' + toArabicNumbers(String(budget * workers));
       if (totalBreakdown) totalBreakdown.innerHTML = toArabicNumbers(String(workers)) + ' workers \u00d7 <span class="sar-symbol">\ufdf3</span> ' + toArabicNumbers(String(budget));
@@ -774,7 +778,7 @@
     // Active link tracking
     var sections = document.querySelectorAll('section[id]');
     var navLinks = document.querySelectorAll('.nav-links a');
-    var sideDots = document.querySelectorAll('.side-dot');
+    var sideDots = document.querySelectorAll('.sd');
     function updateActiveLink() {
       var scrollPos = window.scrollY + 100;
       sections.forEach(function (section) {
@@ -811,7 +815,7 @@
 
   // Mobile menu
   function toggleMobileMenu() {
-    var btn = document.querySelector('.nav-mobile-toggle');
+    var btn = document.querySelector('.nav-mobile');
     var menu = document.getElementById('mobile-menu');
     if (!btn || !menu) return;
     var isOpen = menu.classList.toggle('open');
@@ -820,7 +824,7 @@
   }
 
   function closeMobileMenu() {
-    var btn = document.querySelector('.nav-mobile-toggle');
+    var btn = document.querySelector('.nav-mobile');
     var menu = document.getElementById('mobile-menu');
     if (!btn || !menu) return;
     menu.classList.remove('open');
@@ -835,7 +839,7 @@
     var btn = document.getElementById('back-to-top');
     if (!btn) return;
     function onScroll() {
-      btn.classList.toggle('visible', window.scrollY > 400);
+      btn.classList.toggle('vis', window.scrollY > 400);
     }
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
@@ -848,18 +852,18 @@
   // Scroll Reveal (IntersectionObserver)
   // ============================================
   function initReveal() {
-    var elements = document.querySelectorAll('.reveal');
+    var elements = document.querySelectorAll('.r');
     if (!elements.length) return;
 
     if (!('IntersectionObserver' in window)) {
-      elements.forEach(function (el) { el.classList.add('visible'); });
+      elements.forEach(function (el) { el.classList.add('v'); });
       return;
     }
 
     var observer = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
+          entry.target.classList.add('v');
           observer.unobserve(entry.target);
         }
       });
@@ -928,7 +932,7 @@
       .then(function (result) {
         if (result.success) {
           // Show success state
-          var formEl = form.closest('.contact-form-card');
+          var formEl = form.closest('.contact-card');
           if (formEl) {
             formEl.innerHTML =
               '<div class="form-success">' +
@@ -1014,6 +1018,25 @@
   }
 
   // ============================================
+  // Service Card Toggle (Accordion)
+  // ============================================
+  function toggleSvc(head) {
+    var item = head.closest('.svc-item');
+    if (!item) return;
+    var wasOpen = item.classList.contains('open');
+    // Close all
+    document.querySelectorAll('.svc-item.open').forEach(function (el) {
+      el.classList.remove('open');
+      el.querySelector('.svc-head').setAttribute('aria-expanded', 'false');
+    });
+    // Toggle clicked
+    if (!wasOpen) {
+      item.classList.add('open');
+      head.setAttribute('aria-expanded', 'true');
+    }
+  }
+
+  // ============================================
   // Expose globals for inline onclick handlers
   // ============================================
   window.toggleLang = toggleLang;
@@ -1026,6 +1049,7 @@
   window.adjustTextSize = adjustTextSize;
   window.toggleContrast = toggleContrast;
   window.toggleA11y = toggleA11y;
+  window.toggleSvc = toggleSvc;
 
   // ============================================
   // Hero Particles
