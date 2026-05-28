@@ -6,156 +6,140 @@ Corporate website for MSC Arabia (mscarabia.com) — an IT services company in R
 
 ## Current State (2026-05-28)
 
-**Status**: Deployed to GitHub, pending Cloudflare Pages setup + DNS switch
+**Status**: Live at https://mscarabia.com — v2 design deployed, inlined CSS/JS
 
 **Repo**: https://github.com/defaltadmin/mscarabia
 **Branch**: `main`
-**Hosting**: Cloudflare Pages (auto-deploy via GitHub Actions on push)
+**Hosting**: Cloudflare Pages (auto-deploy via Git integration on push to main)
 
-### What's Done
+## Architecture
 
-| Feature | Status |
-|---------|--------|
-| Full redesign (dark cyberpunk + 3D glassmorphism) | Done |
-| EN/AR bilingual with RTL support | Done |
-| All 200+ translation keys preserved | Done |
-| 8 sections: Hero, Clients, Services, Engineering, Manpower, Projects, About, Contact | Done |
-| Projects section with game.mscarabia.com showcase | Done |
-| Side navigation dots (desktop) | Done |
-| Manpower quote calculator (sliders, budget, professions) | Done |
-| Contact form (Cloudflare Worker + MailChannels) | Done |
-| Honeypot anti-spam | Done |
-| Privacy/cookie policy modals | Done |
-| Clients marquee carousel | Done |
-| Scroll reveal animations | Done |
-| Accessibility panel (text resize, high contrast) | Done |
-| Structured data (JSON-LD ProfessionalService) | Done |
-| GTM + Google Analytics (G-NGXKXV7EGM) | Done |
-| Open Graph + Twitter cards | Done |
-| Hreflang tags (en, ar, x-default) | Done |
-| Security headers (_headers) | Done |
-| Sitemap + robots.txt | Done |
-| GitHub Actions auto-deploy | Done |
+Single `index.html` (~136KB) with inlined CSS (~43KB) and JS (~46KB + 3.5KB canvas background). This was done because CF Pages was serving stale separate CSS files.
 
-### What's Pending
-
-| Task | Priority | Notes |
-|------|----------|-------|
-| Connect Cloudflare Pages to repo | High | Dashboard: Pages > Create > connect GitHub |
-| Set custom domain (mscarabia.com) | High | Add in Pages > Custom domains |
-| Create OG image (1200x630) | Medium | Generate or design for social sharing |
-| Optimize logo to WebP | Low | 155KB PNG → ~30KB WebP |
-| Remove old Infinity Free hosting | Medium | After CF Pages is confirmed working |
-| Add Cloudflare Turnstile CAPTCHA | Low | Extra spam protection on forms |
-
-## Project Structure
+### Files
 
 ```
 mscarabia/
-├── index.html                  # Main page (redesigned)
-├── styles/main.css             # All CSS (design system + components)
-├── scripts/main.js             # All JS (i18n, interactions, forms)
-├── functions/api/contact.js    # Cloudflare Pages Function (contact form)
-├── assets/logo.png             # Company logo
-├── .github/workflows/deploy.yml # Auto-deploy to CF Pages
-├── _headers                    # CF Pages security + cache headers
-├── sitemap.xml
+├── index.html              # Main page (CSS+JS inlined)
+├── 404.html                # Custom error page
+├── functions/api/contact.js # CF Pages Function (form handler via MailChannels)
+├── _headers                # Security headers + cache rules
+├── sitemap.xml             # Includes all pages
 ├── robots.txt
+├── assets/logo.png         # Company logo (155KB, needs WebP optimization)
 ├── cookie-policy.html
 ├── privacy-policy.html
-└── .gitignore
+├── styles/main.css         # External CSS (reference, not currently used — inlined in index.html)
+├── scripts/main.js         # External JS (reference, not currently used — inlined in index.html)
+├── scripts/backgrounds.js  # External canvas bg (reference)
+├── CF-SETUP.md             # Cloudflare setup instructions
+├── CODE_REVIEW.md          # Full code review for DeepSeek
+├── SONNET-DTP-AUDIT-PROMPT.md # Prompt for DTP game audit
+└── README.md
 ```
 
-## Key Technical Details
+## What's Done
 
-### i18n System
-- `translations` object in `scripts/main.js` with `en` and `ar` keys (~200 keys each)
-- `data-i18n` attributes on HTML elements, `data-i18n-html` for HTML content
-- `data-i18n-placeholder` for input placeholders
-- Language persisted to localStorage key `msca_lang`
-- URL param `?lang=ar` also works
-- `dir="rtl"` set on `<html>` when Arabic active
+| Feature | Status |
+|---------|--------|
+| Full redesign (luxury dark editorial) | ✅ |
+| EN/AR bilingual (241 keys each, RTL) | ✅ |
+| 8 sections: Hero, Clients, Services (accordion), Engineering, Manpower, Projects, About, Contact | ✅ |
+| Animated canvas background (mesh gradient + particles + grid) | ✅ |
+| Expandable accordion service cards with keyboard a11y | ✅ |
+| Side navigation dots (desktop) | ✅ |
+| Manpower quote calculator (sliders, budget, professions) | ✅ |
+| Contact form (CF Worker + MailChannels) | ✅ |
+| Email validation on form submission | ✅ |
+| Honeypot anti-spam + basic KV rate limiting | ✅ |
+| Privacy/cookie policy modals | ✅ |
+| Clients marquee carousel | ✅ |
+| Scroll reveal animations | ✅ |
+| Accessibility panel (in nav bar) | ✅ |
+| Structured data (JSON-LD: ProfessionalService + WebSite + SiteNavigation) | ✅ |
+| GTM + Google Analytics + Apollo.io tracking | ✅ |
+| Security headers (HSTS, X-Content-Type-Options, X-Frame-Options, Vary) | ✅ |
+| Hreflang tags (en, ar, x-default) | ✅ |
+| 404 page | ✅ |
+| Custom domain mscarabia.com | ✅ |
+| www.mscarabia.com → mscarabia.com redirect | ✅ (via CF AI) |
 
-### Contact Form
-- Both contact and manpower forms POST to `/api/contact`
-- Cloudflare Pages Function (`functions/api/contact.js`)
-- Sends email via MailChannels API (free for CF Workers)
-- Honeypot field `website` for anti-spam
-- Form type distinguished by `type` field (contact vs manpower)
+## Pending / Next Phases
 
-### Design System
-- CSS custom properties in `:root` for colors, spacing, shadows
-- Dark palette: `#0a0c14` bg, `#e52020` primary accent
-- 3D effects: `transform-style: preserve-3d`, `rotateX()`, layered shadows
-- Glassmorphism: `backdrop-filter: blur(16px)`, translucent borders
-- Scroll reveal: IntersectionObserver-based `.reveal` class
+### Phase 1: Legal & Compliance (HIGH priority)
+- [ ] Create OG image (1200×630) for social sharing
+- [ ] Update privacy policy — disclose GTM/GA/Apollo tracking
+- [ ] Fix privacy policy email (info.mscarabia@gmail.com → info@mscarabia.com)
+- [ ] Add cookie consent banner (defer GTM/Apollo until accepted)
+- [ ] Add CSP header (needs to allow inline scripts + third-party trackers)
 
-### Deployment
-- Push to `main` branch triggers GitHub Actions
-- Wrangler deploys entire directory to CF Pages project `mscarabia`
-- Secrets needed: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`
+### Phase 2: Performance (MEDIUM priority)
+- [ ] Optimize logo.png → WebP (~15KB vs 155KB)
+- [ ] Remove Clash Display font reference (never loaded)
+- [ ] Self-host Google Fonts for faster KSA loading
+- [ ] Add font-display: optional for Material Symbols
+- [ ] Fix will-change cleanup on mobile (IntersectionObserver callback)
 
-## Roadmap — Future Improvements
+### Phase 3: Code Quality (LOW priority)
+- [ ] Convert var → const/let throughout JS
+- [ ] Remove external CSS/JS files (or reference them instead of inlining)
+- [ ] Add source maps for debugging
+- [ ] Fix privacy policy to be bilingual
 
-### Phase 1: Launch (immediate)
-- [ ] Connect CF Pages to GitHub repo
-- [ ] Set custom domain mscarabia.com
-- [ ] Test contact form end-to-end
-- [ ] Verify EN/AR toggle on live site
-- [ ] Remove Infinity Free hosting
+### Phase 4: DTP Game Audit
+- [ ] Run Sonnet audit on donttouchpurple repo using SONNET-DTP-AUDIT-PROMPT.md
+- [ ] Send CODE_REVIEW.md to DeepSeek for MSC Arabia site review
 
-### Phase 2: Polish (1-2 weeks)
-- [ ] Generate OG image (1200x630) for social sharing
-- [ ] Compress logo.png to WebP (~30KB)
-- [ ] Add Cloudflare Turnstile CAPTCHA to forms
-- [ ] Lighthouse audit → fix any issues
-- [ ] Test on real mobile devices
+## Lighthouse Scores (2026-05-28)
 
-### Phase 3: Enhancement (1 month)
-- [ ] Add loading animation / skeleton screen
-- [ ] Parallax effects on hero section
-- [ ] Animated counter for stats (IntersectionObserver)
-- [ ] Case studies / testimonials section
-- [ ] Blog section (if content available)
-- [ ] Arabic font optimization (subset IBM Plex Sans Arabic)
+| Metric | Mobile | PC |
+|--------|--------|-----|
+| Performance | 67 | 78 |
+| Accessibility | 92 | 79 |
+| Best Practices | 54 | 54 |
+| SEO | 100 | 100 |
 
-### Phase 4: Growth (ongoing)
-- [ ] SEO monitoring (Google Search Console)
-- [ ] Analytics review (GA4 dashboards)
-- [ ] A/B test hero CTA buttons
-- [ ] Add more projects to portfolio section
-- [ ] Consider Next.js migration if site grows
+**Key issues**: BP 54 due to third-party cookies (Apollo, GTM), deprecated APIs. Perf drag from render-blocking fonts and GTM.
 
-## Files Changed
+## i18n System
 
-| File | Action |
-|------|--------|
-| `index.html` | Created (redesigned from scratch) |
-| `styles/main.css` | Created (extracted + upgraded from inline) |
-| `scripts/main.js` | Created (extracted + upgraded from inline) |
-| `functions/api/contact.js` | Created (replaces mailto: + PHP) |
-| `.github/workflows/deploy.yml` | Created |
-| `_headers` | Created |
-| `sitemap.xml` | Created (updated date) |
-| `robots.txt` | Created (updated for CF) |
-| `.gitignore` | Created |
-| `assets/logo.png` | Copied from original |
-| `cookie-policy.html` | Kept (original) |
-| `privacy-policy.html` | Kept (original) |
+- 241 EN + 241 AR translation keys (verified match)
+- `data-i18n` on elements, `data-i18n-html` for HTML content
+- Typewriter switches words per language
+- All form labels, placeholders, options translated
+- Manpower calculator fully bilingual
+- `localStorage` key `msca_lang` persists choice
+- `?lang=ar` URL param works
 
-## Cloudflare Pages Setup Steps
+## Cloudflare Setup
 
-1. Go to Cloudflare Dashboard > Pages
-2. Click "Create a project" > "Connect to Git"
-3. Select `defaltadmin/mscarabia` repo
-4. Build settings: None (static site, no build step)
-5. Deploy
-6. Go to Custom domains > Add `mscarabia.com`
-7. Cloudflare will auto-add DNS CNAME record
-8. Test: https://mscarabia.com should load the new site
+- **Pages project**: mscarabia (connected to GitHub repo)
+- **Build output directory**: `.` (set via CF AI)
+- **Custom domain**: mscarabia.com ✅
+- **www redirect**: www.mscarabia.com → mscarabia.com ✅
+- **Pages Functions**: `functions/api/contact.js` (auto-detected)
+- **No GitHub Actions** — using built-in Git integration
 
-## Secrets Needed in GitHub
+## Security Checklist
 
-Add these to repo Settings > Secrets > Actions:
-- `CLOUDFLARE_API_TOKEN` — Create at CF dashboard > API Tokens > Edit zone token
-- `CLOUDFLARE_ACCOUNT_ID` — Found at CF dashboard > right sidebar
+- [x] X-Content-Type-Options: nosniff
+- [x] X-Frame-Options: SAMEORIGIN
+- [x] Strict-Transport-Security (HSTS)
+- [x] Vary: Accept-Language
+- [x] Input sanitization on form fields
+- [x] Email validation on form submission
+- [x] Honeypot anti-spam
+- [x] Rate limiting via KV (when bound)
+- [ ] CSP header (pending — would break inline scripts)
+- [ ] Cookie consent banner (pending)
+- [ ] SRI hashes on third-party scripts (pending)
+
+## Commands
+
+```bash
+# Local preview
+npx serve .
+
+# Direct deploy (requires wrangler auth)
+npx wrangler pages deploy . --project-name=mscarabia
+```
