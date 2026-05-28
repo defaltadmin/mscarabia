@@ -7,3 +7,5 @@ wrangler.toml
 *.md
 .DS_Store
 Thumbs.db
+mscarabia.com-*.json
+mscarabia_og.html

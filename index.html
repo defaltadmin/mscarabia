@@ -1664,14 +1664,44 @@ backdrop-filter: none !important;
 .mp-cols { grid-template-columns: 1fr; }
 .hero-actions { flex-direction: column; }
 .hero-actions .btn { width: 100%; justify-content: center; }
-}</style>
+}
+/* Cookie consent banner */
+.cookie-banner{position:fixed;bottom:0;left:0;right:0;z-index:10000;background:rgba(11,13,20,0.97);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid rgba(255,255,255,0.08);padding:1.25rem 2rem;display:none;align-items:center;gap:1.5rem;flex-wrap:wrap}
+.cookie-banner.show{display:flex}
+.cookie-banner p{flex:1;min-width:240px;font-size:.82rem;color:var(--text-secondary);line-height:1.55}
+.cookie-banner p a{color:var(--accent);text-decoration:underline}
+.cookie-btns{display:flex;gap:.75rem;flex-shrink:0}
+.cookie-btns button{font-family:var(--font-display);font-size:.78rem;font-weight:600;padding:.65rem 1.4rem;border-radius:8px;border:none;cursor:pointer;transition:all .2s ease}
+.cookie-accept{background:var(--accent);color:#fff}.cookie-accept:hover{background:#c9303c}
+.cookie-deny{background:rgba(255,255,255,0.06);color:var(--text-secondary);border:1px solid rgba(255,255,255,0.1) !important}.cookie-deny:hover{background:rgba(255,255,255,0.1)}
+@media(max-width:639px){.cookie-banner{flex-direction:column;text-align:center;padding:1.25rem 1rem}.cookie-btns{width:100%;justify-content:center}}
+</style>
 
   <!-- GTM-MRHLJVHL removed — was returning 404 errors -->
-  <!-- Google Analytics (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-NGXKXV7EGM"></script>
-  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-NGXKXV7EGM');</script>
+  <!-- Google Analytics (gtag.js) — gated behind cookie consent -->
+  <script>
+  window.dataLayer=window.dataLayer||[];
+  function gtag(){dataLayer.push(arguments);}
+  function loadGA(){
+    if(window._gaLoaded)return;
+    window._gaLoaded=true;
+    var s=document.createElement('script');
+    s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-NGXKXV7EGM';
+    document.head.appendChild(s);
+    gtag('js',new Date());gtag('config','G-NGXKXV7EGM',{anonymize_ip:true});
+  }
+  function denyGA(){window._gaDenied=true;gtag('consent','default',{analytics_storage:'denied'});}
+  // Check stored preference
+  var cp=localStorage.getItem('cookie_consent');
+  if(cp==='accepted'){loadGA();}
+  else if(cp==='denied'){denyGA();}
+  else{gtag('consent','default',{analytics_storage:'denied'});}
+  </script>
 </head>
 <body>
+
+<!-- Skip navigation for keyboard accessibility -->
+<a href="#main-content" class="skip-nav" style="position:absolute;top:-100%;left:0;background:var(--accent);color:#fff;padding:.75rem 1.5rem;z-index:10001;font-weight:600;border-radius:0 0 8px 0;transition:top .2s" onfocus="this.style.top='0'" onblur="this.style.top='-100%'">Skip to main content</a>
 
 <!-- Navigation -->
 <nav class="nav">
@@ -1685,9 +1715,9 @@ backdrop-filter: none !important;
       <a href="#engineering" data-i18n="nav_engineering">Engineering</a>
       <a href="#manpower" data-i18n="nav_manpower">Manpower</a>
       <a href="#about" data-i18n="nav_about">About</a>
-      <div class="lang-toggle" onclick="toggleLang()" role="button" tabindex="0" aria-label="Toggle language">
+      <div class="lang-toggle" aria-label="Toggle language">
         <span class="lang-label" id="lang-label">AR</span>
-        <button class="lang-sw" id="lang-switch" role="switch" aria-checked="false" aria-label="Toggle language" onclick="event.stopPropagation();toggleLang()"><span class="lang-sw-knob"></span></button>
+        <button class="lang-sw" id="lang-switch" role="switch" aria-checked="false" aria-label="Toggle language" onclick="toggleLang()"><span class="lang-sw-knob"></span></button>
       </div>
     </div>
     <a href="#contact" class="nav-cta" data-i18n="nav_cta">Get in Touch</a>
@@ -1709,7 +1739,7 @@ backdrop-filter: none !important;
     <a href="#manpower" data-i18n="nav_manpower" onclick="closeMobileMenu()">Manpower</a>
     <a href="#about" data-i18n="nav_about" onclick="closeMobileMenu()">About</a>
     <a href="#contact" data-i18n="nav_contact" onclick="closeMobileMenu()">Contact</a>
-    <div class="lang-toggle" style="margin-top:0.75rem;padding:0.5rem 0" onclick="toggleLang()" role="button" tabindex="0">
+    <div class="lang-toggle" style="margin-top:0.75rem;padding:0.5rem 0" aria-label="Toggle language">
       <span class="lang-label" id="lang-label-m">AR</span>
       <button class="lang-sw" id="lang-switch-mobile" role="switch" aria-checked="false" onclick="event.stopPropagation();toggleLang()"><span class="lang-sw-knob"></span></button>
     </div>
@@ -1774,7 +1804,7 @@ backdrop-filter: none !important;
       <p class="sec-sub" data-i18n="services_sub">End-to-end services designed to accelerate your digital transformation and ensure operational excellence.</p>
     </div>
     <div class="svc-bento r">
-      <div class="svc-card svc-card-hero" onclick="toggleSvc(this)" onkeydown="if(event.key==='Enter'||event.key===' '){toggleSvc(this);event.preventDefault()}" role="button" tabindex="0" aria-expanded="false">
+      <div class="svc-card svc-card-hero">
         <div class="svc-card-glow"></div>
         <div class="svc-card-icon"><span class="material-symbols-outlined">computer</span></div>
         <div class="svc-card-content">
@@ -3111,25 +3141,6 @@ backdrop-filter: none !important;
   }
 
   // ============================================
-  // Service Card Toggle (Accordion)
-  // ============================================
-  function toggleSvc(head) {
-    var item = head.closest('.svc-item');
-    if (!item) return;
-    var wasOpen = item.classList.contains('open');
-    // Close all
-    document.querySelectorAll('.svc-item.open').forEach(function (el) {
-      el.classList.remove('open');
-      el.querySelector('.svc-head').setAttribute('aria-expanded', 'false');
-    });
-    // Toggle clicked
-    if (!wasOpen) {
-      item.classList.add('open');
-      head.setAttribute('aria-expanded', 'true');
-    }
-  }
-
-  // ============================================
   // Expose globals for inline onclick handlers
   // ============================================
   window.toggleLang = toggleLang;
@@ -3142,7 +3153,6 @@ backdrop-filter: none !important;
   window.adjustTextSize = adjustTextSize;
   window.toggleContrast = toggleContrast;
   window.toggleA11y = toggleA11y;
-  window.toggleSvc = toggleSvc;
 
   // ============================================
   // Hero Particles
@@ -3323,7 +3333,7 @@ backdrop-filter: none !important;
     raf = requestAnimationFrame(draw);
   }
 
-  resize(); initShapes(); draw(0);
+  resize(); initShapes(); requestAnimationFrame(draw);
   var resizeTimer;
   window.addEventListener('resize', function () {
     cancelAnimationFrame(resizeTimer);
@@ -3336,5 +3346,28 @@ backdrop-filter: none !important;
   });
 })();
 </script>
+
+<!-- Cookie Consent Banner -->
+<div id="cookie-banner" class="cookie-banner" role="dialog" aria-label="Cookie consent">
+  <p>We use cookies for analytics to improve our website. By clicking "Accept", you consent to the use of cookies. See our <a href="/cookie-policy.html">Cookie Policy</a> for details.</p>
+  <div class="cookie-btns">
+    <button class="cookie-deny" onclick="handleCookieConsent('denied')">Decline</button>
+    <button class="cookie-accept" onclick="handleCookieConsent('accepted')">Accept</button>
+  </div>
+</div>
+<script>
+(function(){
+  if(!localStorage.getItem('cookie_consent')){
+    document.getElementById('cookie-banner').classList.add('show');
+  }
+  window.handleCookieConsent=function(choice){
+    localStorage.setItem('cookie_consent',choice);
+    document.getElementById('cookie-banner').classList.remove('show');
+    if(choice==='accepted'){loadGA();}
+    else{denyGA();}
+  };
+})();
+</script>
+
 </body>
 </html>
