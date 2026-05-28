@@ -1432,13 +1432,163 @@ ul, ol { list-style: none; }
 .contrast input, .contrast textarea, .contrast select { background: #000 !important; color: #ffff00 !important; border: 2px solid #fff !important; }
 
 /* ============================================
-   RESPONSIVE
+   RESPONSIVE — TABLET (768–1023px)
    ============================================ */
-@media (max-width: 640px) {
-  .hero-stats { gap: 1.5rem; }
-  .stat-val { font-size: 1.4rem; }
+@media (max-width: 1023px) and (min-width: 768px) {
+  .hero h1 { font-size: 2.6rem; }
+  .hero-content { gap: 2rem; }
+  .svc-head { padding: 1.25rem 1.5rem; }
+  .svc-body-inner { padding: 0 1.5rem 1.5rem; padding-left: calc(1.5rem + 48px + 1rem); }
+  .eng-panel { padding: 1.5rem; }
+  .about-grid { gap: 2.5rem; }
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+}
+
+/* ============================================
+   RESPONSIVE — MOBILE (<768px)
+   ============================================ */
+@media (max-width: 767px) {
+  /* Navigation */
+  .nav { height: 56px; }
+  .nav-logo img { width: 32px; height: 32px; }
+  .nav-logo span { font-size: 0.95rem; }
+  .nav-cta { display: none; }
+
+  /* Hero */
+  .hero { min-height: auto; padding-top: 56px; padding-bottom: 2rem; }
+  .hero-content { padding: 2rem 0; gap: 2rem; }
+  .hero h1 { font-size: 2.2rem; }
+  .hero p { font-size: 0.9rem; }
+  .hero-actions { gap: 0.5rem; }
+  .hero-actions .btn { font-size: 0.8rem; padding: 0.75rem 1.25rem; }
+  .hero-stats { gap: 1.25rem; flex-wrap: wrap; }
+  .stat-val { font-size: 1.35rem; }
+  .stat-label { font-size: 0.58rem; }
+
+  /* Clients */
+  .clients { padding: 2rem 0; }
+  .clients-label { font-size: 0.55rem; margin-bottom: 1rem; }
+  .m-chip { padding: 0.6rem 1rem; }
+  .m-chip span { font-size: 0.78rem; }
+
+  /* Section Headers */
+  .sec-title { font-size: 1.7rem; }
+  .sec-sub { font-size: 0.9rem; }
+  .sec-hdr { margin-bottom: 2.5rem; }
+
+  /* Services */
+  .svc-head { padding: 1rem 1.25rem; gap: 0.75rem; }
+  .svc-icon { width: 40px; height: 40px; }
+  .svc-icon .material-symbols-outlined { font-size: 20px; }
+  .svc-name { font-size: 0.95rem; }
+  .svc-brief { font-size: 0.75rem; }
+  .svc-body-inner { padding: 0 1.25rem 1.25rem; padding-left: 1.25rem; }
+  [dir="rtl"] .svc-body-inner { padding-right: 1.25rem; padding-left: 1.25rem; }
+  .svc-features { grid-template-columns: 1fr; }
+  .svc-feat { font-size: 0.78rem; }
+
+  /* Engineering */
+  .eng-grid { gap: 1rem; }
+  .eng-panel { padding: 1.25rem; }
+  .eng-panel h3 { font-size: 0.6rem; }
+  .eng-badges { gap: 0.25rem; }
+  .eng-badge { font-size: 0.55rem; padding: 0.25rem 0.5rem; }
+  .eng-list li { font-size: 0.8rem; gap: 0.5rem; }
+
+  /* Manpower */
+  .mp-cols { gap: 1rem; }
+  .mp-col { padding: 1.25rem; }
+  .mp-col-title { font-size: 0.6rem; }
+  .mp-col-list li { font-size: 0.8rem; }
+
+  /* Quote Form */
+  .mq-section { padding: 1.25rem; }
+  .mq-grid { gap: 1rem; }
+  .prof-grid { grid-template-columns: 1fr 1fr; gap: 0.35rem; }
+  .fc { gap: 0.4rem; }
+  .fc input[type="checkbox"] { width: 14px; height: 14px; }
+  .fc span { font-size: 0.78rem; }
+  .range-slider { height: 5px; }
+  .range-slider::-webkit-slider-thumb { width: 20px; height: 20px; }
+  .range-slider::-moz-range-thumb { width: 20px; height: 20px; }
+  .range-val { font-size: 0.82rem; }
+  .mq-total { padding: 1rem; }
+  .mq-total-val { font-size: 1.25rem; }
+
+  /* About */
+  .about-grid { gap: 2rem; }
+  .about h2 { font-size: 1.6rem; }
+  .about p { font-size: 0.85rem; }
   .about-stats { gap: 0.75rem; }
   .about-stat { padding: 1.25rem; }
   .about-stat-val { font-size: 1.5rem; }
-  .modal-box { padding: 1.5rem; }
+  .about-stat-label { font-size: 0.78rem; }
+  .about-certs { gap: 0.3rem; }
+  .about-cert { font-size: 0.55rem; padding: 0.3rem 0.6rem; }
+
+  /* Projects */
+  .proj-card { padding: 1rem; gap: 0.75rem; }
+  .proj-icon { width: 40px; height: 40px; }
+  .proj-icon .material-symbols-outlined { font-size: 20px; }
+  .proj-title { font-size: 0.85rem; }
+  .proj-desc { font-size: 0.72rem; }
+  .proj-link { font-size: 0.6rem; }
+
+  /* Contact */
+  .contact-grid { gap: 2rem; }
+  .contact-card { padding: 1.5rem; }
+  .contact-form { gap: 0.85rem; }
+  .c-info-icon { width: 40px; height: 40px; }
+  .c-info-icon .material-symbols-outlined { font-size: 20px; }
+  .c-info-item h3 { font-size: 0.88rem; }
+  .c-info-item p, .c-info-item a { font-size: 0.82rem; }
+
+  /* Footer */
+  .footer { padding: 2rem 0; }
+  .footer-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+  .footer-brand img { width: 36px; height: 36px; }
+  .footer-brand span { font-size: 1rem; }
+  .footer p { font-size: 0.78rem; }
+  .footer h4 { font-size: 0.82rem; }
+  .footer-links a, .footer-links button, .footer-links span { font-size: 0.78rem; }
+  .footer-bottom { gap: 0.75rem; }
+  .footer-copy { font-size: 0.68rem; }
+  .footer-social a { width: 32px; height: 32px; }
+  .footer-social svg { width: 14px; height: 14px; }
+
+  /* Modals */
+  .modal-overlay { padding: 1rem; }
+  .modal-box { padding: 1.25rem; border-radius: var(--radius-lg); max-height: 85vh; }
+  .modal-box h3 { font-size: 1.2rem; }
+  .modal-box p { font-size: 0.82rem; }
+  .modal-box h4 { font-size: 0.88rem; }
+  .modal-close { top: 0.75rem; right: 0.75rem; width: 28px; height: 28px; font-size: 1rem; }
+  [dir="rtl"] .modal-close { right: auto; left: 0.75rem; }
+
+  /* A11y panel */
+  .a11y { padding: 0.3rem; gap: 0.3rem; }
+  .a11y-toggle { width: 32px; height: 32px; }
+  .a11y-toggle .material-symbols-outlined { font-size: 18px; }
+  .a11y-btn { width: 28px; height: 28px; }
+  .a11y-btn .material-symbols-outlined { font-size: 16px; }
+
+  /* Back to Top */
+  .btt { width: 40px; height: 40px; bottom: 1.5rem; right: 1.5rem; }
+  [dir="rtl"] .btt { right: auto; left: 1.5rem; }
+}
+
+/* ============================================
+   RESPONSIVE — SMALL PHONES (<380px)
+   ============================================ */
+@media (max-width: 379px) {
+  .hero h1 { font-size: 1.8rem; }
+  .hero-stats { gap: 1rem; }
+  .stat-val { font-size: 1.2rem; }
+  .sec-title { font-size: 1.4rem; }
+  .about h2 { font-size: 1.4rem; }
+  .about-stat-val { font-size: 1.3rem; }
+  .prof-grid { grid-template-columns: 1fr; }
+  .mp-cols { grid-template-columns: 1fr; }
+  .hero-actions { flex-direction: column; }
+  .hero-actions .btn { width: 100%; justify-content: center; }
 }
