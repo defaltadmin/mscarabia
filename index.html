@@ -486,7 +486,7 @@
     <div class="about-grid">
       <div class="reveal">
         <div class="about-tag" data-i18n="about_tag">About Us</div>
-        <h2 data-i18n="about_h2">Saudi-Based.<br>Globally Certified.</h2>
+        <h2 data-i18n="about_h2">Saudi-Based. Globally Certified.</h2>
         <p data-i18n="about_p1">MSC Arabia is a Riyadh-based company delivering IT managed services, MDM licensing, hardware & software procurement, fire safety engineering, and manpower solutions across Saudi Arabia.</p>
         <p data-i18n="about_p2">Our engineers hold permanent access IDs for Aramco, STC, and Petro Rabigh — combining international certifications with deep Saudi market expertise built over a decade of execution.</p>
         <div class="about-certs">
@@ -659,16 +659,21 @@
 </section>
 
 <!-- Accessibility Panel -->
-<div class="a11y-panel">
-  <button onclick="adjustTextSize(1)" class="a11y-btn" aria-label="Increase text size">
-    <span class="material-symbols-outlined">format_size</span>
+<div class="a11y-panel" id="a11y-panel">
+  <button onclick="toggleA11y()" class="a11y-toggle" id="a11y-toggle" aria-label="Accessibility options" aria-expanded="false">
+    <span class="material-symbols-outlined">accessibility_new</span>
   </button>
-  <button onclick="adjustTextSize(-1)" class="a11y-btn" aria-label="Decrease text size">
-    <span class="material-symbols-outlined">text_fields</span>
-  </button>
-  <button onclick="toggleContrast()" class="a11y-btn" aria-label="Toggle high contrast">
-    <span class="material-symbols-outlined">contrast</span>
-  </button>
+  <div class="a11y-options" id="a11y-options">
+    <button onclick="adjustTextSize(1)" class="a11y-btn" aria-label="Increase text size">
+      <span class="material-symbols-outlined">format_size</span>
+    </button>
+    <button onclick="adjustTextSize(-1)" class="a11y-btn" aria-label="Decrease text size">
+      <span class="material-symbols-outlined">text_fields</span>
+    </button>
+    <button onclick="toggleContrast()" class="a11y-btn" aria-label="Toggle high contrast">
+      <span class="material-symbols-outlined">contrast</span>
+    </button>
+  </div>
 </div>
 
 <!-- Back to Top -->

@@ -193,7 +193,7 @@
 
       // About
       about_tag: 'About Us',
-      about_h2: 'Saudi-Based.<br>Globally Certified.',
+      about_h2: 'Saudi-Based. Globally Certified.',
       about_p1: 'MSC Arabia is a Riyadh-based company delivering IT managed services, MDM licensing, hardware & software procurement, fire safety engineering, and manpower solutions across Saudi Arabia.',
       about_p2: 'Our engineers hold permanent access IDs for Aramco, STC, and Petro Rabigh — combining international certifications with deep Saudi market expertise built over a decade of execution.',
       about_stat1: 'Years of Operation in KSA',
@@ -459,7 +459,7 @@
 
       // About
       about_tag: 'من نحن',
-      about_h2: 'مقرها المملكة.<br>شهادات عالمية.',
+      about_h2: 'مقرها المملكة. شهادات عالمية.',
       about_p1: 'مؤسسة مرساة الحلول لتقنية المعلومات هي شركة مقرها الرياض تقدم خدمات تكنولوجيا المعلومات المدارة، ترخيص إدارة الأجهزة المحمولة، توريد الأجهزة والبرامج، هندسة السلامة من الحرائق، وحلول القوى العاملة في جميع أنحاء المملكة العربية السعودية.',
       about_p2: 'يحمل مهندسونا معرفات وصول دائمة لأرامكو، stc، وبترو رابغ — يجمعون بين الشهادات الدولية وخبرة السوق السعودي العميقة المبنية على عقد من التنفيذ.',
       about_stat1: 'سنوات التشغيل في المملكة',
@@ -1005,6 +1005,14 @@
     document.documentElement.classList.toggle('contrast');
   }
 
+  function toggleA11y() {
+    var options = document.getElementById('a11y-options');
+    var toggle = document.getElementById('a11y-toggle');
+    if (!options || !toggle) return;
+    var isOpen = options.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  }
+
   // ============================================
   // Expose globals for inline onclick handlers
   // ============================================
@@ -1017,6 +1025,7 @@
   window.handleManpowerSubmit = handleManpowerSubmit;
   window.adjustTextSize = adjustTextSize;
   window.toggleContrast = toggleContrast;
+  window.toggleA11y = toggleA11y;
 
   // ============================================
   // Hero Particles

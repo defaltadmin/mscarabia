@@ -64,19 +64,6 @@ python -m http.server 5000
 
 Push to `main` branch triggers automatic deployment to Cloudflare Pages via GitHub Actions.
 
-### Manual deploy
-
-```bash
-npx wrangler pages deploy . --project-name=mscarabia
-```
-
-### Required GitHub Secrets
-
-| Secret | Description |
-|--------|-------------|
-| `CLOUDFLARE_API_TOKEN` | CF API token with Pages edit permission |
-| `CLOUDFLARE_ACCOUNT_ID` | Found in CF dashboard sidebar |
-
 ## Related Projects
 
 | Project | URL |
