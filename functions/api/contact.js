@@ -182,7 +182,7 @@ export async function onRequestPost(context) {
 
     const emailResult = await sendEmail({
       to: env.CONTACT_EMAIL || 'info@mscarabia.com',
-      from: env.FROM_EMAIL || 'noreply@mscarabia.com',
+      from: env.FROM_EMAIL || 'onboarding@resend.dev',
       subject: emailSubject,
       body: emailBody,
       replyTo: replyToEmail,
