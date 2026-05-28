@@ -16,6 +16,7 @@
   <meta name="format-detection" content="telephone=no">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="canonical" href="https://mscarabia.com">
   <link rel="alternate" hreflang="en" href="https://mscarabia.com/">
   <link rel="alternate" hreflang="ar" href="https://mscarabia.com/?lang=ar">
@@ -29,8 +30,10 @@
   <meta property="og:title" content="MSC Arabia — IT Services, Fire Safety & Manpower Solutions">
   <meta property="og:description" content="Riyadh's leading provider of Managed IT Services, Fire Safety Engineering, Manpower Solutions, and IT Hardware Procurement.">
   <meta property="og:image" content="https://mscarabia.com/assets/og-image.jpg">
+  <meta property="og:site_name" content="MSC Arabia">
   <meta property="og:locale" content="en_US">
   <meta property="og:locale:alternate" content="ar_SA">
+  <link rel="apple-touch-icon" href="/assets/logo.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="MSC Arabia — IT Services, Fire Safety & Manpower Solutions">
   <meta name="twitter:description" content="Riyadh's leading provider of Managed IT Services, Fire Safety Engineering, and Manpower Solutions.">
@@ -84,6 +87,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
+
+  <!-- Cloudflare Turnstile -->
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 
   <style>/* ============================================
    MSC Arabia — Design System v2
@@ -1535,11 +1541,14 @@ ul, ol { list-style: none; }
    RESPONSIVE — MOBILE (<768px)
    ============================================ */
 @media (max-width: 767px) {
-  /* Navigation */
-  .nav { height: 56px; }
+  /* Safe area insets for notched phones */
+  .nav { height: 56px; padding-top: env(safe-area-inset-top); }
   .nav-logo img { width: 32px; height: 32px; }
   .nav-logo span { font-size: 0.95rem; }
   .nav-cta { display: none; }
+
+  /* Prevent iOS zoom on input focus — min 16px */
+  .fi, .fs, .ft { font-size: 16px; }
 
   /* Hero */
   .hero { min-height: auto; padding-top: 56px; padding-bottom: 2rem; }
@@ -1662,6 +1671,21 @@ ul, ol { list-style: none; }
   /* Back to Top */
   .btt { width: 40px; height: 40px; bottom: 1.5rem; right: 1.5rem; }
   [dir="rtl"] .btt { right: auto; left: 1.5rem; }
+
+  /* Touch targets — ensure 44px minimum on interactive elements */
+  .nav-mobile { min-width: 44px; min-height: 44px; }
+  .nav-mobile-menu a { min-height: 44px; display: flex; align-items: center; }
+  .sd { min-width: 44px; min-height: 44px; }
+  .lang-sw { width: 48px; height: 28px; }
+
+  /* Footer safe area */
+  .footer { padding-bottom: calc(2rem + env(safe-area-inset-bottom)); }
+
+  /* Contact form buttons full width on mobile */
+  .btn-submit { min-height: 48px; }
+
+  /* Marquee speed adjustment for small screens */
+  .marquee-track { animation-duration: 25s; }
 }
 
 /* ============================================
@@ -1932,7 +1956,7 @@ ul, ol { list-style: none; }
           <div class="fg"><label class="fl" data-i18n="mq_options">Options</label><label class="fc"><input type="checkbox" id="mq_food" name="mq_food"><span data-i18n="mq_food">Food included</span></label><label class="fc"><input type="checkbox" id="mq_accommodation" name="mq_accommodation"><span data-i18n="mq_accommodation">Accommodation included</span></label><label class="fc"><input type="checkbox" id="mq_transport" name="mq_transport"><span data-i18n="mq_transport">Transportation included</span></label></div>
         </div>
         <div class="mq-total"><div class="mq-total-label">Estimated Monthly Total</div><div class="mq-total-val" id="mq_total_val"><span class="sar">﷼</span> 750</div><div class="mq-total-sub" id="mq_total_breakdown">50 workers × <span class="sar">﷼</span> 15</div></div>
-        <div style="margin-top:1.5rem"><button type="submit" class="btn-submit" data-i18n="mq_submit">Request Quote</button><div id="mq_notice" style="text-align:center;font-size:0.82rem;margin-top:0.75rem;min-height:1.25rem"></div></div>
+        <div style="margin-top:1.5rem"><div class="cf-turnstile" data-sitekey="0x4AAAAAAA_turnstile_placeholder" data-theme="dark" style="margin-bottom:1rem"></div><button type="submit" class="btn-submit" data-i18n="mq_submit">Request Quote</button><div id="mq_notice" style="text-align:center;font-size:0.82rem;margin-top:0.75rem;min-height:1.25rem"></div></div>
       </form>
     </div>
   </div>
@@ -2012,6 +2036,7 @@ ul, ol { list-style: none; }
           <div class="fg"><label for="contact-email" class="fl" data-i18n="form_email">Email Address</label><input type="email" id="contact-email" name="email" required class="fi" autocomplete="email" data-i18n-placeholder="form_email_placeholder"></div>
           <div class="fg"><label class="fl" for="contact-service" data-i18n="form_service">Service Interest</label><select name="service" id="contact-service" class="fs"><option value="" data-i18n="option_select_service">Select a service</option><option value="managed-it" data-i18n="option_managed_it">Managed IT Services</option><option value="mdm" data-i18n="option_mdm">MDM Licensing</option><option value="fire-safety" data-i18n="option_fire_safety">Fire Safety Engineering</option><option value="manpower" data-i18n="option_manpower">Manpower Solutions</option><option value="hardware" data-i18n="option_hardware">Hardware & Software</option><option value="cybersecurity" data-i18n="option_cybersecurity">Cybersecurity</option></select></div>
           <div class="fg"><label class="fl" for="contact-message" data-i18n="form_message">Message</label><textarea id="contact-message" name="message" rows="4" class="ft" data-i18n-placeholder="form_message_placeholder"></textarea></div>
+          <div class="cf-turnstile" data-sitekey="0x4AAAAAAA_turnstile_placeholder" data-theme="dark" style="margin:0.5rem 0"></div>
           <button type="submit" class="btn-submit" data-i18n="form_submit">Send Message</button>
           <div id="contact-notice" style="text-align:center;font-size:0.82rem;min-height:1.25rem;color:#ef4444"></div>
           <input type="text" name="website" style="position:absolute;left:-9999px;opacity:0" tabindex="-1" autocomplete="off">
@@ -3040,6 +3065,8 @@ ul, ol { list-style: none; }
         if (notice) notice.textContent = translations[currentLang].mq_notice_error || 'Failed to send.';
         submitBtn.disabled = false;
         submitBtn.textContent = originalText;
+        // Reset Turnstile widget
+        try { if (window.turnstile) turnstile.reset(); } catch (e) {}
       });
   }
 
@@ -3081,6 +3108,8 @@ ul, ol { list-style: none; }
           notice.style.color = '#ef4444';
           notice.textContent = translations[currentLang].mq_notice_error;
         }
+        // Reset Turnstile widget
+        try { if (window.turnstile) turnstile.reset(); } catch (e) {}
       })
       .finally(function () {
         submitBtn.disabled = false;
@@ -3245,7 +3274,11 @@ ul, ol { list-style: none; }
   }
 
   var startTime = null;
+  var lastFrame = 0;
   function draw(ts) {
+    // Throttle to ~30fps for perf
+    if (ts - lastFrame < 33) { raf = requestAnimationFrame(draw); return; }
+    lastFrame = ts;
     if (!startTime) startTime = ts;
     var t = ts - startTime;
     ctx.clearRect(0, 0, w, h);
@@ -3258,22 +3291,14 @@ ul, ol { list-style: none; }
     ctx.fillStyle = bg;
     ctx.fillRect(0, 0, w, h);
 
-    // Grid lines (subtle)
+    // Grid lines (batched into single path)
+    var gridSize = window.innerWidth < 768 ? 80 : 60;
     ctx.strokeStyle = 'rgba(230, 57, 70, 0.03)';
     ctx.lineWidth = 0.5;
-    var gridSize = 60;
-    for (var x = 0; x < w; x += gridSize) {
-      ctx.beginPath();
-      ctx.moveTo(x, 0);
-      ctx.lineTo(x, h);
-      ctx.stroke();
-    }
-    for (var y = 0; y < h; y += gridSize) {
-      ctx.beginPath();
-      ctx.moveTo(0, y);
-      ctx.lineTo(w, y);
-      ctx.stroke();
-    }
+    ctx.beginPath();
+    for (var x = 0; x < w; x += gridSize) { ctx.moveTo(x, 0); ctx.lineTo(x, h); }
+    for (var y = 0; y < h; y += gridSize) { ctx.moveTo(0, y); ctx.lineTo(w, y); }
+    ctx.stroke();
 
     // Animated blobs
     ctx.globalCompositeOperation = 'lighter';

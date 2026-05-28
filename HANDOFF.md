@@ -1,96 +1,125 @@
 # MSC Arabia Website — Handoff Document
 
-## What This Is
+**Last updated**: 2026-05-28  
+**Live**: https://mscarabia.com  
+**Repo**: https://github.com/defaltadmin/mscarabia (branch: `main`)  
+**Hosting**: Cloudflare Pages (auto-deploy via Git integration)
 
-Corporate website for MSC Arabia (mscarabia.com) — an IT services company in Riyadh, Saudi Arabia. Redesigned and migrated from Infinity Free to Cloudflare Pages.
+---
 
-## Current State (2026-05-28)
+## IMMEDIATE: Push + Verify
 
-**Status**: Live at https://mscarabia.com — v2 design deployed, inlined CSS/JS
+Git auth expired. First action in new session:
+```bash
+cd "C:\Users\user\My Drive\Documents\MSC\Development\MSCArabia.com"
+git push origin main
+```
+Then verify:
+```bash
+curl -s https://mscarabia.com/ | head -3  # Should show <!DOCTYPE html>
+curl -s https://mscarabia.com/ | grep -c "svc-head"  # Should be >0
+curl -s https://mscarabia.com/ | grep -c "<style>"   # Should be 1 (inlined)
+```
 
-**Repo**: https://github.com/defaltadmin/mscarabia
-**Branch**: `main`
-**Hosting**: Cloudflare Pages (auto-deploy via Git integration on push to main)
+**If CSS is stale** (v1 still showing), tell the CF AI:
+> "Purge the Cloudflare cache for mscarabia.com and retry the latest deployment."
+
+---
 
 ## Architecture
 
-Single `index.html` (~136KB) with inlined CSS (~43KB) and JS (~46KB + 3.5KB canvas background). This was done because CF Pages was serving stale separate CSS files.
-
-### Files
+Single `index.html` (~146KB) with inlined CSS (~43KB) and JS (~46KB). Done because CF Pages was serving stale separate CSS files.
 
 ```
 mscarabia/
-├── index.html              # Main page (CSS+JS inlined)
-├── 404.html                # Custom error page
-├── functions/api/contact.js # CF Pages Function (form handler via MailChannels)
-├── _headers                # Security headers + cache rules
-├── sitemap.xml             # Includes all pages
+├── index.html              ← EVERYTHING HERE (CSS+JS inlined)
+├── 404.html                Custom error page
+├── functions/api/contact.js CF Pages Function (form → MailChannels email)
+├── _headers                Security headers + cache rules
+├── sitemap.xml             All pages listed
 ├── robots.txt
-├── assets/logo.png         # Company logo (155KB, needs WebP optimization)
-├── cookie-policy.html
-├── privacy-policy.html
-├── styles/main.css         # External CSS (reference, not currently used — inlined in index.html)
-├── scripts/main.js         # External JS (reference, not currently used — inlined in index.html)
-├── scripts/backgrounds.js  # External canvas bg (reference)
-├── CF-SETUP.md             # Cloudflare setup instructions
-├── CODE_REVIEW.md          # Full code review for DeepSeek
-├── SONNET-DTP-AUDIT-PROMPT.md # Prompt for DTP game audit
-└── README.md
+├── assets/logo.png         Company logo (155KB, needs WebP)
+├── cookie-policy.html      Original policy page
+├── privacy-policy.html     Original policy page
+├── styles/main.css         External CSS (REFERENCE ONLY — inlined in index.html)
+├── scripts/main.js         External JS (REFERENCE ONLY — inlined in index.html)
+├── scripts/backgrounds.js  External canvas bg (REFERENCE ONLY)
+├── CF-SETUP.md             Cloudflare setup instructions
+├── CODE_REVIEW.md          Full code review file for DeepSeek audit
+├── SONNET-DTP-AUDIT-PROMPT.md  Prompt for DTP game audit (separate project)
+├── README.md
+├── .gitignore
+├── .cfignore
+└── .git/                   Local git repo
 ```
 
-## What's Done
+## What's Done (v2)
 
 | Feature | Status |
 |---------|--------|
-| Full redesign (luxury dark editorial) | ✅ |
+| Luxury dark editorial redesign | ✅ |
 | EN/AR bilingual (241 keys each, RTL) | ✅ |
-| 8 sections: Hero, Clients, Services (accordion), Engineering, Manpower, Projects, About, Contact | ✅ |
-| Animated canvas background (mesh gradient + particles + grid) | ✅ |
-| Expandable accordion service cards with keyboard a11y | ✅ |
-| Side navigation dots (desktop) | ✅ |
-| Manpower quote calculator (sliders, budget, professions) | ✅ |
-| Contact form (CF Worker + MailChannels) | ✅ |
-| Email validation on form submission | ✅ |
-| Honeypot anti-spam + basic KV rate limiting | ✅ |
-| Privacy/cookie policy modals | ✅ |
-| Clients marquee carousel | ✅ |
-| Scroll reveal animations | ✅ |
-| Accessibility panel (in nav bar) | ✅ |
-| Structured data (JSON-LD: ProfessionalService + WebSite + SiteNavigation) | ✅ |
+| Animated canvas background (wavy grid + particles + glow orbs) | ✅ |
+| Expandable accordion service cards (keyboard accessible) | ✅ |
+| Side navigation dots (desktop, active section tracking) | ✅ |
+| Manpower quote calculator (sliders, budget SAR, professions) | ✅ |
+| Contact form (CF Worker + MailChannels + email validation) | ✅ |
+| Honeypot anti-spam + KV rate limiting | ✅ |
+| Clients marquee carousel (11 clients) | ✅ |
+| Typewriter effect (EN + AR word arrays) | ✅ |
+| Scroll reveal animations (IntersectionObserver) | ✅ |
+| Accessibility panel (in nav dropdown) | ✅ |
+| Structured data (JSON-LD: ProfessionalService + WebSite) | ✅ |
 | GTM + Google Analytics + Apollo.io tracking | ✅ |
 | Security headers (HSTS, X-Content-Type-Options, X-Frame-Options, Vary) | ✅ |
 | Hreflang tags (en, ar, x-default) | ✅ |
 | 404 page | ✅ |
 | Custom domain mscarabia.com | ✅ |
-| www.mscarabia.com → mscarabia.com redirect | ✅ (via CF AI) |
+| www → mscarabia.com redirect | ✅ (via CF AI) |
+| sitemap.xml with all pages | ✅ |
+| noscript fallback for clients | ✅ |
 
-## Pending / Next Phases
+## Sonnet Audit: 34 Findings — Status
 
-### Phase 1: Legal & Compliance (HIGH priority)
-- [ ] Create OG image (1200×630) for social sharing
-- [ ] Update privacy policy — disclose GTM/GA/Apollo tracking
-- [ ] Fix privacy policy email (info.mscarabia@gmail.com → info@mscarabia.com)
-- [ ] Add cookie consent banner (defer GTM/Apollo until accepted)
-- [ ] Add CSP header (needs to allow inline scripts + third-party trackers)
+From the Sonnet audit (CODE_REVIEW.md), here's what's fixed vs pending:
 
-### Phase 2: Performance (MEDIUM priority)
-- [ ] Optimize logo.png → WebP (~15KB vs 155KB)
-- [ ] Remove Clash Display font reference (never loaded)
-- [ ] Self-host Google Fonts for faster KSA loading
-- [ ] Add font-display: optional for Material Symbols
-- [ ] Fix will-change cleanup on mobile (IntersectionObserver callback)
+### FIXED this session
 
-### Phase 3: Code Quality (LOW priority)
-- [ ] Convert var → const/let throughout JS
-- [ ] Remove external CSS/JS files (or reference them instead of inlining)
-- [ ] Add source maps for debugging
-- [ ] Fix privacy policy to be bilingual
+| # | Finding | Severity | Fix |
+|---|---------|----------|-----|
+| 1 | `form-submit` selector wrong (should be `btn-submit`) | Critical | Replaced in both form handlers |
+| 2 | Canvas animation uses raw timestamps | High | Added `startTime` tracking for elapsed time |
+| 3 | Canvas DPR accumulation on resize | High | Changed `ctx.scale()` to `ctx.setTransform()` |
+| 4 | Keyboard nav broken on accordion | High | Added `onkeydown` for Enter/Space |
+| 5 | `will-change` not removed after reveal | Medium | Set `willChange = 'auto'` after animation |
+| 6 | Text-muted contrast too low (3.8:1) | Low | Changed `--text-muted: #5a6275` → `#6b7590` |
+| 7 | Language toggle missing `role="switch"` | Medium | Added to both toggle buttons |
+| 8 | Phone number missing from contact | Medium | Added `+966551675320` with call icon |
+| 9 | Typewriter hardcoded English in Arabic mode | Medium | Added Arabic word array (تكنولوجيا، هندسة، etc.) |
+| 10 | `workers` text hardcoded English in calculator | Medium | Now uses `translations[currentLang].mq_workers` |
+| 11 | Email validation missing on form | Critical | Added `isValidEmail()` regex check |
+| 12 | `Vary: Accept-Language` header missing | Low | Added to `_headers` |
+| 13 | Sitemap only had one URL | Low | Added privacy + cookie pages |
+| 14 | noscript fallback for clients | Low | Added static text fallback |
 
-### Phase 4: DTP Game Audit
-- [ ] Run Sonnet audit on donttouchpurple repo using SONNET-DTP-AUDIT-PROMPT.md
-- [ ] Send CODE_REVIEW.md to DeepSeek for MSC Arabia site review
+### STILL PENDING (prioritized)
 
-## Lighthouse Scores (2026-05-28)
+| # | Finding | Severity | What to do |
+|---|---------|----------|------------|
+| 15 | No cookie consent banner | High | Add simple consent gate — defer GTM/Apollo until accepted |
+| 16 | OG image missing (`og-image.jpg`) | High | Create 1200×630 image, add to `/assets/` |
+| 17 | Privacy policy wrong email | Medium | Change `info.mscarabia@gmail.com` → `info@mscarabia.com` in `privacy-policy.html` |
+| 18 | Privacy policy doesn't disclose tracking | Medium | Add GTM/GA4/Apollo disclosure |
+| 19 | No CSP header | Medium | Would need to allow inline scripts + GTM + Apollo + Google Fonts |
+| 20 | Logo 155KB PNG (should be WebP) | Medium | Convert to WebP ~15KB, use `<picture>` fallback |
+| 21 | Clash Display font never loaded | Low | Either load from fonts.bunny.net or remove from `--font-display` |
+| 22 | `var` used throughout JS | Low | Convert to `const`/`let` |
+| 23 | Apollo loads without consent | Medium | GDPR/PDPL concern — defer until cookie accepted |
+| 24 | Contrast on `.text-muted` partially fixed | Low | `#6b7590` on `#06070b` is ~4.3:1 — still slightly below 4.5:1 |
+| 25 | KV rate limiting may not be bound | Low | Document KV binding in CF-SETUP.md or fail-closed |
+| 26 | 404 page English only | Low | Add basic Arabic support |
+
+## Lighthouse Scores (last run)
 
 | Metric | Mobile | PC |
 |--------|--------|-----|
@@ -99,40 +128,27 @@ mscarabia/
 | Best Practices | 54 | 54 |
 | SEO | 100 | 100 |
 
-**Key issues**: BP 54 due to third-party cookies (Apollo, GTM), deprecated APIs. Perf drag from render-blocking fonts and GTM.
+**BP 54**: third-party cookies (Apollo, GTM), deprecated APIs — these are third-party script issues.  
+**Perf drag**: render-blocking Google Fonts, GTM. Performance is expected to be ~70-80 with these trackers.
 
 ## i18n System
 
 - 241 EN + 241 AR translation keys (verified match)
-- `data-i18n` on elements, `data-i18n-html` for HTML content
+- `data-i18n` on elements, `data-i18n-html` for HTML content (6 keys)
+- Language persisted to `localStorage` key `msca_lang`
+- `?lang=ar` URL param works
 - Typewriter switches words per language
 - All form labels, placeholders, options translated
-- Manpower calculator fully bilingual
-- `localStorage` key `msca_lang` persists choice
-- `?lang=ar` URL param works
+- Manpower calculator fully bilingual including "workers" text
 
 ## Cloudflare Setup
 
-- **Pages project**: mscarabia (connected to GitHub repo)
+- **Pages project**: mscarabia (connected to GitHub)
 - **Build output directory**: `.` (set via CF AI)
 - **Custom domain**: mscarabia.com ✅
 - **www redirect**: www.mscarabia.com → mscarabia.com ✅
 - **Pages Functions**: `functions/api/contact.js` (auto-detected)
-- **No GitHub Actions** — using built-in Git integration
-
-## Security Checklist
-
-- [x] X-Content-Type-Options: nosniff
-- [x] X-Frame-Options: SAMEORIGIN
-- [x] Strict-Transport-Security (HSTS)
-- [x] Vary: Accept-Language
-- [x] Input sanitization on form fields
-- [x] Email validation on form submission
-- [x] Honeypot anti-spam
-- [x] Rate limiting via KV (when bound)
-- [ ] CSP header (pending — would break inline scripts)
-- [ ] Cookie consent banner (pending)
-- [ ] SRI hashes on third-party scripts (pending)
+- **No GitHub Actions** — using built-in Git integration (removed deploy.yml)
 
 ## Commands
 
@@ -140,6 +156,18 @@ mscarabia/
 # Local preview
 npx serve .
 
-# Direct deploy (requires wrangler auth)
+# Direct deploy (requires wrangler auth — CF AI handles this)
 npx wrangler pages deploy . --project-name=mscarabia
 ```
+
+## Related Projects
+
+| Project | Repo | URL |
+|---------|------|-----|
+| Don't Touch Purple (game) | defaltadmin/donttouchpurple | game.mscarabia.com |
+| MSC Arabia (this site) | defaltadmin/mscarabia | mscarabia.com |
+
+## Files for DeepSeek/Sonnet Review
+
+- `CODE_REVIEW.md` — complete review context for external AI
+- `SONNET-DTP-AUDIT-PROMPT.md` — prompt for DTP game audit (separate project)

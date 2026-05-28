@@ -46,6 +46,29 @@ export async function onRequestPost(context) {
       });
     }
 
+    // Turnstile verification
+    const turnstileToken = formData.get('cf-turnstile-response');
+    if (env.TURNSTILE_SECRET) {
+      if (!turnstileToken) {
+        return new Response(JSON.stringify({ success: false, error: 'CAPTCHA required' }), {
+          status: 403,
+          headers: { 'Content-Type': 'application/json', ...corsHeaders },
+        });
+      }
+      const verifyRes = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `secret=${encodeURIComponent(env.TURNSTILE_SECRET)}&response=${encodeURIComponent(turnstileToken)}&remoteip=${encodeURIComponent(request.headers.get('CF-Connecting-IP') || '')}`,
+      });
+      const verifyData = await verifyRes.json();
+      if (!verifyData.success) {
+        return new Response(JSON.stringify({ success: false, error: 'CAPTCHA verification failed' }), {
+          status: 403,
+          headers: { 'Content-Type': 'application/json', ...corsHeaders },
+        });
+      }
+    }
+
     const clientIP = request.headers.get('CF-Connecting-IP') || 'unknown';
 
     // Basic rate limiting via KV (if available)
