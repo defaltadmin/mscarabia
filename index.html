@@ -343,8 +343,8 @@ position: absolute;
 inset: 0;
 z-index: 1;
 background:
-radial-gradient(ellipse 80% 60% at 60% 40%, transparent 30%, var(--bg-deep) 80%),
-linear-gradient(to bottom, transparent 70%, var(--bg-deep) 100%);
+radial-gradient(ellipse 80% 70% at 50% 45%, transparent 40%, rgba(6,7,11,0.4) 100%),
+linear-gradient(to bottom, transparent 75%, rgba(6,7,11,0.7) 100%);
 pointer-events: none;
 }
 .hero-content {
@@ -3101,7 +3101,7 @@ backdrop-filter: none !important;
   Node.prototype.draw = function () {
     var g = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.r);
     g.addColorStop(0, this.color);
-    g.addColorStop(0.6, this.color.replace(/[\d.]+\)$/, '0.02)'));
+    g.addColorStop(0.6, this.color.replace(/[\d.]+\)$/, '0.06)'));
     g.addColorStop(1, 'transparent');
     ctx.fillStyle = g;
     ctx.beginPath();
@@ -3114,15 +3114,17 @@ backdrop-filter: none !important;
     this.reset();
   }
 
+  var pColors = ['rgba(230, 57, 70, ', 'rgba(59, 130, 246, ', 'rgba(139, 92, 246, ', 'rgba(200, 200, 255, '];
   Particle.prototype.reset = function () {
     this.x = Math.random() * w;
     this.y = Math.random() * h;
-    this.size = Math.random() * 1.5 + 0.5;
-    this.speedX = (Math.random() - 0.5) * 0.15;
-    this.speedY = -Math.random() * 0.2 - 0.05;
-    this.opacity = Math.random() * 0.4 + 0.1;
+    this.size = Math.random() * 2.5 + 0.8;
+    this.speedX = (Math.random() - 0.5) * 0.2;
+    this.speedY = -Math.random() * 0.3 - 0.05;
+    this.opacity = Math.random() * 0.7 + 0.2;
     this.life = Math.random() * 0.8 + 0.2;
     this.decay = Math.random() * 0.0003 + 0.0001;
+    this.color = pColors[Math.floor(Math.random() * 4)];
   };
 
   Particle.prototype.update = function () {
@@ -3138,17 +3140,17 @@ backdrop-filter: none !important;
   Particle.prototype.draw = function () {
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-    ctx.fillStyle = 'rgba(230, 57, 70, ' + (this.opacity * this.life) + ')';
+    ctx.fillStyle = this.color + (this.opacity * this.life) + ')';
     ctx.fill();
   };
 
   function initNodes() {
     nodes = [
-      new Node(0.65, 0.3, Math.min(w * 0.5, 500), 'rgba(230, 57, 70, 0.12)', 1.0, 0),
-      new Node(0.2, 0.6, Math.min(w * 0.45, 450), 'rgba(59, 130, 246, 0.08)', 0.7, 2),
-      new Node(0.8, 0.75, Math.min(w * 0.4, 400), 'rgba(139, 92, 246, 0.07)', 0.85, 4),
-      new Node(0.35, 0.15, Math.min(w * 0.35, 350), 'rgba(6, 182, 212, 0.06)', 0.6, 6),
-      new Node(0.5, 0.5, Math.min(w * 0.6, 600), 'rgba(230, 57, 70, 0.04)', 0.4, 1),
+      new Node(0.65, 0.3, Math.min(w * 0.55, 600), 'rgba(230, 57, 70, 0.35)', 1.0, 0),
+      new Node(0.2, 0.6, Math.min(w * 0.5, 550), 'rgba(59, 130, 246, 0.25)', 0.7, 2),
+      new Node(0.8, 0.75, Math.min(w * 0.45, 500), 'rgba(139, 92, 246, 0.22)', 0.85, 4),
+      new Node(0.35, 0.15, Math.min(w * 0.4, 450), 'rgba(6, 182, 212, 0.18)', 0.6, 6),
+      new Node(0.5, 0.5, Math.min(w * 0.65, 700), 'rgba(230, 57, 70, 0.15)', 0.4, 1),
     ];
   }
 
@@ -3167,19 +3169,19 @@ backdrop-filter: none !important;
 
   // Scanline effect
   function drawScanlines(t) {
-    var spacing = 4;
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.03)';
+    var spacing = 3;
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.06)';
     for (var y = 0; y < h; y += spacing) {
       ctx.fillRect(0, y, w, 1);
     }
     // Moving scanline
-    var scanY = (t * 0.03) % h;
-    var scanG = ctx.createLinearGradient(0, scanY - 30, 0, scanY + 30);
+    var scanY = (t * 0.05) % h;
+    var scanG = ctx.createLinearGradient(0, scanY - 50, 0, scanY + 50);
     scanG.addColorStop(0, 'transparent');
-    scanG.addColorStop(0.5, 'rgba(230, 57, 70, 0.04)');
+    scanG.addColorStop(0.5, 'rgba(230, 57, 70, 0.12)');
     scanG.addColorStop(1, 'transparent');
     ctx.fillStyle = scanG;
-    ctx.fillRect(0, scanY - 30, w, 60);
+    ctx.fillRect(0, scanY - 50, w, 100);
   }
 
   var startTime = null;
@@ -3192,17 +3194,17 @@ backdrop-filter: none !important;
     ctx.clearRect(0, 0, w, h);
 
     // Dark base with animated hue shift
-    var hueShift = Math.sin(t * 0.0002) * 5;
+    var hueShift = Math.sin(t * 0.0002) * 10;
     var bg = ctx.createLinearGradient(0, 0, w, h);
-    bg.addColorStop(0, 'hsl(' + (230 + hueShift) + ', 15%, 3%)');
-    bg.addColorStop(0.5, 'hsl(' + (240 + hueShift) + ', 12%, 5%)');
-    bg.addColorStop(1, 'hsl(' + (280 + hueShift) + ', 10%, 4%)');
+    bg.addColorStop(0, 'hsl(' + (230 + hueShift) + ', 25%, 5%)');
+    bg.addColorStop(0.5, 'hsl(' + (240 + hueShift) + ', 20%, 7%)');
+    bg.addColorStop(1, 'hsl(' + (280 + hueShift) + ', 18%, 6%)');
     ctx.fillStyle = bg;
     ctx.fillRect(0, 0, w, h);
 
     // Grid with perspective fade
     var gridSize = mobile ? 80 : 60;
-    ctx.globalAlpha = 0.03;
+    ctx.globalAlpha = 0.08;
     ctx.strokeStyle = '#e63946';
     ctx.lineWidth = 0.5;
     ctx.beginPath();
