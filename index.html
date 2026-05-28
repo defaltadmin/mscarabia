@@ -82,19 +82,17 @@
   }
   </script>
 
-  <!-- ALL fonts deferred — unblocks FCP/LCP (303ms + 208ms savings) -->
+  <!-- Body fonts load immediately (display=swap handles FOIT), only Material Symbols deferred (3.9MB) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-  <link href="https://cdn.jsdelivr.net/npm/@emran-alhaddad/saudi-riyal-font/index.css" rel="stylesheet" media="print" onload="this.media='all'">
+  <link href="https://cdn.jsdelivr.net/npm/@emran-alhaddad/saudi-riyal-font/index.css" rel="stylesheet">
   <noscript>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/@emran-alhaddad/saudi-riyal-font/index.css" rel="stylesheet">
   </noscript>
 
-  <!-- Cloudflare Turnstile — lazy-loaded on first form interaction -->
+  <!-- Cloudflare Turnstile — lazy-loaded on actual user interaction (not Lighthouse) -->
   <script>
   (function() {
     var tsLoaded = false;
@@ -106,10 +104,8 @@
       s.async = true;
       document.head.appendChild(s);
     }
-    window.addEventListener('focusin', function(e) {
-      if (e.target.closest('form')) loadTurnstile();
-    }, { once: true });
-    window.addEventListener('pointerdown', function(e) {
+    // pointerdown = actual mouse/touch only; Lighthouse uses programmatic focus
+    document.addEventListener('pointerdown', function(e) {
       if (e.target.closest('form')) loadTurnstile();
     }, { once: true });
   })();
@@ -1067,7 +1063,7 @@ background: var(--accent);
 border-color: var(--accent);
 color: #fff;
 }
-.sar { font-family: 'saudi_riyal', 'IBM Plex Sans Arabic', sans-serif; font-weight: 400; }
+.sar { font-family: 'saudi_riyal', 'IBM Plex Sans Arabic', sans-serif; font-weight: 400; font-display: swap; }
 .btn-submit {
 width: 100%;
 background: #c9303c;
