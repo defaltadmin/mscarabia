@@ -146,6 +146,39 @@ color: var(--text-primary);
 overflow-x: hidden;
 line-height: 1.6;
 }
+/* Full-page persistent animated gradient — Apple/Stripe style */
+body::before {
+content: '';
+position: fixed;
+inset: 0;
+z-index: -1;
+background:
+radial-gradient(ellipse 60% 50% at 20% 20%, rgba(230, 57, 70, 0.06) 0%, transparent 60%),
+radial-gradient(ellipse 50% 40% at 80% 60%, rgba(59, 130, 246, 0.05) 0%, transparent 55%),
+radial-gradient(ellipse 55% 45% at 50% 80%, rgba(139, 92, 246, 0.04) 0%, transparent 50%),
+radial-gradient(ellipse 40% 30% at 70% 10%, rgba(6, 182, 212, 0.03) 0%, transparent 45%);
+animation: bgShift 20s ease-in-out infinite alternate;
+pointer-events: none;
+}
+@keyframes bgShift {
+0% { transform: translate(0, 0) scale(1); }
+50% { transform: translate(-2%, 3%) scale(1.02); }
+100% { transform: translate(2%, -2%) scale(0.98); }
+}
+/* Section gradient dividers */
+.services, .engineering, .manpower, .about, .projects, .contact {
+position: relative;
+}
+.services::before, .engineering::before, .manpower::before, .about::before, .projects::before, .contact::before {
+content: '';
+position: absolute;
+top: 0;
+left: 50%;
+transform: translateX(-50%);
+width: min(80%, 600px);
+height: 1px;
+background: linear-gradient(90deg, transparent, rgba(230, 57, 70, 0.15), rgba(59, 130, 246, 0.1), transparent);
+}
 a { color: inherit; text-decoration: none; }
 img { max-width: 100%; display: block; }
 button { font: inherit; cursor: pointer; border: none; background: none; color: inherit; }
@@ -559,7 +592,8 @@ mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transpa
 .marquee-track {
 display: flex;
 width: max-content;
-animation: marquee 35s linear infinite;
+animation: marquee 45s linear infinite;
+will-change: transform;
 }
 .marquee-track:hover { animation-play-state: paused; }
 @keyframes marquee {
@@ -569,30 +603,34 @@ animation: marquee 35s linear infinite;
 [dir="rtl"] .marquee-track { animation-direction: reverse; }
 .marquee-set {
 display: flex;
-gap: 1.5rem;
+gap: 2rem;
 flex-shrink: 0;
-padding: 0.75rem 0;
+padding: 1rem 0;
+align-items: center;
 }
 .m-chip {
-padding: 0.75rem 1.5rem;
-background: var(--glass);
-border: 1px solid var(--border);
+padding: 0.85rem 2rem;
+background: rgba(255, 255, 255, 0.02);
+backdrop-filter: blur(10px);
+-webkit-backdrop-filter: blur(10px);
+border: 1px solid rgba(255, 255, 255, 0.06);
 border-radius: var(--radius-md);
 white-space: nowrap;
-transition: all var(--slow) var(--ease);
+transition: all 0.5s var(--ease);
 cursor: default;
 }
 .m-chip span {
 font-size: 0.85rem;
 font-weight: 600;
-color: rgba(255, 255, 255, 0.55);
-transition: color var(--fast);
+color: rgba(255, 255, 255, 0.45);
+letter-spacing: 0.02em;
+transition: color 0.5s var(--ease);
 }
 .m-chip:hover {
-border-color: var(--accent);
-background: var(--accent-glow);
-transform: translateY(-6px);
-box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+border-color: rgba(230, 57, 70, 0.25);
+background: rgba(230, 57, 70, 0.08);
+transform: translateY(-4px);
+box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
 }
 .m-chip:hover span { color: #fff; }
 .sec-hdr {
@@ -640,44 +678,51 @@ position: relative;
 .svc-grid {
 display: grid;
 grid-template-columns: 1fr;
-gap: 1px;
-background: var(--border);
-border-radius: var(--radius-lg);
-overflow: hidden;
+gap: 1rem;
 }
+@media (min-width: 768px) { .svc-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1024px) { .svc-grid { grid-template-columns: repeat(3, 1fr); } }
 .svc-item {
-background: var(--bg-base);
-transition: background var(--fast);
+background: rgba(255, 255, 255, 0.02);
+backdrop-filter: blur(12px);
+-webkit-backdrop-filter: blur(12px);
+border: 1px solid rgba(255, 255, 255, 0.06);
+border-radius: var(--radius-lg);
+transition: all 0.4s var(--ease);
+overflow: hidden;
+cursor: pointer;
 }
-.svc-item:hover { background: var(--bg-elevated); }
+.svc-item:hover {
+border-color: rgba(230, 57, 70, 0.2);
+background: rgba(255, 255, 255, 0.04);
+transform: translateY(-4px);
+box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(230, 57, 70, 0.08);
+}
 .svc-head {
 display: flex;
 align-items: center;
 gap: 1rem;
-padding: 1.5rem 1.75rem;
-cursor: pointer;
+padding: 1.5rem;
 user-select: none;
-transition: background var(--fast);
 }
-.svc-head:hover { background: var(--bg-elevated); }
 .svc-icon {
 width: 48px;
 height: 48px;
 border-radius: var(--radius-sm);
-background: var(--accent-glow);
+background: rgba(230, 57, 70, 0.1);
 border: 1px solid rgba(230, 57, 70, 0.15);
 display: flex;
 align-items: center;
 justify-content: center;
 flex-shrink: 0;
-transition: transform var(--normal) var(--ease-spring);
+transition: all 0.4s var(--ease);
 }
 .svc-icon .material-symbols-outlined { font-size: 24px; color: var(--accent); }
-.svc-item.open .svc-icon { transform: scale(1.05); }
+.svc-item:hover .svc-icon { background: rgba(230, 57, 70, 0.15); transform: scale(1.05); }
 .svc-info { flex: 1; }
 .svc-name {
 font-family: var(--font-display);
-font-size: 1.1rem;
+font-size: 1.05rem;
 font-weight: 600;
 color: #fff;
 margin-bottom: 0.2rem;
@@ -685,58 +730,61 @@ margin-bottom: 0.2rem;
 .svc-brief {
 font-size: 0.82rem;
 color: var(--text-muted);
+line-height: 1.5;
 }
 .svc-arrow {
-width: 32px;
-height: 32px;
+width: 28px;
+height: 28px;
 border-radius: 50%;
-background: var(--bg-muted);
+background: rgba(255, 255, 255, 0.05);
 display: flex;
 align-items: center;
 justify-content: center;
-transition: transform var(--normal) var(--ease), background var(--fast);
+transition: transform 0.5s var(--ease), background var(--fast);
 flex-shrink: 0;
 }
 .svc-arrow .material-symbols-outlined { font-size: 18px; color: var(--text-muted); transition: color var(--fast); }
 .svc-item.open .svc-arrow {
 transform: rotate(180deg);
-background: var(--accent-glow);
+background: rgba(230, 57, 70, 0.15);
 }
 .svc-item.open .svc-arrow .material-symbols-outlined { color: var(--accent); }
 .svc-body {
-max-height: 0;
-overflow: hidden;
-transition: max-height var(--slow) var(--ease), padding var(--slow) var(--ease);
+display: grid;
+grid-template-rows: 0fr;
+transition: grid-template-rows 0.5s var(--ease);
 }
 .svc-item.open .svc-body {
-max-height: 600px;
+grid-template-rows: 1fr;
+}
+.svc-body > div {
+overflow: hidden;
 }
 .svc-body-inner {
-padding: 0 1.75rem 1.75rem;
-padding-left: calc(1.75rem + 48px + 1rem);
-}
-[dir="rtl"] .svc-body-inner {
-padding-left: 1.75rem;
-padding-right: calc(1.75rem + 48px + 1rem);
+padding: 0 1.5rem 1.5rem;
 }
 .svc-body-inner p {
-font-size: 0.9rem;
+font-size: 0.85rem;
 color: var(--text-secondary);
 line-height: 1.7;
 margin-bottom: 1rem;
 }
 .svc-features {
 display: grid;
-grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-gap: 0.5rem;
+grid-template-columns: 1fr;
+gap: 0.4rem;
 margin-bottom: 1.25rem;
 }
 .svc-feat {
 display: flex;
 align-items: center;
 gap: 0.5rem;
-font-size: 0.82rem;
+font-size: 0.8rem;
 color: var(--text-secondary);
+padding: 0.35rem 0.6rem;
+background: rgba(255, 255, 255, 0.02);
+border-radius: var(--radius-sm);
+border: 1px solid rgba(255, 255, 255, 0.04);
 }
 .svc-feat::before {
 content: '';
@@ -769,12 +817,21 @@ margin-top: 2rem;
 }
 @media (min-width: 1024px) { .eng-grid { grid-template-columns: 1fr 1fr; } }
 .eng-panel {
-background: var(--bg-elevated);
-border: 1px solid var(--border);
+background: rgba(255, 255, 255, 0.02);
+backdrop-filter: blur(16px);
+-webkit-backdrop-filter: blur(16px);
+border: 1px solid rgba(255, 255, 255, 0.06);
 border-radius: var(--radius-lg);
 padding: 2rem;
 position: relative;
 overflow: hidden;
+transition: all 0.4s var(--ease);
+}
+.eng-panel:hover {
+border-color: rgba(230, 57, 70, 0.15);
+background: rgba(255, 255, 255, 0.03);
+transform: translateY(-3px);
+box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
 }
 .eng-panel::before {
 content: '';
@@ -834,10 +891,19 @@ margin-top: 2rem;
 }
 @media (min-width: 768px) { .mp-cols { grid-template-columns: repeat(3, 1fr); } }
 .mp-col {
-background: var(--bg-elevated);
-border: 1px solid var(--border);
+background: rgba(255, 255, 255, 0.02);
+backdrop-filter: blur(16px);
+-webkit-backdrop-filter: blur(16px);
+border: 1px solid rgba(255, 255, 255, 0.06);
 border-radius: var(--radius-lg);
 padding: 1.5rem;
+transition: all 0.4s var(--ease);
+}
+.mp-col:hover {
+border-color: rgba(230, 57, 70, 0.15);
+background: rgba(255, 255, 255, 0.03);
+transform: translateY(-3px);
+box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
 }
 .mp-col-title {
 font-family: var(--font-mono);
@@ -854,8 +920,10 @@ border-bottom: 1px solid var(--border);
 .mp-col-list li { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
 .mq-section {
 margin-top: 3rem;
-background: var(--bg-elevated);
-border: 1px solid var(--border);
+background: rgba(255, 255, 255, 0.02);
+backdrop-filter: blur(16px);
+-webkit-backdrop-filter: blur(16px);
+border: 1px solid rgba(255, 255, 255, 0.06);
 border-radius: var(--radius-xl);
 padding: 2rem;
 }
@@ -1043,13 +1111,20 @@ grid-template-columns: 1fr 1fr;
 gap: 1rem;
 }
 .about-stat {
-background: var(--bg-elevated);
-border: 1px solid var(--border);
+background: rgba(255, 255, 255, 0.02);
+backdrop-filter: blur(16px);
+-webkit-backdrop-filter: blur(16px);
+border: 1px solid rgba(255, 255, 255, 0.06);
 border-radius: var(--radius-lg);
 padding: 1.5rem;
-transition: border-color var(--fast);
+transition: all 0.4s var(--ease);
 }
-.about-stat:hover { border-color: rgba(230, 57, 70, 0.2); }
+.about-stat:hover {
+border-color: rgba(230, 57, 70, 0.2);
+background: rgba(255, 255, 255, 0.04);
+transform: translateY(-3px);
+box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+}
 .about-stat-val {
 font-family: var(--font-display);
 font-size: 2rem;
@@ -1076,15 +1151,19 @@ gap: 1rem;
 display: flex;
 align-items: center;
 gap: 1rem;
-background: var(--bg-elevated);
-border: 1px solid var(--border);
+background: rgba(255, 255, 255, 0.02);
+backdrop-filter: blur(16px);
+-webkit-backdrop-filter: blur(16px);
+border: 1px solid rgba(255, 255, 255, 0.06);
 border-radius: var(--radius-md);
 padding: 1.25rem;
-transition: border-color var(--fast), transform var(--fast);
+transition: all 0.4s var(--ease);
 }
 .proj-card:hover {
 border-color: rgba(230, 57, 70, 0.25);
+background: rgba(255, 255, 255, 0.04);
 transform: translateY(-3px);
+box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
 }
 .proj-icon {
 width: 48px;
@@ -1148,8 +1227,10 @@ flex-shrink: 0;
 .c-info-item p, .c-info-item a { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; }
 .c-info-item a:hover { color: #fff; }
 .contact-card {
-background: var(--bg-elevated);
-border: 1px solid var(--border);
+background: rgba(255, 255, 255, 0.02);
+backdrop-filter: blur(16px);
+-webkit-backdrop-filter: blur(16px);
+border: 1px solid rgba(255, 255, 255, 0.06);
 border-radius: var(--radius-lg);
 padding: 2rem;
 }
@@ -1669,11 +1750,11 @@ backdrop-filter: none !important;
           <div class="svc-info"><div class="svc-name" data-i18n="svc1_title">Managed IT Services</div><div class="svc-brief" data-i18n="svc1_desc">24/7 proactive monitoring, support, and maintenance.</div></div>
           <div class="svc-arrow"><span class="material-symbols-outlined">expand_more</span></div>
         </div>
-        <div class="svc-body"><div class="svc-body-inner">
+        <div class="svc-body"><div><div class="svc-body-inner">
           <p data-i18n="svc1_desc">24/7 proactive monitoring, support, and maintenance of your IT infrastructure to ensure maximum uptime and performance.</p>
           <div class="svc-features"><div class="svc-feat" data-i18n="svc1_item1">Server & Network Management</div><div class="svc-feat" data-i18n="svc1_item2">Cloud Infrastructure</div><div class="svc-feat" data-i18n="svc1_item3">Help Desk Support</div></div>
           <a href="#contact" class="svc-cta"><span data-i18n="svc_cta">Request Service</span><span class="material-symbols-outlined">arrow_forward</span></a>
-        </div></div>
+        </div></div></div>
       </div>
       <div class="svc-item">
         <div class="svc-head" onclick="toggleSvc(this)" onkeydown="if(event.key==='Enter'||event.key===' '){toggleSvc(this);event.preventDefault()}" role="button" tabindex="0" aria-expanded="false">
@@ -1681,11 +1762,11 @@ backdrop-filter: none !important;
           <div class="svc-info"><div class="svc-name" data-i18n="svc2_title">MDM Licensing</div><div class="svc-brief" data-i18n="svc2_desc">Mobile Device Management solutions for enterprise mobility.</div></div>
           <div class="svc-arrow"><span class="material-symbols-outlined">expand_more</span></div>
         </div>
-        <div class="svc-body"><div class="svc-body-inner">
+        <div class="svc-body"><div><div class="svc-body-inner">
           <p data-i18n="svc2_desc">Mobile Device Management solutions for secure enterprise mobility and device lifecycle management.</p>
           <div class="svc-features"><div class="svc-feat" data-i18n="svc2_item1">Apple Business Manager</div><div class="svc-feat" data-i18n="svc2_item2">Microsoft Intune</div><div class="svc-feat" data-i18n="svc2_item3">Enterprise Security</div></div>
           <a href="#contact" class="svc-cta"><span data-i18n="svc_cta">Request Service</span><span class="material-symbols-outlined">arrow_forward</span></a>
-        </div></div>
+        </div></div></div>
       </div>
       <div class="svc-item">
         <div class="svc-head" onclick="toggleSvc(this)" onkeydown="if(event.key==='Enter'||event.key===' '){toggleSvc(this);event.preventDefault()}" role="button" tabindex="0" aria-expanded="false">
@@ -1693,11 +1774,11 @@ backdrop-filter: none !important;
           <div class="svc-info"><div class="svc-name" data-i18n="svc3_title">Fire Safety Engineering</div><div class="svc-brief" data-i18n="svc3_desc">Certified fire safety systems design, installation, and maintenance.</div></div>
           <div class="svc-arrow"><span class="material-symbols-outlined">expand_more</span></div>
         </div>
-        <div class="svc-body"><div class="svc-body-inner">
+        <div class="svc-body"><div><div class="svc-body-inner">
           <p data-i18n="svc3_desc">Certified fire safety systems design, installation, and maintenance for industrial and commercial facilities.</p>
           <div class="svc-features"><div class="svc-feat" data-i18n="svc3_item1">Siemens Fire Systems</div><div class="svc-feat" data-i18n="svc3_item2">BACnet Integration</div><div class="svc-feat" data-i18n="svc3_item3">Safety Compliance</div></div>
           <a href="#contact" class="svc-cta"><span data-i18n="svc_cta">Request Service</span><span class="material-symbols-outlined">arrow_forward</span></a>
-        </div></div>
+        </div></div></div>
       </div>
       <div class="svc-item">
         <div class="svc-head" onclick="toggleSvc(this)" onkeydown="if(event.key==='Enter'||event.key===' '){toggleSvc(this);event.preventDefault()}" role="button" tabindex="0" aria-expanded="false">
@@ -1705,11 +1786,11 @@ backdrop-filter: none !important;
           <div class="svc-info"><div class="svc-name" data-i18n="svc4_title">Manpower Solutions</div><div class="svc-brief" data-i18n="svc4_desc">Skilled professionals for positions across Saudi Arabia.</div></div>
           <div class="svc-arrow"><span class="material-symbols-outlined">expand_more</span></div>
         </div>
-        <div class="svc-body"><div class="svc-body-inner">
+        <div class="svc-body"><div><div class="svc-body-inner">
           <p data-i18n="svc4_desc">Skilled IT and engineering professionals for temporary and permanent positions across Saudi Arabia.</p>
           <div class="svc-features"><div class="svc-feat" data-i18n="svc4_item1">IT Staffing</div><div class="svc-feat" data-i18n="svc4_item2">Engineering Resources</div><div class="svc-feat" data-i18n="svc4_item3">Project Teams</div></div>
           <a href="#manpower" class="svc-cta"><span data-i18n="svc_cta_quote">Get a Quote</span><span class="material-symbols-outlined">arrow_forward</span></a>
-        </div></div>
+        </div></div></div>
       </div>
       <div class="svc-item">
         <div class="svc-head" onclick="toggleSvc(this)" onkeydown="if(event.key==='Enter'||event.key===' '){toggleSvc(this);event.preventDefault()}" role="button" tabindex="0" aria-expanded="false">
@@ -1717,11 +1798,11 @@ backdrop-filter: none !important;
           <div class="svc-info"><div class="svc-name" data-i18n="svc5_title">Hardware & Software</div><div class="svc-brief" data-i18n="svc5_desc">Procurement and deployment of enterprise-grade solutions.</div></div>
           <div class="svc-arrow"><span class="material-symbols-outlined">expand_more</span></div>
         </div>
-        <div class="svc-body"><div class="svc-body-inner">
+        <div class="svc-body"><div><div class="svc-body-inner">
           <p data-i18n="svc5_desc">Procurement and deployment of enterprise-grade hardware and licensed software solutions.</p>
           <div class="svc-features"><div class="svc-feat" data-i18n="svc5_item1">Enterprise Hardware</div><div class="svc-feat" data-i18n="svc5_item2">Software Licensing</div><div class="svc-feat" data-i18n="svc5_item3">Asset Management</div></div>
           <a href="#contact" class="svc-cta"><span data-i18n="svc_cta">Request Service</span><span class="material-symbols-outlined">arrow_forward</span></a>
-        </div></div>
+        </div></div></div>
       </div>
       <div class="svc-item">
         <div class="svc-head" onclick="toggleSvc(this)" onkeydown="if(event.key==='Enter'||event.key===' '){toggleSvc(this);event.preventDefault()}" role="button" tabindex="0" aria-expanded="false">
@@ -1729,11 +1810,11 @@ backdrop-filter: none !important;
           <div class="svc-info"><div class="svc-name" data-i18n="svc6_title">Cloud Services</div><div class="svc-brief" data-i18n="svc6_desc">Scalable cloud infrastructure with migration and optimization.</div></div>
           <div class="svc-arrow"><span class="material-symbols-outlined">expand_more</span></div>
         </div>
-        <div class="svc-body"><div class="svc-body-inner">
+        <div class="svc-body"><div><div class="svc-body-inner">
           <p data-i18n="svc6_desc">Scalable cloud infrastructure with migration, management, and optimization across leading providers.</p>
           <div class="svc-features"><div class="svc-feat" data-i18n="svc6_item1">AWS, Azure & Google Cloud</div><div class="svc-feat" data-i18n="svc6_item2">Migration & workload modernization</div><div class="svc-feat" data-i18n="svc6_item3">Managed operations & cost optimization</div></div>
           <a href="#contact" class="svc-cta"><span data-i18n="svc_cta">Request Service</span><span class="material-symbols-outlined">arrow_forward</span></a>
-        </div></div>
+        </div></div></div>
       </div>
     </div>
   </div>
