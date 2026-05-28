@@ -1,28 +1,24 @@
 # MSC Arabia Website — Handoff Document
 
-**Last updated**: 2026-05-28  
-**Live**: https://mscarabia.com  
-**Repo**: https://github.com/defaltadmin/mscarabia (branch: `main`)  
+**Last updated**: 2026-05-28 (session 2)
+**Live**: https://mscarabia.com
+**Repo**: https://github.com/defaltadmin/mscarabia (branch: `main`)
 **Hosting**: Cloudflare Pages (auto-deploy via Git integration)
+**Commits**: `f8ba893` (3 commits pushed this session)
 
 ---
 
-## IMMEDIATE: Push + Verify
+## Current State
 
-Git auth expired. First action in new session:
+Pushed and live. `git status` clean, 0 commits ahead.
+
+Verify:
 ```bash
-cd "C:\Users\user\My Drive\Documents\MSC\Development\MSCArabia.com"
-git push origin main
-```
-Then verify:
-```bash
-curl -s https://mscarabia.com/ | head -3  # Should show <!DOCTYPE html>
-curl -s https://mscarabia.com/ | grep -c "svc-head"  # Should be >0
-curl -s https://mscarabia.com/ | grep -c "<style>"   # Should be 1 (inlined)
+curl -s https://mscarabia.com/ | grep -c "challenges.cloudflare.com/turnstile"  # Should be 1
+curl -s https://mscarabia.com/ | grep -c "safe-area-inset"  # Should be 2
 ```
 
-**If CSS is stale** (v1 still showing), tell the CF AI:
-> "Purge the Cloudflare cache for mscarabia.com and retry the latest deployment."
+**Pending env var**: `TURNSTILE_SECRET` needs adding in CF Pages dashboard → Settings → Environment Variables → value `0x4AAAAAADXw8o_yjHMNXtHzNwb1usIYaIk`. Without it, Turnstile is gracefully skipped (forms still work but bots aren't blocked).
 
 ---
 
@@ -78,6 +74,15 @@ mscarabia/
 | www → mscarabia.com redirect | ✅ (via CF AI) |
 | sitemap.xml with all pages | ✅ |
 | noscript fallback for clients | ✅ |
+| Mobile: safe-area insets + 44px touch targets | ✅ (session 2) |
+| Mobile: iOS zoom prevention (16px min on inputs) | ✅ (session 2) |
+| Canvas: RAF throttled to 30fps | ✅ (session 2) |
+| Canvas: batched grid lines (single path) | ✅ (session 2) |
+| Canvas: larger grid on mobile (80px vs 60px) | ✅ (session 2) |
+| SEO: og:site_name + apple-touch-icon + status bar | ✅ (session 2) |
+| Cloudflare Turnstile CAPTCHA (both forms) | ✅ (session 2) |
+| Turnstile server-side verification in contact.js | ✅ (session 2) |
+| Turnstile reset on form error | ✅ (session 2) |
 
 ## Sonnet Audit: 34 Findings — Status
 
@@ -110,7 +115,7 @@ From the Sonnet audit (CODE_REVIEW.md), here's what's fixed vs pending:
 | 16 | OG image missing (`og-image.jpg`) | High | Create 1200×630 image, add to `/assets/` |
 | 17 | Privacy policy wrong email | Medium | Change `info.mscarabia@gmail.com` → `info@mscarabia.com` in `privacy-policy.html` |
 | 18 | Privacy policy doesn't disclose tracking | Medium | Add GTM/GA4/Apollo disclosure |
-| 19 | No CSP header | Medium | Would need to allow inline scripts + GTM + Apollo + Google Fonts |
+| 19 | No CSP header | Medium | Would need to allow inline scripts + GTM + Apollo + Google Fonts + Turnstile |
 | 20 | Logo 155KB PNG (should be WebP) | Medium | Convert to WebP ~15KB, use `<picture>` fallback |
 | 21 | Clash Display font never loaded | Low | Either load from fonts.bunny.net or remove from `--font-display` |
 | 22 | `var` used throughout JS | Low | Convert to `const`/`let` |
@@ -149,6 +154,8 @@ From the Sonnet audit (CODE_REVIEW.md), here's what's fixed vs pending:
 - **www redirect**: www.mscarabia.com → mscarabia.com ✅
 - **Pages Functions**: `functions/api/contact.js` (auto-detected)
 - **No GitHub Actions** — using built-in Git integration (removed deploy.yml)
+- **Turnstile CAPTCHA**: Site key `0x4AAAAAADXw8vszetp5UKcP` in index.html
+- **Turnstile Secret**: needs env var `TURNSTILE_SECRET` in CF Pages dashboard (not yet added)
 
 ## Commands
 
