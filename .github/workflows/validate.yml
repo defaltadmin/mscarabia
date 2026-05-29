@@ -1,0 +1,46 @@
+name: Validate & Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate HTML
+        uses: Cyb3r-Jak3/html-validate-action@v1
+        with:
+          globs: "*.html"
+
+      - name: Check links
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: --exclude-mail --exclude-loopback --no-progress "*.html"
+          fail: false
+
+      - name: Validate sitemap
+        run: |
+          curl -s https://mscarabia.com/sitemap.xml | xmllint --noout - || echo "Sitemap validation skipped (external)"
+        continue-on-error: true
+
+  lighthouse:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Run Lighthouse
+        uses: treosh/lighthouse-ci-action@v12
+        with:
+          uploadArtifacts: true
+          configPath: '.github/lighthouserc.json'

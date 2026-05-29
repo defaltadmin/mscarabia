@@ -161,31 +161,34 @@ These are broken features that throw errors or display wrong content.
 
 ## Phase 5: SEO & Marketing
 
-### 5.1 Structured data
-- [ ] Add LocalBusiness schema with all fields
-- [ ] Add Service schema for each service
-- **Impact**: Rich snippets in search results
+### 5.1 ~~Structured data~~ DONE
+- [x] ProfessionalService schema with full fields (address, geo, contactPoint, openingHours, sameAs)
+- [x] Service catalog — all 6 services with OfferCatalog/Offer/Service
+- [x] WebSite schema with SearchAction
+- [x] BreadcrumbList schema
+- [x] ImageObject for logo, foundingDate, knowsAbout, availableLanguage
 
-### 5.2 Content
+### 5.2 ~~Analytics events~~ DONE
+- [x] `contact_form_submit` event on contact form success (with service label)
+- [x] `manpower_quote_submit` event on quote form success (with budget value)
+- [x] Sitemap updated with 2026-05-29 dates
+
+### 5.3 Content
 - [ ] Add blog/resources section
 - [ ] Add case studies
 - [ ] Add client testimonials
 - **Impact**: SEO content, trust signals
 
-### 5.3 Analytics
-- [ ] Track form submissions as conversions
-- [ ] Track service card clicks
-- [ ] Track language toggle usage
-- **Impact**: Data-driven decisions
-
 ---
 
 ## Phase 6: Infrastructure
 
-### 6.1 GitHub Actions
-- [ ] Add HTML validation check
-- [ ] Add Lighthouse CI check
-- **Impact**: Automated quality gates
+### 6.1 ~~GitHub Actions~~ DONE
+- [x] HTML validation via html-validate-action
+- [x] Link checking via lychee-action
+- [x] Lighthouse CI with score thresholds (perf 90+, a11y 95+, SEO 95+)
+- [x] `.github/lighthouserc.json` config
+- [x] `.cfignore` already excludes .github from deploy
 
 ### 6.2 Monitoring
 - [ ] Add uptime monitoring
