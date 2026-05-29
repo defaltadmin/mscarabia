@@ -1,6 +1,10 @@
 # MSC Arabia Website — Handoff Document
 
-**Last updated**: 2026-05-29 (session 5)
+> **PROJECT**: mscarabia.com (corporate website) — NOT the DTP game.
+> **If you're working on the game, read `../HANDOFF.md` instead.**
+> This file is ONLY for the static marketing site at mscarabia.com.
+
+**Last updated**: 2026-05-29 (session 6)
 **Live**: https://mscarabia.com
 **Repo**: https://github.com/defaltadmin/mscarabia (branch: `main`)
 **Hosting**: Cloudflare Pages (auto-deploy via Git integration)
@@ -27,6 +31,52 @@ Pushed and live. `git status` clean.
 - CLS: 0.004 (score 1) ✅
 - Speed Index: 1.0s (score 0.97)
 - Interactive: 1.2s (score 1) ✅
+
+---
+
+## Session 6 Changes (2026-05-29)
+
+### Mobile Navigation (CRITICAL BUG FIX)
+- **Hamburger menu was broken** — Menu was `display: none` on mobile, wasn't showing when tapped
+- Fixed: Menu now opens full-screen overlay with close button (X) + backdrop overlay
+- Added Escape key support to close menu
+- Body scroll locked when menu is open
+- Menu items now 52px height (better touch targets)
+- Mobile nav button has 44px min touch target with proper centering
+
+### High Contrast Mode (BUG FIX)
+- CSS selectors targeted `.svc-item` and `.svc-name` — but cards use `.svc-card` and `.svc-card-name`
+- **Completely rewrote contrast styles** to cover all elements:
+  - `.svc-card`, `.svc-card-icon`, `.svc-card-tags`, `.svc-card-features`, `.svc-card-stats`
+  - `.about-card`, `.eng-card`, `.mp-card`, `.prof-card`
+  - `.cookie-banner`, `.nav-mobile-menu`, `.footer`, `.hero`
+  - Images get brightness/contrast boost
+  - Side nav dots use yellow active state
+  - All inputs, buttons, CTAs use yellow-on-black
+  - Selection highlight is yellow
+- Mobile menu close button styled in contrast mode
+
+### Service Cards Redesign
+- All 6 service cards now have:
+  - **Feature checklist** with green checkmark icons (3 items each)
+  - **Stats row** on hero card (99.9% Uptime SLA, 15+ Years KSA, 50+ Enterprises)
+  - Longer, more descriptive briefs
+  - More specific tags (e.g., "Monitoring", "Civil Defense", "GOSI", "Quarterly Reviews")
+- CTA button always visible (was hidden until hover — bad for mobile)
+- Added CSS for `.svc-card-features`, `.svc-card-stats`, `.svc-stat`
+- Updated English i18n translations (svc1-svc6) with richer descriptions
+- Contrast mode covers all new elements
+
+### Folder Structure Decision
+- Game stays at root of `deploy-ready/` (it IS the git repo)
+- MSCArabia.com stays as sibling folder with own git repo
+- Added `MSCArabia.com/` and `crm.mscarabia.com/` to DTP `.gitignore`
+- Future subdomains will be sibling folders, each with own repo
+
+### Handoff Separation
+- Both HANDOFF.md files now have clear disambiguation headers
+- Root HANDOFF.md = DTP GAME ONLY
+- MSCArabia.com/HANDOFF.md = WEBSITE ONLY
 
 ---
 
