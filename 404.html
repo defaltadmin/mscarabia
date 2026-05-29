@@ -1,28 +1,30 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Page Not Found — MSC Arabia</title>
-  <meta name="robots" content="noindex">
-  <link rel="stylesheet" href="/assets/fonts/fonts.css">
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Plus Jakarta Sans', sans-serif; background: #06070b; color: #e8eaf0; min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 2rem; }
-    .container { max-width: 480px; }
-    .icon { font-size: 4rem; color: #e63946; margin-bottom: 1.5rem; }
-    h1 { font-size: 2rem; font-weight: 700; margin-bottom: 0.75rem; }
-    p { color: #8b93a8; font-size: 1rem; line-height: 1.6; margin-bottom: 2rem; }
-    a { display: inline-flex; align-items: center; gap: 0.5rem; background: #e63946; color: #fff; font-weight: 600; font-size: 0.85rem; padding: 0.85rem 1.75rem; border-radius: 8px; text-decoration: none; transition: background 0.2s, transform 0.2s; }
-    a:hover { background: #c9303c; transform: translateY(-2px); }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Page Not Found | MSC Arabia</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'IBM Plex Sans Arabic',system-ui,-apple-system,sans-serif;background:#06070b;color:#e8eaf0;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:1.5rem}
+.not-found{text-align:center;max-width:32rem}
+.not-found svg{width:80px;height:80px;margin-bottom:1.5rem;opacity:0.7}
+.not-found h1{font-size:5rem;font-weight:800;background:linear-gradient(135deg,#e63946,#3b82f6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin-bottom:0.5rem}
+.not-found p{color:#8a8d96;font-size:1.1rem;margin-bottom:2rem;line-height:1.6}
+.not-found a{display:inline-block;padding:0.75rem 2rem;background:linear-gradient(135deg,#e63946,#c91c1c);color:#fff;text-decoration:none;border-radius:8px;font-weight:600;font-size:0.95rem;transition:transform 0.2s,box-shadow 0.2s}
+.not-found a:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(230,57,70,0.3)}
+</style>
 </head>
 <body>
-  <div class="container">
-    <div class="icon" style="font-size:64px;color:#e63946">&#x1F6D1;</div>
-    <h1>Page Not Found</h1>
-    <p>The page you're looking for doesn't exist or has been moved.</p>
-    <a href="/">&#x2190; Back to MSC Arabia</a>
-  </div>
+<div class="not-found" role="main">
+  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="12" cy="12" r="10" stroke="#e63946" stroke-width="1.5" opacity="0.5"/>
+    <path d="M8 8l8 8M16 8l-8 8" stroke="#e63946" stroke-width="1.5" stroke-linecap="round"/>
+  </svg>
+  <h1>404</h1>
+  <p>The page you're looking for doesn't exist or has been moved.</p>
+  <a href="/">Back to Home</a>
+</div>
 </body>
 </html>

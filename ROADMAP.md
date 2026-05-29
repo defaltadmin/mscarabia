@@ -35,6 +35,11 @@ These are broken features that throw errors or display wrong content.
 - [x] ~~Use SVG favicon (17KB) instead of PNG (425KB)~~
 - [x] Apple-touch-icon still uses PNG (required — SVG not supported for apple-touch-icon)
 
+### 1.7 ~~404 page improvements~~ DONE
+- [x] ~~Dark theme matching main site~~
+- [x] ~~SVG icon instead of emoji~~
+- [x] ~~Gradient heading, hover effect, professional layout~~
+
 ---
 
 ## Phase 2: i18n & Legal Compliance
@@ -79,18 +84,18 @@ These are broken features that throw errors or display wrong content.
 ### 2.10 ~~Remove unsafe-eval from CSP~~ DONE
 - [x] ~~Removed `'unsafe-eval'` from `_headers` CSP~~
 
-### 2.11 Fix Resend from address
-- [ ] Replace `onboarding@resend.dev` with verified domain (e.g., `noreply@mscarabia.com`)
-- **Impact**: Emails flagged as spam, "on behalf of resend.dev" shown to recipients
+### 2.11 ~~Fix Resend from address~~ DONE
+- [x] ~~Default changed from `onboarding@resend.dev` to `noreply@mscarabia.com`~~
+- [x] ~~Requires Resend domain verification for mscarabia.com to actually work~~
 
 ---
 
 ## Phase 3: Performance Optimization
 
-### 3.1 Font loading
-- [ ] Self-host Material Symbols (3.9MB from Google Fonts is biggest perf drag)
-- [ ] Subset to only icons actually used (~50 of 1000+)
-- **Impact**: LCP improvement, reduce external requests
+### 3.1 Material Symbols font
+- [x] ~~Already deferred with media="print" onload pattern~~
+- [x] ~~noscript fallback present~~
+- [ ] Self-host + subset to ~20 icons used (future optimization — 3.9MB is large but non-blocking)
 
 ### 3.2 ~~Dead CSS cleanup~~ DONE
 - [x] ~~Remove `.svc-head`, `.svc-body-inner`, `.svc-name`, `.svc-icon`, `.svc-brief`, `.svc-feat`~~
@@ -144,10 +149,13 @@ These are broken features that throw errors or display wrong content.
 ### 4.7 Manpower form reset fix DONE
 - [x] After form submit, `_updateManpowerQuoteUI()` called to refresh display values
 
-### 4.8 404 page improvements
-- [ ] Add Arabic version
-- [ ] Replace emoji with SVG icon
-- **Impact**: Better error recovery UX
+### 4.8 Section aria-labels DONE
+- [x] `aria-labelledby` on services, engineering, manpower, contact sections
+- [x] Matching `id` on section headings
+- [x] `loading="lazy"` on footer logo image
+
+### 4.9 SEO meta DONE
+- [x] `<meta name="twitter:url">` added
 
 ---
 
