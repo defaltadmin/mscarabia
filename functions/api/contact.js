@@ -25,9 +25,9 @@ const corsHeaders = {
 export async function onRequestPost(context) {
   const { request, env } = context;
 
-  // Check origin
+  // Check origin — fail-closed: reject missing or mismatched origin
   const origin = request.headers.get('Origin');
-  if (origin && origin !== ALLOWED_ORIGIN) {
+  if (!origin || origin !== ALLOWED_ORIGIN) {
     return new Response(JSON.stringify({ success: false, error: 'Forbidden' }), {
       status: 403,
       headers: { 'Content-Type': 'application/json', ...corsHeaders },
@@ -46,8 +46,14 @@ export async function onRequestPost(context) {
       });
     }
 
-    // Turnstile verification
+    // Turnstile verification — fail-closed if secret missing
     const turnstileToken = formData.get('cf-turnstile-response');
+    if (!env.TURNSTILE_SECRET) {
+      return new Response(JSON.stringify({ success: false, error: 'Server misconfiguration' }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json', ...corsHeaders },
+      });
+    }
     if (env.TURNSTILE_SECRET) {
       if (!turnstileToken) {
         return new Response(JSON.stringify({ success: false, error: 'CAPTCHA required' }), {
