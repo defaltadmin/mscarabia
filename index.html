@@ -880,22 +880,6 @@ transition: opacity 0.5s ease;
 pointer-events: none;
 }
 .svc-card:hover .svc-card-glow { opacity: 1; }
-/* Compound glow: cursor-tracking ambient + white core (Figma technique) */
-.svc-card::after {
-content: '';
-position: absolute;
-inset: 0;
-border-radius: inherit;
-background:
-radial-gradient(circle 100px at var(--mx, 50%) var(--my, 50%), rgba(230, 57, 70, 0.12) 0%, transparent 60%),
-radial-gradient(circle 40px at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, 0.06) 0%, transparent 50%);
-mix-blend-mode: screen;
-opacity: 0;
-transition: opacity 0.3s;
-pointer-events: none;
-z-index: 0;
-}
-.svc-card:hover::after { opacity: 1; }
 .svc-card-icon {
 width: 48px;
 height: 48px;
@@ -3496,14 +3480,6 @@ background: #ffff00 !important; color: #000 !important; border-color: #ffff00 !i
         if (banner) banner.classList.add('show');
       }
     } catch (e) {}
-    // Cursor-tracking glow on service cards
-    document.querySelectorAll('.svc-card').forEach(function(card) {
-      card.addEventListener('mousemove', function(e) {
-        var rect = card.getBoundingClientRect();
-        card.style.setProperty('--mx', (e.clientX - rect.left) + 'px');
-        card.style.setProperty('--my', (e.clientY - rect.top) + 'px');
-      }, { passive: true });
-    });
   });
 })();
 </script>
