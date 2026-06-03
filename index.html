@@ -1514,8 +1514,24 @@ transition: all var(--fast);
 }
 .a11y-toggle:hover { background: rgba(230, 57, 70, 0.2); }
 .a11y-toggle .material-symbols-outlined { font-size: 20px; }
-.a11y-opts { display: none; flex-direction: column; gap: 0.4rem; }
+.a11y-opts { display: none; flex-direction: column; gap: 0.4rem; position: relative; }
 .a11y-opts.open { display: flex; }
+.a11y-close {
+width: 28px;
+height: 28px;
+border-radius: 50%;
+background: rgba(230, 57, 70, 0.1);
+border: 1px solid rgba(230, 57, 70, 0.2);
+color: #fff;
+display: flex;
+align-items: center;
+justify-content: center;
+cursor: pointer;
+transition: all var(--fast);
+margin-left: auto;
+}
+.a11y-close:hover { background: rgba(230, 57, 70, 0.25); border-color: rgba(230, 57, 70, 0.4); }
+.a11y-close .material-symbols-outlined { font-size: 16px; }
 .a11y-btn {
 width: 32px;
 height: 32px;
@@ -1872,6 +1888,8 @@ background: #ffff00 !important; color: #000 !important; border-color: #ffff00 !i
 .a11y { padding: 0.3rem; gap: 0.3rem; }
 .a11y-toggle { width: 32px; height: 32px; }
 .a11y-toggle .material-symbols-outlined { font-size: 18px; }
+.a11y-close { width: 26px; height: 26px; }
+.a11y-close .material-symbols-outlined { font-size: 14px; }
 .a11y-btn { width: 28px; height: 28px; }
 .a11y-btn .material-symbols-outlined { font-size: 16px; }
 .btt { width: 40px; height: 40px; bottom: 1.5rem; right: 1.5rem; }
@@ -1956,6 +1974,7 @@ background: #ffff00 !important; color: #000 !important; border-color: #ffff00 !i
     <div class="a11y" id="a11y-panel">
       <button onclick="toggleA11y()" class="a11y-toggle" id="a11y-toggle" aria-label="Accessibility options" aria-expanded="false"><span class="material-symbols-outlined">accessibility_new</span></button>
       <div class="a11y-opts" id="a11y-options">
+        <button onclick="closeA11y()" class="a11y-close" aria-label="Close accessibility options"><span class="material-symbols-outlined">close</span></button>
         <button onclick="adjustTextSize(1)" class="a11y-btn" aria-label="Increase text size"><span class="material-symbols-outlined">format_size</span></button>
         <button onclick="adjustTextSize(-1)" class="a11y-btn" aria-label="Decrease text size"><span class="material-symbols-outlined">text_fields</span></button>
         <button onclick="toggleContrast()" class="a11y-btn" aria-label="Toggle high contrast"><span class="material-symbols-outlined">contrast</span></button>
@@ -3530,6 +3549,16 @@ background: #ffff00 !important; color: #000 !important; border-color: #ffff00 !i
     if (!options || !toggle) return;
     var isOpen = options.classList.toggle('open');
     toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    if (!isOpen) toggle.focus();
+  }
+
+  function closeA11y() {
+    var options = document.getElementById('a11y-options');
+    var toggle = document.getElementById('a11y-toggle');
+    if (!options || !toggle) return;
+    options.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.focus();
   }
 
   // ============================================
@@ -3545,6 +3574,7 @@ background: #ffff00 !important; color: #000 !important; border-color: #ffff00 !i
   window.adjustTextSize = adjustTextSize;
   window.toggleContrast = toggleContrast;
   window.toggleA11y = toggleA11y;
+  window.closeA11y = closeA11y;
   window.underlines = underlines;
   window.letterSpacing = letterSpacing;
   window.loadGA = loadGA;
