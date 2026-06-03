@@ -126,24 +126,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block" rel="stylesheet">
   </noscript>
 
-  <!-- Cloudflare Turnstile — lazy-loaded on actual user interaction (not Lighthouse) -->
-  <script>
-  (function() {
-    var tsLoaded = false;
-    function loadTurnstile() {
-      if (tsLoaded) return;
-      tsLoaded = true;
-      var s = document.createElement('script');
-      s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
-      s.async = true;
-      document.head.appendChild(s);
-    }
-    // pointerdown = actual mouse/touch only; Lighthouse uses programmatic focus
-    document.addEventListener('pointerdown', function(e) {
-      if (e.target.closest('form')) loadTurnstile();
-    }, { once: true });
-  })();
-  </script>
+  <script src="/assets/js/inline-turnstile.min.js"></script>
 
   <style>:root {
 --bg-deep: #06070b;
@@ -1942,25 +1925,7 @@ background: #ffff00 !important; color: #000 !important; border-color: #ffff00 !i
 </style>
 
   <!-- GTM-MRHLJVHL removed — was returning 404 errors -->
-  <!-- Google Analytics (gtag.js) — gated behind cookie consent -->
-  <script>
-  window.dataLayer=window.dataLayer||[];
-  function gtag(){dataLayer.push(arguments);}
-  function loadGA(){
-    if(window._gaLoaded)return;
-    window._gaLoaded=true;
-    var s=document.createElement('script');
-    s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-NGXKXV7EGM';
-    document.head.appendChild(s);
-    gtag('js',new Date());gtag('config','G-NGXKXV7EGM',{anonymize_ip:true});
-  }
-  function denyGA(){window._gaDenied=true;gtag('consent','default',{analytics_storage:'denied'});}
-  // Check stored preference
-  var cp=localStorage.getItem('cookie_consent');
-  if(cp==='accepted'){loadGA();}
-  else if(cp==='denied'){denyGA();}
-  else{gtag('consent','default',{analytics_storage:'denied'});}
-  </script>
+  <script src="/assets/js/inline-ga.min.js"></script>
 </head>
 <body>
 
@@ -2402,14 +2367,7 @@ background: #ffff00 !important; color: #000 !important; border-color: #ffff00 !i
     <button class="cookie-accept" onclick="handleCookieConsent('accepted')" data-i18n="cookie_accept">Accept</button>
   </div>
 </div>
-<script>
-window.handleCookieConsent=function(choice){
-  try { localStorage.setItem('cookie_consent',choice); } catch(e) {}
-  document.getElementById('cookie-banner').classList.remove('show');
-  if(choice==='accepted'){loadGA();}
-  else{denyGA();}
-};
-</script>
+<script src="/assets/js/inline-cookie.min.js"></script>
 
 </body>
 </html>
