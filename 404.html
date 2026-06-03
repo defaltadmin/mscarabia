@@ -7,7 +7,9 @@
 <title>Page Not Found | MSC Arabia</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'IBM Plex Sans Arabic',system-ui,-apple-system,sans-serif;background:#06070b;color:#e8eaf0;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:1.5rem}
+body{font-family:'IBM Plex Sans Arabic',system-ui,-apple-system,sans-serif;background:#06070b;color:#e8eaf0;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:1.5rem;position:relative}
+body::before{content:'';position:fixed;inset:0;z-index:-1;background:radial-gradient(ellipse 65% 55% at 15% 20%,rgba(230,57,70,0.08) 0%,transparent 55%),radial-gradient(ellipse 55% 45% at 85% 60%,rgba(59,130,246,0.07) 0%,transparent 50%),radial-gradient(ellipse 60% 50% at 50% 80%,rgba(139,92,246,0.06) 0%,transparent 50%),radial-gradient(ellipse 45% 35% at 70% 10%,rgba(6,182,212,0.05) 0%,transparent 45%);background-blend-mode:overlay;animation:bgShift 25s ease-in-out infinite alternate;pointer-events:none}
+@keyframes bgShift{0%{transform:translate(0,0) scale(1)}33%{transform:translate(-1.5%,2%) scale(1.03)}66%{transform:translate(1.5%,-1.5%) scale(0.97)}100%{transform:translate(-1%,-1%) scale(1.01)}}
 .not-found{text-align:center;max-width:32rem}
 .not-found svg{width:80px;height:80px;margin-bottom:1.5rem;opacity:0.7}
 .not-found h1{font-size:5rem;font-weight:800;background:linear-gradient(135deg,#e63946,#3b82f6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin-bottom:0.5rem}
