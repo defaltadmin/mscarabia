@@ -4,11 +4,11 @@
 > **If you're working on the game, read `../HANDOFF.md` instead.**
 > This file is ONLY for the static marketing site at mscarabia.com.
 
-**Last updated**: 2026-05-29 (session 6)
+**Last updated**: 2026-05-30 (session 7)
 **Live**: https://mscarabia.com
 **Repo**: https://github.com/defaltadmin/mscarabia (branch: `main`)
 **Hosting**: Cloudflare Pages (auto-deploy via Git integration)
-**Commits**: `57daa0c` (latest)
+**Commits**: `58b5d0f` (latest)
 
 ---
 
@@ -31,6 +31,39 @@ Pushed and live. `git status` clean.
 - CLS: 0.004 (score 1) ✅
 - Speed Index: 1.0s (score 0.97)
 - Interactive: 1.2s (score 1) ✅
+
+---
+
+## Session 7 Changes (2026-05-30)
+
+### Glassmorphic Micro-Animations (commits `3974b65`, `58b5d0f`)
+
+Design Spells + Figma compound glow technique inspired refinements:
+
+**Kept (professional B2B appropriate):**
+- Hero ambient crimson crescent glow — subtle radial gradient blurred behind hero content
+- Hero float card shimmer — light sweep across the floating verification card
+- Hero scroll indicator — "Scroll" text + chevron with bounce animation
+- Button glow pulse — enhanced dual-layer box-shadow on hover
+- Contact card hover — accent border glow on hover
+- All animations respect `prefers-reduced-motion` (existing rule at line 185)
+
+**Removed (not B2B appropriate):**
+- ~~Cursor-tracking glow on service cards~~ — gaming pattern, not corporate. Removed `svc-card::after` compound glow + JS mousemove listener. Kept existing static `svc-card-glow` with hover opacity transition which is subtle enough.
+
+**Design philosophy for future work:**
+- Corporate site needs **restrained, confident** animations — not flashy interactive effects
+- Hover states: subtle border/shadow transitions, not cursor-following glows
+- Loading: shimmer sweeps are OK (see Linear, Vercel) — they imply polish
+- Scroll: bounce indicators are standard UX — keep
+- Background: ambient gradients behind content sections create depth without distraction
+- Reference: Apple, Linear, Stripe, Vercel — all use minimal hover, no cursor-tracking
+
+**Next MCP session priorities:**
+1. Re-verify Lighthouse scores (may have shifted with CSS additions)
+2. Audit new animations on mobile (shimmer, scroll indicator)
+3. Consider self-hosting Material Symbols (3.9MB external font, deferred but still loaded)
+4. Blog content placeholder
 
 ---
 

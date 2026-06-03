@@ -520,6 +520,66 @@ animation-delay: -8s;
 @media (prefers-reduced-motion: reduce) {
 .hero-depth-orb { animation: none; }
 }
+/* Compound glow ambient: crimson backlit crescent behind hero content */
+.hero-vignette::after {
+content: '';
+position: absolute;
+bottom: 8%;
+left: 50%;
+transform: translateX(-50%);
+width: 70%;
+height: 40%;
+background: radial-gradient(ellipse at 50% 100%, rgba(230, 57, 70, 0.08) 0%, transparent 60%);
+filter: blur(50px);
+pointer-events: none;
+}
+/* Hero floating card shimmer */
+.hero-float { position: relative; overflow: hidden; }
+.hero-float::after {
+content: '';
+position: absolute;
+top: 0;
+left: -100%;
+width: 50%;
+height: 100%;
+background: linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent);
+animation: shimmer-corp 5s ease-in-out infinite;
+pointer-events: none;
+}
+@keyframes shimmer-corp {
+0%, 100% { left: -100%; }
+50% { left: 100%; }
+}
+/* Scroll indicator */
+.hero-scroll {
+position: absolute;
+bottom: 2rem;
+left: 50%;
+transform: translateX(-50%);
+z-index: 3;
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 0.4rem;
+color: var(--text-muted);
+font-family: var(--font-mono);
+font-size: 0.55rem;
+text-transform: uppercase;
+letter-spacing: 0.15em;
+animation: scroll-bounce 2.5s ease-in-out infinite;
+}
+.hero-scroll-chevron {
+width: 16px;
+height: 16px;
+border-right: 1.5px solid var(--text-muted);
+border-bottom: 1.5px solid var(--text-muted);
+transform: rotate(45deg);
+opacity: 0.4;
+}
+@keyframes scroll-bounce {
+0%, 100% { transform: translateX(-50%) translateY(0); }
+50% { transform: translateX(-50%) translateY(8px); }
+}
 .hero-content {
 position: relative;
 z-index: 2;
@@ -589,7 +649,7 @@ box-shadow: 0 0 0 0 var(--accent-glow);
 }
 .btn-primary:hover {
 background: #b52833;
-box-shadow: 0 0 30px var(--accent-glow);
+box-shadow: 0 0 30px rgba(230, 57, 70, 0.25), 0 0 60px rgba(230, 57, 70, 0.1);
 transform: translateY(-2px);
 }
 .btn-ghost {
@@ -689,6 +749,8 @@ border-radius: var(--radius-md);
 padding: 0.85rem 1.25rem;
 align-self: flex-start;
 animation: floatY 6s ease-in-out infinite;
+position: relative;
+overflow: hidden;
 }
 @keyframes floatY {
 0%, 100% { transform: translateY(0); }
@@ -713,6 +775,14 @@ text-transform: uppercase;
 letter-spacing: 0.1em;
 }
 .hero-float-val { font-size: 0.85rem; font-weight: 600; color: #fff; }
+/* Contact card hover glow */
+.contact-card {
+transition: border-color 0.3s, box-shadow 0.3s;
+}
+.contact-card:hover {
+border-color: rgba(230, 57, 70, 0.15);
+box-shadow: 0 0 40px rgba(230, 57, 70, 0.05);
+}
 .clients {
 padding: 2.5rem 0;
 border-top: 1px solid var(--border);
@@ -1944,6 +2014,10 @@ background: #ffff00 !important; color: #000 !important; border-color: #ffff00 !i
         <div><div class="hero-float-tag" data-i18n="hero_badge_tag">Aramco Permanent ID</div><div class="hero-float-val" data-i18n="hero_badge_val">STC & Petro Rabigh Access</div></div>
       </div>
     </div>
+  </div>
+  <div class="hero-scroll">
+    <span data-i18n="scroll_cta">Scroll</span>
+    <div class="hero-scroll-chevron"></div>
   </div>
 </section>
 
