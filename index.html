@@ -85,11 +85,6 @@
         "url": "https://mscarabia.com",
         "inLanguage": ["en", "ar"],
         "publisher": { "@id": "https://mscarabia.com/#organization" },
-        "potentialAction": {
-          "@type": "SearchAction",
-          "target": "https://mscarabia.com/?q={search_term_string}",
-          "query-input": "required name=search_term_string"
-        }
       },
       {
         "@type": "SiteNavigationElement",
@@ -2170,7 +2165,7 @@ background: #ffff00 !important; color: #000 !important; border-color: #ffff00 !i
         <h2 style="font-family:var(--font-display);font-size:clamp(1.5rem,3vw,2rem);font-weight:700;color:#fff;margin-bottom:0.5rem" data-i18n="mq_title">Request a Free Manpower Quote</h2>
         <p style="color:var(--text-secondary);font-size:0.9rem" data-i18n="mq_sub">Send your requirements and we will get back within 1–2 business days.</p>
       </div>
-      <form id="mq-form" onsubmit="handleManpowerSubmit(event)">
+      <form id="mq-form" action="/api/manpower" method="POST" onsubmit="handleManpowerSubmit(event)">
         <div class="mq-grid">
           <div class="fg"><label class="fl" for="mq_name" data-i18n="mq_name">Your Name</label><input type="text" id="mq_name" name="mq_name" required class="fi" autocomplete="name"></div>
           <div class="fg"><label class="fl" for="mq_email" data-i18n="mq_email">Your Email</label><input type="email" id="mq_email" name="mq_email" required class="fi" autocomplete="email"></div>
@@ -2259,7 +2254,7 @@ background: #ffff00 !important; color: #000 !important; border-color: #ffff00 !i
         <div class="c-info-item"><div class="c-info-icon"><span class="material-symbols-outlined">schedule</span></div><div><h3 data-i18n="contact_hours_title">Business Hours</h3><p data-i18n="contact_hours">Sun – Thu: 8:00 AM – 5:00 PM (AST)</p></div></div>
       </div>
       <div class="contact-card r r-d1">
-        <form onsubmit="handleContactSubmit(event)" class="contact-form">
+        <form action="/api/contact" method="POST" onsubmit="handleContactSubmit(event)" class="contact-form">
           <div class="fg"><label for="contact-name" class="fl" data-i18n="form_name">Full Name</label><input type="text" id="contact-name" name="name" required class="fi" autocomplete="name" data-i18n-placeholder="form_name_placeholder"></div>
           <div class="fg"><label for="contact-email" class="fl" data-i18n="form_email">Email Address</label><input type="email" id="contact-email" name="email" required class="fi" autocomplete="email" data-i18n-placeholder="form_email_placeholder"></div>
           <div class="fg"><label class="fl" for="contact-service" data-i18n="form_service">Service Interest</label><select name="service" id="contact-service" class="fs"><option value="" data-i18n="option_select_service">Select a service</option><option value="managed-it" data-i18n="option_managed_it">Managed IT Services</option><option value="mdm" data-i18n="option_mdm">MDM Licensing</option><option value="fire-safety" data-i18n="option_fire_safety">Fire Safety Engineering</option><option value="manpower" data-i18n="option_manpower">Manpower Solutions</option><option value="hardware" data-i18n="option_hardware">Hardware & Software</option><option value="cybersecurity" data-i18n="option_cybersecurity">Cybersecurity</option></select></div>
@@ -2314,6 +2309,7 @@ background: #ffff00 !important; color: #000 !important; border-color: #ffff00 !i
     <h4 data-i18n="modal_privacy_protection_title">Data Protection</h4><p data-i18n="modal_privacy_protection_desc"></p>
     <h4 data-i18n="modal_privacy_rights_title">Your Rights</h4><p data-i18n="modal_privacy_rights_list" data-i18n-html></p>
     <h4 data-i18n="modal_privacy_contact_title">Contact Us</h4><p data-i18n="modal_privacy_contact_desc"></p>
+    <p style="margin-top:1rem;border-top:1px solid rgba(255,255,255,0.1);padding-top:1rem;font-size:0.85rem"><a href="/privacy-policy.html" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" data-i18n="modal_privacy_full">View Full Privacy Policy →</a></p>
   </div>
 </div>
 
@@ -2329,12 +2325,13 @@ background: #ffff00 !important; color: #000 !important; border-color: #ffff00 !i
     <h4 data-i18n="modal_cookie_types_title">Types of cookies we use</h4><p data-i18n="modal_cookie_types_list" data-i18n-html></p>
     <h4 data-i18n="modal_cookie_manage_title">Manage cookie preferences</h4><p data-i18n="modal_cookie_manage_desc"></p>
     <p data-i18n="modal_cookie_manage_list" data-i18n-html></p>
+    <p style="margin-top:1rem;border-top:1px solid rgba(255,255,255,0.1);padding-top:1rem;font-size:0.85rem"><a href="/cookie-policy.html" target="_blank" rel="noopener noreferrer" data-i18n="modal_cookie_full">View Full Cookie Policy →</a></p>
   </div>
 </div>
 
-<script src="/assets/js/main.min.js">/* Main JS - i18n, interactions, animations, form handling */</script>
-<script src="/assets/js/hero-canvas.min.js"></script>
-<script src="/assets/js/parallax.min.js"></script>
+<script src="/assets/js/main.min.js" defer>/* Main JS - i18n, interactions, animations, form handling */</script>
+<script src="/assets/js/hero-canvas.min.js" defer></script>
+<script src="/assets/js/parallax.min.js" defer></script>
 
 
 <!-- Cookie Consent Banner -->
