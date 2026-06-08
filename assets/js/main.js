@@ -1133,7 +1133,7 @@
       .then(function (result) {
         if (result.success) {
           if (notice) {
-            notice.style.color = '#4ade80';
+            notice.className = 'notice-success';
             notice.textContent = translations[currentLang].mq_notice_success;
           }
           form.reset();
@@ -1145,7 +1145,7 @@
       })
       .catch(function () {
         if (notice) {
-          notice.style.color = '#ef4444';
+          notice.className = 'notice-error';
           notice.textContent = translations[currentLang].mq_notice_error;
         }
         // Reset Turnstile widget

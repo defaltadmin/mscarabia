@@ -136,7 +136,10 @@
 --blue-soft: rgba(74, 158, 255, 0.12);
 --gold: #f0c040;
 --gold-soft: rgba(240, 192, 64, 0.1);
+--green: #22c55e;
+--orange: #ff8c42;
 --text-primary: #e8eaf0;
+--text-tertiary: #bdc6d1;
 --text-secondary: #8b93a8;
 --text-muted: #7682a0;
 --border: rgba(255, 255, 255, 0.06);
@@ -936,9 +939,9 @@ transform: scale(1.05);
 box-shadow: none;
 }
 .svc-card:hover .svc-card-icon .material-symbols-outlined { color: #fff; }
-.svc-icon-fire .material-symbols-outlined { color: #ff8c42; }
+.svc-icon-fire .material-symbols-outlined { color: var(--orange); }
 .svc-icon-fire { background: rgba(255, 140, 66, 0.08); border-color: rgba(255, 140, 66, 0.2); }
-.svc-card:hover .svc-icon-fire { background: #ff8c42; }
+.svc-card:hover .svc-icon-fire { background: var(--orange); }
 .svc-card:hover .svc-icon-fire .material-symbols-outlined { color: #fff; }
 .svc-card-content { flex: 1; }
 .svc-card > *:not(.svc-card-glow) { position: relative; z-index: 1; }
@@ -965,7 +968,7 @@ font-size: 0.72rem;
 font-weight: 500;
 background: rgba(255, 255, 255, 0.05);
 border: 1px solid rgba(255, 255, 255, 0.08);
-color: #bdc6d1;
+color: var(--text-tertiary);
 padding: 0.3rem 0.7rem;
 border-radius: 8px;
 letter-spacing: 0.02em;
@@ -993,7 +996,7 @@ line-height: 1.4;
 }
 .svc-card-features li .material-symbols-outlined {
 font-size: 16px;
-color: #22c55e;
+color: var(--green);
 flex-shrink: 0;
 }
 .svc-card-cta {
@@ -1268,6 +1271,8 @@ transition: background var(--fast), transform var(--fast);
 .form-success-icon { font-size: 3rem; margin-bottom: 1rem; }
 .form-success h3 { font-family: var(--font-display); font-size: 1.25rem; color: #fff; margin-bottom: 0.5rem; }
 .form-success p { color: var(--text-secondary); font-size: 0.9rem; }
+.notice-success { color: var(--green) !important; }
+.notice-error { color: var(--accent) !important; }
 .about {
 padding: var(--section-gap) 0;
 background: var(--bg-base);
@@ -1959,7 +1964,7 @@ background: #ffff00 !important; color: #000 !important; border-color: #ffff00 !i
   <a href="#contact" data-i18n="nav_contact" onclick="closeMobileMenu()">Contact</a>
   <div class="lang-toggle" style="margin-top:0.75rem;padding:0.5rem 0" aria-label="Toggle language">
     <span class="lang-label" id="lang-label-m">AR</span>
-    <button class="lang-sw" id="lang-switch-mobile" role="switch" aria-checked="false" onclick="event.stopPropagation();toggleLang()"><span class="lang-sw-knob"></span></button>
+    <button class="lang-sw" id="lang-switch-mobile" role="switch" aria-checked="false" aria-label="Toggle language" onclick="event.stopPropagation();toggleLang()"><span class="lang-sw-knob"></span></button>
   </div>
 </div>
 
@@ -2007,7 +2012,7 @@ background: #ffff00 !important; color: #000 !important; border-color: #ffff00 !i
 <section id="clients" class="clients">
   <div class="wrap">
     <p class="clients-label" data-i18n="clients_tag">Trusted by Saudi Arabia's Leading Organisations</p>
-    <noscript><div style="text-align:center;padding:1rem;color:#8b93a8;font-size:0.85rem">Amsa Hospitality · TSS Advertising · Kudu · EHIC · Hellmann Logistics</div></noscript><div class="marquee-wrap">
+    <noscript><div style="text-align:center;padding:1rem;color:var(--text-secondary);font-size:0.85rem">Amsa Hospitality · TSS Advertising · Kudu · EHIC · Hellmann Logistics</div></noscript><div class="marquee-wrap">
       <div class="marquee-track" id="marquee-track">
         <div class="marquee-set" data-clients-set></div>
         <div class="marquee-set" data-clients-set aria-hidden="true"></div>
@@ -2273,7 +2278,7 @@ background: #ffff00 !important; color: #000 !important; border-color: #ffff00 !i
           <div class="fg"><label class="fl" for="contact-message" data-i18n="form_message">Message</label><textarea id="contact-message" name="message" rows="4" class="ft" data-i18n-placeholder="form_message_placeholder"></textarea></div>
           <div class="cf-turnstile" data-sitekey="0x4AAAAAADXw8vszetp5UKcP" data-theme="dark" style="margin:0.5rem 0"></div>
           <button type="submit" class="btn-submit" data-i18n="form_submit">Send Message</button>
-          <div id="contact-notice" style="text-align:center;font-size:0.82rem;min-height:1.25rem;color:#ef4444"></div>
+          <div id="contact-notice" style="text-align:center;font-size:0.82rem;min-height:1.25rem;color:var(--accent)"></div>
           <label style="position:absolute;left:-9999px" aria-hidden="true">Leave this empty<input type="text" name="website" tabindex="-1" autocomplete="off"></label>
         </form>
       </div>
