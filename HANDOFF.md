@@ -4,11 +4,10 @@
 > **If you're working on the game, read `../HANDOFF.md` instead.**
 > This file is ONLY for the static marketing site at mscarabia.com.
 
-**Last updated**: 2026-05-30 (session 7)
+**Last updated**: 2026-06-08 (session 8)
 **Live**: https://mscarabia.com
 **Repo**: https://github.com/defaltadmin/mscarabia (branch: `main`)
-**Hosting**: Cloudflare Pages (auto-deploy via Git integration)
-**Commits**: `58b5d0f` (latest)
+**Commits**: `9631ea3` (latest)
 
 ---
 
@@ -33,6 +32,45 @@ Pushed and live. `git status` clean.
 - Interactive: 1.2s (score 1) ✅
 
 ---
+
+## Session 8 Changes (2026-06-08)
+
+### U+20C1 Saudi Riyal Fallback + CSS Var Cleanup + A11y Polish
+
+**Commits**: `7027488` → `9631ea3` (5 total). All pushed, live on Cloudflare Pages.
+
+#### Unicode U+20C1 Fallback
+- Unicode 17.0 added the official Saudi Riyal symbol (U+20C1 ﷁ) — used throughout the site
+- Some browsers don't support Unicode 17.0 yet, so added `.sar-fallback` text
+- **3 HTML instances**: hero pricing, calculator SAR output, service card SAR badge
+- **3 JS instances**: budget calculator result display (all 3 budget tiers)
+- Fallback: small muted "SAR" text beside the symbol via `<span class="sar-fallback">SAR</span>`
+- CSS: `.sar-fallback` styled with `font-size: 0.65em; color: var(--text-muted)` for graceful degradation
+- When a browser supports U+20C1, the fallback is invisible decoration; unsupported browsers see "SAR" text
+
+#### CSS Variable Cleanup
+- Added `--green`, `--orange`, `--text-tertiary` CSS custom properties
+- Replaced all hardcoded `#22c55e` → `var(--green)`, `#ff8c42` → `var(--orange)`
+- Replaced `#bdc6d1`, `#8b93a8` → `var(--text-tertiary)`, `#ef4444` → `var(--error)`
+- Ensured all inline CSS in JS uses className-based approach instead of `style.color`
+
+#### Accessibility
+- Mobile language-switch button: added `aria-label="Toggle language"` (was missing ARIA label)
+- Contact form success/error notices: replaced JS inline `style.color` with `.notice-success` / `.notice-error` CSS classes
+
+#### Corpo Site Scan (10 issues all resolved)
+| # | Issue | Status |
+|---|-------|--------|
+| 1 | Cookie banner a11y (aria-modal, Escape, focus) | Fixed in previous session |
+| 2 | Vite chunk warning (settings import race) | N/A (corpo site is single-file, no Vite) |
+| 3 | Trailing comma in JSON-LD | Fixed in previous session |
+| 4 | Broken saudi-riyal.css font dependency | Fixed in previous session |
+| 5 | U+20C1 browser support fallback | Fixed this session |
+| 6 | Missing CSS vars for colors | Fixed this session |
+| 7 | Mobile lang-switch missing aria-label | Fixed this session |
+| 8 | Hardcoded `#22c55e`/`#ff8c42` | Fixed this session |
+| 9 | JS inline style.color → CSS classes | Fixed this session |
+| 10 | Noscript fallback uses var(--text-secondary) | Fixed in previous session |
 
 ## Session 7 Changes (2026-05-30)
 
