@@ -823,11 +823,11 @@
       }
 
       var budget = parseInt(budgetSlider.value);
-      if (budgetVal) budgetVal.innerHTML = 'SAR ' + toArabicNumbers(String(budget));
+      if (budgetVal) budgetVal.innerHTML = '\uFDFC ' + toArabicNumbers(String(budget));
 
-      if (totalVal) totalVal.innerHTML = 'SAR ' + toArabicNumbers(String(budget * workers));
+      if (totalVal) totalVal.innerHTML = '\uFDFC ' + toArabicNumbers(String(budget * workers));
       var wxLabel = (translations[currentLang] && translations[currentLang].mq_workers_x) || 'workers \u00d7';
-      if (totalBreakdown) totalBreakdown.innerHTML = toArabicNumbers(String(workers)) + ' ' + wxLabel + ' SAR ' + toArabicNumbers(String(budget));
+      if (totalBreakdown) totalBreakdown.innerHTML = toArabicNumbers(String(workers)) + ' ' + wxLabel + ' \uFDFC ' + toArabicNumbers(String(budget));
     }
 
     if (employeesSlider) employeesSlider.addEventListener('input', update);
