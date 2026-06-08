@@ -102,7 +102,7 @@
       svc1_tag1: 'Server Management', svc1_tag2: 'Cloud Infrastructure', svc1_tag3: 'Help Desk', svc1_tag4: 'Monitoring',
 
       // Cookie consent
-      cookie_text: 'We use cookies for analytics to improve our website. By clicking "Accept", you consent to the use of cookies. See our',
+      cookie_text: 'We use cookies for analytics to improve our website. By clicking "Accept", you consent to the use of cookies. See our <a href="#" onclick="openModal(\'cookie\');return false">Cookie Policy</a> for details.',
       cookie_link: 'Cookie Policy',
       cookie_decline: 'Decline',
       cookie_accept: 'Accept',
@@ -249,6 +249,7 @@
       form_success_title: 'Message Sent!',
       form_success_desc: 'Thank you for reaching out. We will get back to you within 1–2 business days.',
       form_sending: 'Sending...',
+      form_error: 'Failed to send. Please try again or email us directly.',
 
       // Footer
       footer_desc: 'Your trusted partner for comprehensive IT solutions and engineering services in Saudi Arabia.',
@@ -390,7 +391,7 @@
       svc1_tag1: 'إدارة الخوادم', svc1_tag2: 'البنية التحتية السحابية', svc1_tag3: 'مكتب المساعدة', svc1_tag4: 'المراقبة',
 
       // Cookie consent
-      cookie_text: 'نستخدم ملفات تعريف الارتباط لتحسين موقعنا. بالنقر على "قبول"، فإنك توافق على استخدامها. راجع',
+      cookie_text: 'نستخدم ملفات تعريف الارتباط لتحسين موقعنا. بالنقر على "قبول"، فإنك توافق على استخدامها. راجع <a href="#" onclick="openModal(\'cookie\');return false">سياسة ملفات تعريف الارتباط</a> للتفاصيل.',
       cookie_link: 'سياسة ملفات تعريف الارتباط',
       cookie_decline: 'رفض',
       cookie_accept: 'قبول',
@@ -537,6 +538,7 @@
       form_success_title: 'تم إرسال الرسالة!',
       form_success_desc: 'شكراً لتواصلك معنا. سنرد عليك خلال 1–2 يوم عمل.',
       form_sending: 'جارٍ الإرسال...',
+      form_error: 'فشل الإرسال. يرجى المحاولة مرة أخرى أو التواصل عبر البريد مباشرة.',
 
       // Footer
       footer_desc: 'شريكك الموثوق للحلول التكنولوجية الشاملة وخدمات الهندسة في المملكة العربية السعودية.',
@@ -925,7 +927,21 @@
     if (isOpen) {
       var close = menu.querySelector('.nav-mobile-close');
       if (close) setTimeout(function(){ close.focus(); }, 50);
+      menu.addEventListener('keydown', _trapMobileFocus);
+    } else {
+      menu.removeEventListener('keydown', _trapMobileFocus);
     }
+  }
+
+  function _trapMobileFocus(e) {
+    if (e.key !== 'Tab') return;
+    var menu = document.getElementById('mobile-menu');
+    if (!menu) return;
+    var focusable = menu.querySelectorAll('a, button, [tabindex]:not([tabindex="-1"])');
+    if (!focusable.length) return;
+    var first = focusable[0], last = focusable[focusable.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
   }
 
   function closeMobileMenu() {
@@ -942,6 +958,7 @@
     var footer = document.querySelector('footer');
     if (main) main.setAttribute('aria-hidden', 'false');
     if (footer) footer.setAttribute('aria-hidden', 'false');
+    menu.removeEventListener('keydown', _trapMobileFocus);
     btn.focus();
   }
 
@@ -1071,7 +1088,7 @@
           var formEl = form.closest('.contact-card');
           if (formEl) {
             formEl.innerHTML =
-              '<div class="form-success">' +
+              '<div class="form-success" role="alert">' +
               '<div class="form-success-icon">\u2705</div>' +
               '<h3 data-i18n="form_success_title">' + translations[currentLang].form_success_title + '</h3>' +
               '<p data-i18n="form_success_desc">' + translations[currentLang].form_success_desc + '</p>' +
@@ -1083,7 +1100,7 @@
         }
       })
       .catch(function () {
-        if (notice) notice.textContent = translations[currentLang].mq_notice_error || 'Failed to send.';
+        if (notice) notice.textContent = translations[currentLang].form_error || 'Failed to send.';
         submitBtn.disabled = false;
         submitBtn.textContent = originalText;
         // Reset Turnstile widget
