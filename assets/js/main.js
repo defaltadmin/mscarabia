@@ -102,7 +102,7 @@
       svc1_tag1: 'Server Management', svc1_tag2: 'Cloud Infrastructure', svc1_tag3: 'Help Desk', svc1_tag4: 'Monitoring',
 
       // Cookie consent
-      cookie_text: 'We use cookies for analytics to improve our website. By clicking "Accept", you consent to the use of cookies. See our <a href="#" onclick="openModal(\'cookie\');return false">Cookie Policy</a> for details.',
+      cookie_text: 'We use cookies for analytics to improve our website. By clicking "Accept", you consent to the use of cookies. See our <a href="#" data-action="open-cookie-modal">Cookie Policy</a> for details.',
       cookie_link: 'Cookie Policy',
       cookie_decline: 'Decline',
       cookie_accept: 'Accept',
@@ -391,7 +391,7 @@
       svc1_tag1: 'إدارة الخوادم', svc1_tag2: 'البنية التحتية السحابية', svc1_tag3: 'مكتب المساعدة', svc1_tag4: 'المراقبة',
 
       // Cookie consent
-      cookie_text: 'نستخدم ملفات تعريف الارتباط لتحسين موقعنا. بالنقر على "قبول"، فإنك توافق على استخدامها. راجع <a href="#" onclick="openModal(\'cookie\');return false">سياسة ملفات تعريف الارتباط</a> للتفاصيل.',
+      cookie_text: 'نستخدم ملفات تعريف الارتباط لتحسين موقعنا. بالنقر على "قبول"، فإنك توافق على استخدامها. راجع <a href="#" data-action="open-cookie-modal">سياسة ملفات تعريف الارتباط</a> للتفاصيل.',
       cookie_link: 'سياسة ملفات تعريف الارتباط',
       cookie_decline: 'رفض',
       cookie_accept: 'قبول',
