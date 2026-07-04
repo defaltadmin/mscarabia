@@ -25,6 +25,7 @@ const corsHeaders = {
   'Access-Control-Allow-Origin': ALLOWED_ORIGIN,
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type',
+  'Vary': 'Origin',
 };
 
 export async function onRequestPost(context) {
@@ -71,7 +72,17 @@ export async function onRequestPost(context) {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: `secret=${encodeURIComponent(env.TURNSTILE_SECRET)}&response=${encodeURIComponent(turnstileToken)}&remoteip=${encodeURIComponent(request.headers.get('CF-Connecting-IP') || '')}`,
       });
-      const verifyData = await verifyRes.json();
+
+      if (!verifyRes.ok) {
+        return new Response(JSON.stringify({ success: false, error: 'CAPTCHA verification failed' }), {
+          status: 403,
+          headers: { 'Content-Type': 'application/json', ...corsHeaders },
+        });
+      }
+
+      let verifyData = {};
+      try { verifyData = await verifyRes.json(); } catch { verifyData = {}; }
+
       if (!verifyData.success) {
         return new Response(JSON.stringify({ success: false, error: 'CAPTCHA verification failed' }), {
           status: 403,
@@ -222,6 +233,7 @@ export async function onRequestPost(context) {
 
 export async function onRequestOptions() {
   return new Response(null, {
+    status: 204,
     headers: corsHeaders,
   });
 }

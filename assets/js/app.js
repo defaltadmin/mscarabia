@@ -2,13 +2,17 @@
 
 /* Event delegation: unified click handler for all data-action elements */
 document.addEventListener('click', function(e) {
+  var target = e.target;
+  if (!target || typeof target.closest !== 'function') return;
+
   /* Stop CTA clicks from bubbling to card handlers */
-  var cta = e.target.closest('.svc-card-cta');
+  var cta = target.closest('.svc-card-cta');
   if (cta) { e.stopPropagation(); return; }
 
   /* data-action delegation — replaces all inline onclick handlers */
-  var el = e.target.closest('[data-action]');
+  var el = target.closest('[data-action]');
   if (!el) return;
+
   var action = el.getAttribute('data-action');
   var arg = el.getAttribute('data-action-arg') || '';
 

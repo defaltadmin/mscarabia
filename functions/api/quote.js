@@ -35,6 +35,12 @@ export async function onRequestPost(context) {
     return new Response(JSON.stringify({ error: 'Forbidden' }), { status: 403, headers: { 'Content-Type': 'application/json', ...corsHeaders } });
   }
 
+  // Content-Type check
+  const contentType = request.headers.get('Content-Type') || '';
+  if (!contentType.includes('application/json')) {
+    return new Response(JSON.stringify({ error: 'Content-Type must be application/json' }), { status: 415, headers: { 'Content-Type': 'application/json', ...corsHeaders } });
+  }
+
   try {
     const body = await request.json();
     const { email, workers, duration, budget, profession, total, website } = body;
@@ -56,7 +62,8 @@ export async function onRequestPost(context) {
       await env.RATE_LIMIT_KV.put(key, String(count + 1), { expirationTtl: 3600 });
     }
 
-    if (!isValidEmail(email)) {
+    const cleanEmail = sanitize(email).slice(0, 120);
+    if (!isValidEmail(cleanEmail)) {
       return new Response(JSON.stringify({ error: 'Valid email required' }), { status: 400, headers: { 'Content-Type': 'application/json', ...corsHeaders } });
     }
 
@@ -78,12 +85,12 @@ export async function onRequestPost(context) {
       body: JSON.stringify({
         from: 'MSC Arabia Calculator <noreply@mscarabia.com>',
         to: [env.LEAD_INBOX || 'info@mscarabia.com'],
-        reply_to: email,
+        reply_to: cleanEmail,
         subject: `Quote Request — ${w} ${prof || 'workers'} × ${tot}`,
         text: [
           `New manpower quote request from the website calculator.`,
           ``,
-          `Email: ${email}`,
+          `Email: ${cleanEmail}`,
           `Workers: ${w}`,
           `Profession: ${prof || 'Not specified'}`,
           `Duration: ${dur || 'Not specified'}`,
