@@ -19,6 +19,7 @@ const corsHeaders = {
   'Access-Control-Allow-Origin': ALLOWED_ORIGIN,
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type',
+  'Vary': 'Origin',
 };
 
 export async function onRequestOptions() {
@@ -34,24 +35,25 @@ export async function onRequestPost(context) {
     return new Response(JSON.stringify({ error: 'Forbidden' }), { status: 403, headers: { 'Content-Type': 'application/json', ...corsHeaders } });
   }
 
-  // Rate limiting via KV (if available)
-  const clientIP = request.headers.get('CF-Connecting-IP') || 'unknown';
-  if (env.RATE_LIMIT_KV) {
-    const key = `quote:${clientIP}`;
-    const count = parseInt(await env.RATE_LIMIT_KV.get(key) || '0', 10);
-    if (count >= 5) {
-      return new Response(JSON.stringify({ error: 'Rate limit exceeded' }), { status: 429, headers: { 'Content-Type': 'application/json', ...corsHeaders } });
-    }
-    await env.RATE_LIMIT_KV.put(key, String(count + 1), { expirationTtl: 3600 });
-  }
-
   try {
     const body = await request.json();
-    const { email, workers, duration, profession, total, website } = body;
+    const { email, workers, duration, budget, profession, total, website } = body;
 
-    // Honeypot: bots fill hidden fields, humans don't
+    // Honeypot: bots fill hidden fields, humans don't.
+    // Return success without consuming rate-limit quota or sending email.
     if (website) {
       return new Response(JSON.stringify({ ok: true }), { status: 200, headers: { 'Content-Type': 'application/json', ...corsHeaders } });
+    }
+
+    // Rate limiting via KV (if available), only for real submissions
+    const clientIP = request.headers.get('CF-Connecting-IP') || 'unknown';
+    if (env.RATE_LIMIT_KV) {
+      const key = `quote:${clientIP}`;
+      const count = parseInt(await env.RATE_LIMIT_KV.get(key) || '0', 10);
+      if (count >= 5) {
+        return new Response(JSON.stringify({ error: 'Rate limit exceeded' }), { status: 429, headers: { 'Content-Type': 'application/json', ...corsHeaders } });
+      }
+      await env.RATE_LIMIT_KV.put(key, String(count + 1), { expirationTtl: 3600 });
     }
 
     if (!isValidEmail(email)) {
@@ -61,6 +63,7 @@ export async function onRequestPost(context) {
     const w = Math.max(1, Math.min(10000, parseInt(workers, 10) || 1));
     const prof = sanitize(profession);
     const dur = sanitize(duration);
+    const bud = sanitize(budget);
     const tot = sanitize(total);
 
     // Send via Resend (same provider as /api/contact)
@@ -84,7 +87,8 @@ export async function onRequestPost(context) {
           `Workers: ${w}`,
           `Profession: ${prof || 'Not specified'}`,
           `Duration: ${dur || 'Not specified'}`,
-          `Estimated monthly total: ${tot}`,
+          `Budget per person/month: ${bud || 'Not specified'}`,
+          `Estimated monthly total: ${tot || 'Not specified'}`,
           ``,
           `This lead was captured from the calculator on mscarabia.com.`,
         ].join('\n'),

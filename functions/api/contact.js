@@ -16,6 +16,11 @@ function isValidEmail(str) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(str);
 }
 
+function safeLogMessage(err) {
+  const msg = err instanceof Error ? err.message : String(err || 'unknown');
+  return msg.replace(/[\r\n]/g, ' ').slice(0, 180);
+}
+
 const corsHeaders = {
   'Access-Control-Allow-Origin': ALLOWED_ORIGIN,
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
@@ -200,14 +205,14 @@ export async function onRequestPost(context) {
         headers: { 'Content-Type': 'application/json', ...corsHeaders },
       });
     } else {
-      console.error('Contact email failed:', emailResult.error);
+      console.error('Contact email failed:', safeLogMessage(emailResult.error));
       return new Response(JSON.stringify({ success: false, error: 'Failed to send email' }), {
         status: 500,
         headers: { 'Content-Type': 'application/json', ...corsHeaders },
       });
     }
   } catch (error) {
-    console.error('Contact form error:', error instanceof Error ? error.message : 'unknown');
+    console.error('Contact form error:', safeLogMessage(error));
     return new Response(JSON.stringify({ success: false, error: 'Server error' }), {
       status: 500,
       headers: { 'Content-Type': 'application/json', ...corsHeaders },
@@ -240,6 +245,6 @@ async function sendEmail({ to, from, subject, body, replyTo, apiKey }) {
     if (response.ok) return { success: true };
     return { success: false, error: `Resend ${response.status}` };
   } catch (error) {
-    return { success: false, error: error instanceof Error ? error.message.slice(0, 180) : 'unknown' };
+    return { success: false, error: safeLogMessage(error) };
   }
 }
