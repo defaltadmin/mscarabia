@@ -1385,6 +1385,19 @@ font-size: 0.82rem;
 color: var(--text-secondary);
 line-height: 1.4;
 }
+/* ── Case Studies ──────────────────────────────────────────────── */
+.cases { padding: var(--section-gap) 0; }
+.sec-eyebrow { font-family: var(--font-mono); font-size: .65rem; letter-spacing: .2em; text-transform: uppercase; color: var(--accent-soft); margin-bottom: 1rem; }
+.sec-title { font-family: var(--font-display); font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 700; color: #fff; margin-bottom: 3rem; }
+.cases-grid { display: grid; grid-template-columns: 1fr; gap: 1.25rem; }
+@media (min-width: 768px) { .cases-grid { grid-template-columns: repeat(3, 1fr); } }
+.case-card { background: var(--glass); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 2rem; transition: transform var(--normal) var(--ease), border-color var(--normal) var(--ease), box-shadow var(--normal) var(--ease); }
+.case-card:hover { transform: translateY(-4px); border-color: var(--border-hover); box-shadow: 0 20px 40px rgba(0,0,0,.3), 0 0 30px rgba(230,57,70,.06); }
+.case-tag { display: inline-block; font-family: var(--font-mono); font-size: .6rem; letter-spacing: .12em; text-transform: uppercase; color: var(--accent-soft); background: var(--accent-glow); border: 1px solid rgba(230,57,70,.2); border-radius: var(--radius-sm); padding: .3rem .7rem; margin-bottom: 1.25rem; }
+.case-card h3 { font-family: var(--font-display); font-size: 1.15rem; color: #fff; margin-bottom: .75rem; }
+.case-card p { color: var(--text-secondary); font-size: .9rem; line-height: 1.7; margin-bottom: 1.5rem; }
+.case-metric { font-size: .82rem; color: var(--text-tertiary); border-top: 1px solid var(--border); padding-top: 1rem; }
+.case-metric span { font-family: var(--font-display); font-size: 1.4rem; font-weight: 700; color: var(--gold); display: block; }
 .projects {
 padding: var(--section-gap) 0;
 }
@@ -1972,6 +1985,7 @@ background: #ffff00 !important; color: #000 !important; border-color: #ffff00 !i
       <a href="#engineering" data-i18n="nav_engineering">Engineering</a>
       <a href="#manpower" data-i18n="nav_manpower">Manpower</a>
       <a href="#about" data-i18n="nav_about">About</a>
+      <a href="#cases">Case Studies</a>
       <div class="lang-toggle" aria-label="Toggle language">
         <span class="lang-label" id="lang-label">AR</span>
         <button class="lang-sw" id="lang-switch" role="switch" aria-checked="false" aria-label="Toggle language" onclick="toggleLang()"><span class="lang-sw-knob"></span></button>
@@ -2258,6 +2272,34 @@ background: #ffff00 !important; color: #000 !important; border-color: #ffff00 !i
         <div class="about-stat"><div class="about-stat-val" data-num="500" data-suf="+">500+</div><div class="about-stat-label" data-i18n="about_stat3">Successfully Placed Workers</div></div>
         <div class="about-stat"><div class="about-stat-val" data-num="24/7" data-suf="">24/7</div><div class="about-stat-label" data-i18n="about_stat4">Managed IT Support Coverage</div></div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- Case Studies -->
+<section class="cases reveal" id="cases">
+  <div class="wrap">
+    <p class="sec-eyebrow">Proven in the field</p>
+    <h2 class="sec-title" style="max-width:20ch;">Trusted on Saudi Arabia's most demanding sites</h2>
+    <div class="cases-grid">
+      <article class="case-card">
+        <div class="case-tag">Fire Safety Engineering</div>
+        <h3>Aramco facility commissioning</h3>
+        <p>Siemens-certified engineers with permanent Aramco access IDs delivered full pre-FAT and FAT testing, gas-system verification, and BACnet integration across live petrochemical zones, zero commissioning delays.</p>
+        <div class="case-metric"><span>100%</span> NFPA & Civil Defense compliant handover</div>
+      </article>
+      <article class="case-card">
+        <div class="case-tag">Managed IT</div>
+        <h3>STC infrastructure support</h3>
+        <p>SLA-backed 24/7 monitoring and on-site response for STC-access environments, with preventive maintenance cycles and dedicated account management keeping uptime uninterrupted.</p>
+        <div class="case-metric"><span>24/7</span> guaranteed response coverage</div>
+      </article>
+      <article class="case-card">
+        <div class="case-tag">Engineering</div>
+        <h3>Petro Rabigh systems execution</h3>
+        <p>A decade of on-site execution: fire alarm design through final AutoCAD handover, device addressing, loop termination, and integration with suppression and BMS safety systems.</p>
+        <div class="case-metric"><span>10+</span> years of continuous site access</div>
+      </article>
     </div>
   </div>
 </section>
