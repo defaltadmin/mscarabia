@@ -191,10 +191,19 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 /* Inline SVG icons — replaces Material Symbols font dependency */
 .icon { display: inline-block; width: 1em; height: 1em; vertical-align: -0.125em; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ── Scroll Reveal ──────────────────────────────────────────────── */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s cubic-bezier(0.22,1,0.36,1), transform 0.7s cubic-bezier(0.22,1,0.36,1); }
+.reveal.revealed { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+
 html { scroll-behavior: smooth; scroll-padding-top: 5rem; overflow-x: hidden; }
 @media (prefers-reduced-motion: reduce) {
 html { scroll-behavior: auto; }
 *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+.reveal { opacity: 1; transform: none; transition: none; }
 .hero-canvas { display: none; }
 }
 .underline-links a { text-decoration: underline !important; text-underline-offset: 3px; }
@@ -2036,7 +2045,7 @@ background: #ffff00 !important; color: #000 !important; border-color: #ffff00 !i
 </section>
 
 <!-- Clients -->
-<section id="clients" class="clients">
+<section id="clients" class="clients reveal">
   <div class="wrap">
     <p class="clients-label" data-i18n="clients_tag">Trusted by Saudi Arabia's Leading Organisations</p>
     <noscript><div style="text-align:center;padding:1rem;color:var(--text-secondary);font-size:0.85rem">Amsa Hospitality · TSS Advertising · Kudu · EHIC · Hellmann Logistics</div></noscript><div class="marquee-wrap">
@@ -2049,7 +2058,7 @@ background: #ffff00 !important; color: #000 !important; border-color: #ffff00 !i
 </section>
 
 <!-- Services -->
-<section id="services" class="services" aria-labelledby="services-heading">
+<section id="services" class="services reveal" aria-labelledby="services-heading">
   <div class="wrap">
     <div class="sec-hdr r">
       <div class="sec-pill" data-i18n="services_pill">Our Core Services</div>
@@ -2152,7 +2161,7 @@ background: #ffff00 !important; color: #000 !important; border-color: #ffff00 !i
 </section>
 
 <!-- Engineering -->
-<section id="engineering" class="engineering" aria-labelledby="engineering-heading">
+<section id="engineering" class="engineering reveal" aria-labelledby="engineering-heading">
   <div class="wrap">
     <div class="r">
       <div class="about-tag" data-i18n="eng_tag">Engineering Services</div>
@@ -2187,7 +2196,7 @@ background: #ffff00 !important; color: #000 !important; border-color: #ffff00 !i
 </section>
 
 <!-- Manpower -->
-<section id="manpower" class="manpower" aria-labelledby="manpower-heading">
+<section id="manpower" class="manpower reveal" aria-labelledby="manpower-heading">
   <div class="wrap">
     <div class="sec-hdr r">
       <div class="sec-pill" data-i18n="mp_tag">Manpower Solutions</div>
@@ -2233,7 +2242,7 @@ background: #ffff00 !important; color: #000 !important; border-color: #ffff00 !i
 </section>
 
 <!-- About -->
-<section id="about" class="about">
+<section id="about" class="about reveal">
   <div class="wrap">
     <div class="about-grid">
       <div class="r">
@@ -2254,7 +2263,7 @@ background: #ffff00 !important; color: #000 !important; border-color: #ffff00 !i
 </section>
 
 <!-- Projects -->
-<section id="projects" class="projects">
+<section id="projects" class="projects reveal">
   <div class="wrap">
     <div class="sec-hdr r">
       <div class="sec-pill" data-i18n="projects_pill">Our Projects</div>
@@ -2293,7 +2302,7 @@ background: #ffff00 !important; color: #000 !important; border-color: #ffff00 !i
 </div>
 
 <!-- Contact -->
-<section id="contact" class="contact" aria-labelledby="contact-heading">
+<section id="contact" class="contact reveal" aria-labelledby="contact-heading">
   <div class="wrap">
     <div class="sec-hdr r">
       <div class="sec-pill" data-i18n="contact_pill">Get In Touch</div>
@@ -2441,6 +2450,50 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape'){var b=docum
     btn.disabled = false;
     btn.textContent = 'Email me this quote';
   });
+})();
+</script>
+
+<script>
+/* ── Scroll Reveal ──────────────────────────────────────────────── */
+(function() {
+  var reveals = document.querySelectorAll('.reveal');
+  if (!reveals.length) return;
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('revealed');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(function(el) { observer.observe(el); });
+})();
+</script>
+
+<script>
+/* ── Hero Stats Count-Up ────────────────────────────────────────── */
+(function() {
+  var stats = document.querySelectorAll('.stat-val[data-num],.about-stat-val[data-num]');
+  if (!stats.length) return;
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (!entry.isIntersecting) return;
+      var el = entry.target;
+      var raw = el.getAttribute('data-num');
+      var suffix = el.getAttribute('data-suf') || '';
+      if (isNaN(parseInt(raw, 10))) return;
+      var target = parseInt(raw, 10);
+      var current = 0;
+      var step = Math.max(1, Math.ceil(target / 30));
+      var interval = setInterval(function() {
+        current += step;
+        if (current >= target) { current = target; clearInterval(interval); }
+        el.textContent = current + suffix;
+      }, 40);
+      observer.unobserve(el);
+    });
+  }, { threshold: 0.3 });
+  stats.forEach(function(el) { observer.observe(el); });
 })();
 </script>
 
