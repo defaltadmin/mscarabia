@@ -1,8 +1,31 @@
 /* ── MSC Arabia — Consolidated JS ──────────────────────────────── */
 
-/* Event delegation: stop CTA clicks from bubbling to card handlers */
+/* Event delegation: unified click handler for all data-action elements */
 document.addEventListener('click', function(e) {
-  if (e.target.closest('.svc-card-cta')) e.stopPropagation();
+  /* Stop CTA clicks from bubbling to card handlers */
+  var cta = e.target.closest('.svc-card-cta');
+  if (cta) { e.stopPropagation(); return; }
+
+  /* data-action delegation — replaces all inline onclick handlers */
+  var el = e.target.closest('[data-action]');
+  if (!el) return;
+  var action = el.getAttribute('data-action');
+  var arg = el.getAttribute('data-action-arg') || '';
+
+  switch (action) {
+    case 'toggle-lang': toggleLang(); break;
+    case 'toggle-mobile-menu': toggleMobileMenu(); break;
+    case 'close-mobile-menu': closeMobileMenu(); break;
+    case 'toggle-a11y': toggleA11y(); break;
+    case 'adjust-text-size': adjustTextSize(parseInt(arg, 10) || 1); break;
+    case 'toggle-contrast': toggleContrast(); break;
+    case 'close-a11y': closeA11y(); break;
+    case 'open-modal': openModal(arg); break;
+    case 'close-modal': closeModal(arg); break;
+    case 'cookie-deny': handleCookieConsent('denied'); break;
+    case 'cookie-accept': handleCookieConsent('accepted'); break;
+    case 'open-cookie-modal': openModal('cookie'); e.preventDefault(); break;
+  }
 }, true);
 
 /* Cookie banner: Escape to dismiss, focus trap on show */

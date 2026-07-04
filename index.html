@@ -1988,33 +1988,33 @@ background: #ffff00 !important; color: #000 !important; border-color: #ffff00 !i
       <a href="#cases">Case Studies</a>
       <div class="lang-toggle" aria-label="Toggle language">
         <span class="lang-label" id="lang-label">AR</span>
-        <button class="lang-sw" id="lang-switch" role="switch" aria-checked="false" aria-label="Toggle language" onclick="toggleLang()"><span class="lang-sw-knob"></span></button>
+        <button class="lang-sw" id="lang-switch" role="switch" aria-checked="false" aria-label="Toggle language" data-action="toggle-lang"><span class="lang-sw-knob"></span></button>
       </div>
     </div>
     <a href="#contact" class="nav-cta" data-i18n="nav_cta">Get in Touch</a>
-    <button class="nav-mobile" onclick="toggleMobileMenu()" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    <button class="nav-mobile" data-action="toggle-mobile-menu" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
     <div class="a11y" id="a11y-panel">
-      <button onclick="toggleA11y()" class="a11y-toggle" id="a11y-toggle" aria-label="Accessibility options" aria-expanded="false"><svg class="icon"><use href="#i-accessibility"/></svg></button>
+      <button data-action="toggle-a11y" class="a11y-toggle" id="a11y-toggle" aria-label="Accessibility options" aria-expanded="false"><svg class="icon"><use href="#i-accessibility"/></svg></button>
       <div class="a11y-opts" id="a11y-options">
-        <button onclick="adjustTextSize(1)" class="a11y-btn" aria-label="Increase text size"><svg class="icon"><use href="#i-format-size"/></svg></button>
-        <button onclick="adjustTextSize(-1)" class="a11y-btn" aria-label="Decrease text size"><svg class="icon"><use href="#i-text-fields"/></svg></button>
-        <button onclick="toggleContrast()" class="a11y-btn" aria-label="Toggle high contrast"><svg class="icon"><use href="#i-contrast"/></svg></button>
-        <button onclick="closeA11y()" class="a11y-close" aria-label="Close accessibility options"><svg class="icon"><use href="#i-close"/></svg></button>
+        <button data-action="adjust-text-size" data-action-arg="1" class="a11y-btn" aria-label="Increase text size"><svg class="icon"><use href="#i-format-size"/></svg></button>
+        <button data-action="adjust-text-size" data-action-arg="-1" class="a11y-btn" aria-label="Decrease text size"><svg class="icon"><use href="#i-text-fields"/></svg></button>
+        <button data-action="toggle-contrast" class="a11y-btn" aria-label="Toggle high contrast"><svg class="icon"><use href="#i-contrast"/></svg></button>
+        <button data-action="close-a11y" class="a11y-close" aria-label="Close accessibility options"><svg class="icon"><use href="#i-close"/></svg></button>
       </div>
     </div>
   </div>
 </nav>
-<div id="mobile-overlay" class="nav-mobile-overlay" onclick="closeMobileMenu()"></div>
+<div id="mobile-overlay" class="nav-mobile-overlay" data-action="close-mobile-menu"></div>
 <div id="mobile-menu" class="nav-mobile-menu" role="dialog" aria-label="Navigation menu">
-  <button class="nav-mobile-close" onclick="closeMobileMenu()" aria-label="Close menu">&times;</button>
-  <a href="#services" data-i18n="nav_services" onclick="closeMobileMenu()">Services</a>
-  <a href="#engineering" data-i18n="nav_engineering" onclick="closeMobileMenu()">Engineering</a>
-  <a href="#manpower" data-i18n="nav_manpower" onclick="closeMobileMenu()">Manpower</a>
-  <a href="#about" data-i18n="nav_about" onclick="closeMobileMenu()">About</a>
-  <a href="#contact" data-i18n="nav_contact" onclick="closeMobileMenu()">Contact</a>
+  <button class="nav-mobile-close" data-action="close-mobile-menu" aria-label="Close menu">&times;</button>
+  <a href="#services" data-i18n="nav_services" data-action="close-mobile-menu">Services</a>
+  <a href="#engineering" data-i18n="nav_engineering" data-action="close-mobile-menu">Engineering</a>
+  <a href="#manpower" data-i18n="nav_manpower" data-action="close-mobile-menu">Manpower</a>
+  <a href="#about" data-i18n="nav_about" data-action="close-mobile-menu">About</a>
+  <a href="#contact" data-i18n="nav_contact" data-action="close-mobile-menu">Contact</a>
   <div class="lang-toggle" style="margin-top:0.75rem;padding:0.5rem 0" aria-label="Toggle language">
     <span class="lang-label" id="lang-label-m">AR</span>
-    <button class="lang-sw" id="lang-switch-mobile" role="switch" aria-checked="false" aria-label="Toggle language" onclick="event.stopPropagation();toggleLang()"><span class="lang-sw-knob"></span></button>
+    <button class="lang-sw" id="lang-switch-mobile" role="switch" aria-checked="false" aria-label="Toggle language" data-action="toggle-lang"><span class="lang-sw-knob"></span></button>
   </div>
 </div>
 
@@ -2388,7 +2388,7 @@ background: #ffff00 !important; color: #000 !important; border-color: #ffff00 !i
         <div class="footer-badge"><svg class="icon" style="font-size:14px"><use href="#i-verified"/></svg><span data-i18n="compliance_ids" data-i18n-html>Unified No.: <strong>704-925-4704</strong> &middot; VAT: <strong>312 900 114 900 003</strong></span></div>
       </div>
       <div><h4 data-i18n="footer_services">Services</h4><div class="footer-links"><a href="#services" data-i18n="footer_svc1">Managed IT Services</a><a href="#services" data-i18n="footer_svc2">Fire Safety Engineering</a><a href="#services" data-i18n="footer_svc3">Manpower Solutions</a><a href="#services" data-i18n="footer_svc4">Hardware, Software & Cloud</a></div></div>
-      <div><h4 data-i18n="footer_company">Company</h4><div class="footer-links"><a href="#about" data-i18n="footer_about">About Us</a><a href="#clients" data-i18n="footer_clients">Our Clients</a><button type="button" onclick="openModal('privacy')" data-i18n="footer_privacy">Privacy Policy</button><button type="button" onclick="openModal('cookie')" data-i18n="footer_cookies">Cookie Policy</button></div></div>
+      <div><h4 data-i18n="footer_company">Company</h4><div class="footer-links"><a href="#about" data-i18n="footer_about">About Us</a><a href="#clients" data-i18n="footer_clients">Our Clients</a><button type="button" data-action="open-modal" data-action-arg="privacy" data-i18n="footer_privacy">Privacy Policy</button><button type="button" data-action="open-modal" data-action-arg="cookie" data-i18n="footer_cookies">Cookie Policy</button></div></div>
       <div><h4 data-i18n="footer_contact">Contact</h4><div class="footer-links"><span data-i18n="footer_addr">Riyadh 13223, Saudi Arabia</span><a href="mailto:info@mscarabia.com" data-i18n="footer_email">info@mscarabia.com</a></div></div>
     </div>
     <div class="footer-bottom">
@@ -2404,7 +2404,7 @@ background: #ffff00 !important; color: #000 !important; border-color: #ffff00 !i
 <!-- Privacy Modal -->
 <div id="privacy-modal" class="modal-overlay">
   <div class="modal-box">
-    <button class="modal-close" onclick="closeModal('privacy')" aria-label="Close">&times;</button>
+    <button class="modal-close" data-action="close-modal" data-action-arg="privacy" aria-label="Close">&times;</button>
     <div class="modal-tag" data-i18n="modal_privacy_tag">Privacy Policy</div>
     <h3 data-i18n="modal_privacy_title">Privacy Policy</h3>
     <p data-i18n="modal_privacy_updated">Last Updated: March 26, 2026</p>
@@ -2414,14 +2414,14 @@ background: #ffff00 !important; color: #000 !important; border-color: #ffff00 !i
     <h4 data-i18n="modal_privacy_protection_title">Data Protection</h4><p data-i18n="modal_privacy_protection_desc"></p>
     <h4 data-i18n="modal_privacy_rights_title">Your Rights</h4><p data-i18n="modal_privacy_rights_list" data-i18n-html></p>
     <h4 data-i18n="modal_privacy_contact_title">Contact Us</h4><p data-i18n="modal_privacy_contact_desc"></p>
-    <p style="margin-top:1rem;border-top:1px solid rgba(255,255,255,0.1);padding-top:1rem;font-size:0.85rem"><a href="/privacy-policy.html" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" data-i18n="modal_privacy_full">View Full Privacy Policy →</a></p>
+    <p style="margin-top:1rem;border-top:1px solid rgba(255,255,255,0.1);padding-top:1rem;font-size:0.85rem"><a href="/privacy-policy.html" target="_blank" rel="noopener noreferrer"  data-i18n="modal_privacy_full">View Full Privacy Policy →</a></p>
   </div>
 </div>
 
 <!-- Cookie Modal -->
 <div id="cookie-modal" class="modal-overlay">
   <div class="modal-box">
-    <button class="modal-close" onclick="closeModal('cookie')" aria-label="Close">&times;</button>
+    <button class="modal-close" data-action="close-modal" data-action-arg="cookie" aria-label="Close">&times;</button>
     <div class="modal-tag" data-i18n="modal_cookie_tag">Cookie Policy</div>
     <h3 data-i18n="modal_cookie_title">Cookie Policy</h3>
     <p data-i18n="modal_cookie_effective">Effective date: March 26, 2026</p>
@@ -2441,10 +2441,10 @@ background: #ffff00 !important; color: #000 !important; border-color: #ffff00 !i
 
 <!-- Cookie Consent Banner -->
 <div id="cookie-banner" class="cookie-banner" role="dialog" aria-modal="true" aria-label="Cookie consent">
-  <p data-i18n="cookie_text" data-i18n-html>We use cookies for analytics to improve our website. By clicking "Accept", you consent to the use of cookies. See our <a href="#" onclick="openModal('cookie');return false" data-i18n="cookie_link">Cookie Policy</a> for details.</p>
+  <p data-i18n="cookie_text" data-i18n-html>We use cookies for analytics to improve our website. By clicking "Accept", you consent to the use of cookies. See our <a href="#" data-action="open-cookie-modal" data-i18n="cookie_link">Cookie Policy</a> for details.</p>
   <div class="cookie-btns">
-    <button class="cookie-deny" onclick="handleCookieConsent('denied')" data-i18n="cookie_decline">Decline</button>
-    <button class="cookie-accept" onclick="handleCookieConsent('accepted')" data-i18n="cookie_accept">Accept</button>
+    <button class="cookie-deny" data-action="cookie-deny" data-i18n="cookie_decline">Decline</button>
+    <button class="cookie-accept" data-action="cookie-accept" data-i18n="cookie_accept">Accept</button>
   </div>
 </div>
 <script src="/assets/js/app.js" defer></script>

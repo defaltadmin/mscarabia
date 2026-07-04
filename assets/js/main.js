@@ -593,6 +593,8 @@
       modal_cookie_manage_title: 'إدارة تفضيلات ملفات تعريف الارتباط',
       modal_cookie_manage_desc: 'يمكنك تعديل إعدادات ملفات تعريف الارتباط في أي وقت من خلال إعدادات المتصفح.',
       modal_cookie_manage_list: '• Chrome: https://support.google.com/accounts/answer/32050<br>• Safari، Firefox، Edge: يرجى الرجوع إلى وثائق المتصفح المعنية',
+      modal_privacy_full: 'عرض سياسة الخصوصية الكاملة ←',
+      modal_cookie_full: 'عرض سياسة ملفات تعريف الارتباط الكاملة ←',
     },
   };
 
