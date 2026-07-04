@@ -52,40 +52,55 @@ document.addEventListener('click', function(e) {
 (function() {
   var form = document.getElementById('quote-capture');
   if (!form) return;
+
   form.addEventListener('submit', async function(e) {
     e.preventDefault();
+
     var msg = document.getElementById('quote-msg');
     var btn = form.querySelector('button[type="submit"]');
     var emailInput = document.getElementById('quote-email');
+
+    if (!msg || !btn || !emailInput) return;
+
     btn.disabled = true;
+    var oldText = btn.textContent;
     btn.textContent = 'Sending…';
     msg.textContent = '';
+
     try {
+      var checkedProfessions = Array.prototype.slice
+        .call(document.querySelectorAll('input[name="mq_profession"]:checked'))
+        .map(function(cb) { return cb.value; })
+        .join(', ');
+
       var res = await fetch('/api/quote', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           email: emailInput.value,
-          workers: document.getElementById('mq_employees')?.value,
-          duration: document.getElementById('mq_duration')?.value,
-          profession: [...document.querySelectorAll('input[name="mq_profession"]:checked')].map(function(cb) { return cb.value; }).join(', '),
-          total: document.getElementById('mq_total_val')?.textContent?.trim(),
+          workers: document.getElementById('mq_employees')?.value || '',
+          duration: document.getElementById('mq_duration')?.value || '',
+          budget: document.getElementById('mq_budget')?.value || '',
+          profession: checkedProfessions,
+          total: document.getElementById('mq_total_val')?.textContent?.trim() || '',
         }),
       });
+
       if (res.ok) {
         msg.textContent = "Sent — we'll reply within 1-2 business days.";
-        msg.style.color = 'var(--safe)';
+        msg.style.color = 'var(--safe, #22c55e)';
         emailInput.value = '';
       } else {
         msg.textContent = 'Something went wrong, try again.';
         msg.style.color = 'var(--accent)';
       }
-    } catch(err) {
+    } catch {
       msg.textContent = 'Network error, try again.';
       msg.style.color = 'var(--accent)';
+    } finally {
+      btn.disabled = false;
+      btn.textContent = oldText || 'Email me this quote';
     }
-    btn.disabled = false;
-    btn.textContent = 'Email me this quote';
   });
 })();
 
@@ -108,23 +123,47 @@ document.addEventListener('click', function(e) {
 (function() {
   var stats = document.querySelectorAll('.stat-val[data-num],.about-stat-val[data-num]');
   if (!stats.length) return;
+
+  var reduceMotion = window.matchMedia &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function finish(el) {
+    var raw = el.getAttribute('data-num');
+    var suffix = el.getAttribute('data-suf') || '';
+    if (isNaN(parseInt(raw, 10))) return;
+    el.textContent = parseInt(raw, 10) + suffix;
+  }
+
+  if (reduceMotion) {
+    stats.forEach(finish);
+    return;
+  }
+
   var observer = new IntersectionObserver(function(entries) {
     entries.forEach(function(entry) {
       if (!entry.isIntersecting) return;
+
       var el = entry.target;
       var raw = el.getAttribute('data-num');
       var suffix = el.getAttribute('data-suf') || '';
       if (isNaN(parseInt(raw, 10))) return;
+
       var target = parseInt(raw, 10);
       var current = 0;
       var step = Math.max(1, Math.ceil(target / 30));
+
       var interval = setInterval(function() {
         current += step;
-        if (current >= target) { current = target; clearInterval(interval); }
+        if (current >= target) {
+          current = target;
+          clearInterval(interval);
+        }
         el.textContent = current + suffix;
       }, 40);
+
       observer.unobserve(el);
     });
   }, { threshold: 0.3 });
+
   stats.forEach(function(el) { observer.observe(el); });
 })();

@@ -76,8 +76,8 @@ export async function onRequestPost(context) {
     });
 
     if (!sendRes.ok) {
-      const err = await sendRes.text();
-      console.error('Quote email failed:', err);
+      const status = sendRes.status;
+      console.error('Quote email failed:', status);
       return new Response(JSON.stringify({ error: 'Failed to send' }), { status: 502, headers: { 'Content-Type': 'application/json', ...corsHeaders } });
     }
 
