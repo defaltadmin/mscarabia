@@ -193,8 +193,15 @@
 .icon { display: inline-block; width: 1em; height: 1em; vertical-align: -0.125em; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
 /* ── Scroll Reveal ──────────────────────────────────────────────── */
-.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s cubic-bezier(0.22,1,0.36,1), transform 0.7s cubic-bezier(0.22,1,0.36,1); }
-.reveal.revealed { opacity: 1; transform: translateY(0); }
+/* Reveal fallback: visible by default so screenshots, crawlers, JS-fail show content */
+.r, .reveal { opacity: 1; transform: none; }
+/* Only JS-enabled pages get hidden-before-reveal behavior */
+.js-reveal-ready .r, .js-reveal-ready .reveal {
+  opacity: 0; transform: translateY(24px) scale(0.98);
+  transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);
+  will-change: transform, opacity;
+}
+.js-reveal-ready .r.v, .js-reveal-ready .reveal.revealed { opacity: 1; transform: translateY(0) scale(1); }
 .reveal-delay-1 { transition-delay: 0.1s; }
 .reveal-delay-2 { transition-delay: 0.2s; }
 .reveal-delay-3 { transition-delay: 0.3s; }
@@ -203,7 +210,7 @@ html { scroll-behavior: smooth; scroll-padding-top: 5rem; overflow-x: hidden; }
 @media (prefers-reduced-motion: reduce) {
 html { scroll-behavior: auto; }
 *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
-.reveal { opacity: 1; transform: none; transition: none; }
+.js-reveal-ready .r, .js-reveal-ready .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
 .hero-canvas { display: none; }
 }
 .underline-links a { text-decoration: underline !important; text-underline-offset: 3px; }
@@ -1950,10 +1957,15 @@ background: #ffff00 !important; color: #000 !important; border-color: #ffff00 !i
 .about h2 { font-size: 1.4rem; }
 .about-stat-val { font-size: 1.3rem; }
 .prof-grid { grid-template-columns: 1fr; }
-.mp-cols { grid-template-columns: 1fr; }
-.hero-actions { flex-direction: column; }
-.hero-actions .btn { width: 100%; justify-content: center; }
 }
+@media (max-width: 360px) {
+.hero h1 { font-size: clamp(2rem, 12vw, 2.6rem); }
+.hero p { font-size: 0.9rem; line-height: 1.65; }
+.btn { width: 100%; justify-content: center; }
+.hero-stats { gap: 1rem; }
+.stat-val { font-size: 1.4rem; }
+}
+
 /* Cookie consent banner */
 .cookie-banner{position:fixed;bottom:0;left:0;right:0;z-index:10000;background:rgba(11,13,20,0.97);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid rgba(255,255,255,0.08);padding:1.25rem 2rem;display:none;align-items:center;gap:1.5rem;flex-wrap:wrap}
 .cookie-banner.show{display:flex}
@@ -1963,7 +1975,7 @@ background: #ffff00 !important; color: #000 !important; border-color: #ffff00 !i
 .cookie-btns button{font-family:var(--font-display);font-size:.78rem;font-weight:600;padding:.65rem 1.4rem;border-radius:8px;border:none;cursor:pointer;transition:all .2s ease}
 .cookie-accept{background:var(--accent);color:#fff}.cookie-accept:hover{background:var(--accent-hover)}
 .cookie-deny{background:rgba(255,255,255,0.06);color:var(--text-secondary);border:1px solid rgba(255,255,255,0.1) !important}.cookie-deny:hover{background:rgba(255,255,255,0.1)}
-@media(max-width:639px){.cookie-banner{flex-direction:column;text-align:center;padding:1.25rem 1rem}.cookie-btns{width:100%;justify-content:center}}
+@media(max-width:639px){.cookie-banner{left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));width:auto;max-width:none;border-radius:14px;padding:10px 12px;display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center;font-size:.72rem;border-top:none;border:1px solid rgba(255,255,255,0.08)}.cookie-banner p{margin:0;line-height:1.35;min-width:0}.cookie-banner button{min-height:34px;padding:0 10px;font-size:.72rem;white-space:nowrap}}
 </style>
 
   <!-- GTM-MRHLJVHL removed — was returning 404 errors -->

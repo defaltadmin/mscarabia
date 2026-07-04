@@ -1,5 +1,8 @@
 /* ── MSC Arabia — Consolidated JS ──────────────────────────────── */
 
+/* Mark document as JS-ready for reveal system (content visible by default until this runs) */
+document.documentElement.classList.add('js-reveal-ready');
+
 /* Event delegation: unified click handler for all data-action elements */
 document.addEventListener('click', function(e) {
   var target = e.target;
@@ -111,16 +114,27 @@ document.addEventListener('click', function(e) {
 
 /* Scroll Reveal — IntersectionObserver fade-in */
 (function() {
-  var reveals = document.querySelectorAll('.reveal');
+  var reveals = document.querySelectorAll('.reveal, .r');
   if (!reveals.length) return;
+
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    reveals.forEach(function(el) {
+      el.classList.add('revealed');
+      el.classList.add('v');
+    });
+    return;
+  }
+
   var observer = new IntersectionObserver(function(entries) {
     entries.forEach(function(entry) {
       if (entry.isIntersecting) {
         entry.target.classList.add('revealed');
+        entry.target.classList.add('v');
         observer.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.1 });
+  }, { threshold: 0.08, rootMargin: '0px 0px -5% 0px' });
+
   reveals.forEach(function(el) { observer.observe(el); });
 })();
 
