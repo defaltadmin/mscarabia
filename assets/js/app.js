@@ -1,5 +1,10 @@
 /* ── MSC Arabia — Consolidated JS ──────────────────────────────── */
 
+/* Event delegation: stop CTA clicks from bubbling to card handlers */
+document.addEventListener('click', function(e) {
+  if (e.target.closest('.svc-card-cta')) e.stopPropagation();
+}, true);
+
 /* Cookie banner: Escape to dismiss, focus trap on show */
 (function() {
   document.addEventListener('keydown', function(e) {
