@@ -34,9 +34,25 @@ export async function onRequestPost(context) {
     return new Response(JSON.stringify({ error: 'Forbidden' }), { status: 403, headers: { 'Content-Type': 'application/json', ...corsHeaders } });
   }
 
+  // Rate limiting via KV (if available)
+  const clientIP = request.headers.get('CF-Connecting-IP') || 'unknown';
+  if (env.RATE_LIMIT_KV) {
+    const key = `quote:${clientIP}`;
+    const count = parseInt(await env.RATE_LIMIT_KV.get(key) || '0', 10);
+    if (count >= 5) {
+      return new Response(JSON.stringify({ error: 'Rate limit exceeded' }), { status: 429, headers: { 'Content-Type': 'application/json', ...corsHeaders } });
+    }
+    await env.RATE_LIMIT_KV.put(key, String(count + 1), { expirationTtl: 3600 });
+  }
+
   try {
     const body = await request.json();
-    const { email, workers, duration, profession, total } = body;
+    const { email, workers, duration, profession, total, website } = body;
+
+    // Honeypot: bots fill hidden fields, humans don't
+    if (website) {
+      return new Response(JSON.stringify({ ok: true }), { status: 200, headers: { 'Content-Type': 'application/json', ...corsHeaders } });
+    }
 
     if (!isValidEmail(email)) {
       return new Response(JSON.stringify({ error: 'Valid email required' }), { status: 400, headers: { 'Content-Type': 'application/json', ...corsHeaders } });

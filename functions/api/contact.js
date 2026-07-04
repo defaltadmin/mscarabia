@@ -200,14 +200,14 @@ export async function onRequestPost(context) {
         headers: { 'Content-Type': 'application/json', ...corsHeaders },
       });
     } else {
-      console.error('Resend error:', emailResult.error);
+      console.error('Contact email failed:', emailResult.error);
       return new Response(JSON.stringify({ success: false, error: 'Failed to send email' }), {
         status: 500,
         headers: { 'Content-Type': 'application/json', ...corsHeaders },
       });
     }
   } catch (error) {
-    console.error('Contact form error:', error);
+    console.error('Contact form error:', error instanceof Error ? error.message : 'unknown');
     return new Response(JSON.stringify({ success: false, error: 'Server error' }), {
       status: 500,
       headers: { 'Content-Type': 'application/json', ...corsHeaders },
@@ -238,9 +238,8 @@ async function sendEmail({ to, from, subject, body, replyTo, apiKey }) {
       }),
     });
     if (response.ok) return { success: true };
-    const text = await response.text();
-    return { success: false, error: `Resend ${response.status}: ${text}` };
+    return { success: false, error: `Resend ${response.status}` };
   } catch (error) {
-    return { success: false, error: error.message };
+    return { success: false, error: error instanceof Error ? error.message.slice(0, 180) : 'unknown' };
   }
 }

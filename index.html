@@ -1272,6 +1272,7 @@ margin-top: 0.15rem;
 .quote-capture input[type="email"] { flex:1; min-width:200px; background:var(--bg-surface); border:1px solid var(--border); border-radius:var(--radius-sm); padding:.85rem 1rem; color:var(--text-primary); font-size:16px; font-family:var(--font-body); }
 .quote-capture input[type="email"]:focus { outline:none; border-color:var(--accent); }
 .quote-msg { flex-basis:100%; font-size:.85rem; color:var(--text-secondary); margin-top:.25rem; min-height:1.2em; }
+.hp-field { position:absolute!important; left:-9999px!important; width:1px!important; height:1px!important; overflow:hidden!important; }
 .budget-toggle { display: flex; gap: 0.5rem; margin-bottom: 0.5rem; }
 .budget-btn {
 font-size: 0.7rem;
@@ -2245,6 +2246,7 @@ background: #ffff00 !important; color: #000 !important; border-color: #ffff00 !i
         </div>
         <div class="mq-total"><div class="mq-total-label">Estimated Monthly Total</div><div class="mq-total-val" id="mq_total_val"><span class="sar" aria-label="Saudi Riyal">&#xFDFC;<span class="sar-fallback">SAR</span></span> 750</div><div class="mq-total-sub" id="mq_total_breakdown">50 workers × <span class="sar" aria-label="Saudi Riyal">&#xFDFC;<span class="sar-fallback">SAR</span></span> 15</div></div>
         <form id="quote-capture" class="quote-capture">
+          <label class="hp-field" aria-hidden="true" tabindex="-1">Website<input type="text" id="quote-website" name="website" autocomplete="off" tabindex="-1"></label>
           <input type="email" id="quote-email" required placeholder="you@company.com" aria-label="Your email" maxlength="120">
           <button type="submit" class="btn btn-primary">Email me this quote</button>
           <p id="quote-msg" class="quote-msg" role="status" aria-live="polite"></p>
