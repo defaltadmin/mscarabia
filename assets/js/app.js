@@ -3,6 +3,85 @@
 /* Mark document as JS-ready for reveal system (content visible by default until this runs) */
 document.documentElement.classList.add('js-reveal-ready');
 
+/* Structured data — injected from trusted external JS to avoid inline CSP noise */
+(function() {
+  if (document.getElementById('msc-schema-jsonld')) return;
+
+  var schema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "ProfessionalService",
+        "@id": "https://mscarabia.com/#organization",
+        "name": "MSC Arabia",
+        "alternateName": "ESTABLISHMENT MARSAH ALHALLOUL FOR INFORMATION TECHNOLOGY",
+        "url": "https://mscarabia.com",
+        "logo": { "@type": "ImageObject", "url": "https://mscarabia.com/assets/logo.svg", "width": 120, "height": 120 },
+        "image": "https://mscarabia.com/assets/og-image.jpg",
+        "description": "Managed IT Services, MDM Licensing, Fire Safety Engineering, Manpower Solutions, and IT Hardware Procurement in Riyadh, Saudi Arabia.",
+        "foundingDate": "2024",
+        "founders": [{ "@type": "Person", "name": "MSC Arabia Management" }],
+        "address": { "@type": "PostalAddress", "streetAddress": "6787 Abdulrahman Al Nasser, Al Khaleej Dist.", "addressLocality": "Riyadh", "addressRegion": "Riyadh", "postalCode": "13223", "addressCountry": "SA" },
+        "geo": { "@type": "GeoCoordinates", "latitude": 24.7136, "longitude": 46.6753 },
+        "areaServed": { "@type": "Country", "name": "Saudi Arabia" },
+        "knowsAbout": ["IT Services", "Fire Safety Engineering", "Mobile Device Management", "Manpower Solutions", "Hardware Procurement"],
+        "sameAs": ["https://x.com/mscarabia", "https://www.linkedin.com/company/mscarabia"],
+        "priceRange": "$$",
+        "openingHoursSpecification": { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Sunday","Monday","Tuesday","Wednesday","Thursday"], "opens": "08:00", "closes": "17:00" },
+        "contactPoint": [
+          { "@type": "ContactPoint", "email": "info@mscarabia.com", "telephone": "+966551675320", "contactType": "customer service", "areaServed": "SA", "availableLanguage": ["English", "Arabic"] }
+        ],
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "MSC Arabia Services",
+          "itemListElement": [
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Managed IT Services", "description": "24/7 proactive monitoring, expert localized technical support, and comprehensive maintenance.", "provider": { "@id": "https://mscarabia.com/#organization" } } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "MDM Licensing", "description": "Enterprise Mobile Device Management — Apple Business Manager, Microsoft Intune, Android Enterprise.", "provider": { "@id": "https://mscarabia.com/#organization" } } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Fire Safety Engineering", "description": "Turnkey fire alarm, suppression, and evacuation systems — Siemens, BACnet, NFPA compliant.", "provider": { "@id": "https://mscarabia.com/#organization" } } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Manpower Solutions", "description": "Vetted IT and engineering professionals deployed across Saudi Arabia with visa processing.", "provider": { "@id": "https://mscarabia.com/#organization" } } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Hardware & Software", "description": "Enterprise procurement — Dell, HP, Lenovo fleet, Microsoft 365 licensing, asset lifecycle.", "provider": { "@id": "https://mscarabia.com/#organization" } } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Support & Maintenance", "description": "SLA-backed IT support with guaranteed response times and preventive maintenance.", "provider": { "@id": "https://mscarabia.com/#organization" } } }
+          ]
+        }
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://mscarabia.com/#website",
+        "name": "MSC Arabia",
+        "url": "https://mscarabia.com",
+        "inLanguage": ["en", "ar"],
+        "publisher": { "@id": "https://mscarabia.com/#organization" }
+      },
+      {
+        "@type": "SiteNavigationElement",
+        "name": "Navigation",
+        "url": "https://mscarabia.com",
+        "hasPart": [
+          { "@type": "SiteNavigationElement", "name": "Services", "url": "https://mscarabia.com/#services" },
+          { "@type": "SiteNavigationElement", "name": "Engineering", "url": "https://mscarabia.com/#engineering" },
+          { "@type": "SiteNavigationElement", "name": "Manpower", "url": "https://mscarabia.com/#manpower" },
+          { "@type": "SiteNavigationElement", "name": "About", "url": "https://mscarabia.com/#about" },
+          { "@type": "SiteNavigationElement", "name": "Contact", "url": "https://mscarabia.com/#contact" }
+        ]
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://mscarabia.com/" },
+          { "@type": "ListItem", "position": 2, "name": "Services", "item": "https://mscarabia.com/#services" },
+          { "@type": "ListItem", "position": 3, "name": "Contact", "item": "https://mscarabia.com/#contact" }
+        ]
+      }
+    ]
+  };
+
+  var s = document.createElement('script');
+  s.id = 'msc-schema-jsonld';
+  s.type = 'application/ld+json';
+  s.textContent = JSON.stringify(schema);
+  document.head.appendChild(s);
+})();
+
 /* Event delegation: unified click handler for all data-action elements */
 document.addEventListener('click', function(e) {
   var target = e.target;
