@@ -3,6 +3,16 @@
 /* Mark document as JS-ready for reveal system (content visible by default until this runs) */
 document.documentElement.classList.add('js-reveal-ready');
 
+/* Stub GA functions — analytics removed for clean CSP, stub to prevent ReferenceError in main.js */
+window.loadGA = window.loadGA || function() {};
+window.denyGA = window.denyGA || function() {};
+
+/* Flip font stylesheet from print to all (replaces inline onload) */
+var gsLink = document.getElementById('gs-link');
+if (gsLink) gsLink.media = 'all';
+var sfLink = document.getElementById('self-fonts');
+if (sfLink) sfLink.media = 'all';
+
 /* Structured data — injected from trusted external JS to avoid inline CSP noise */
 (function() {
   if (document.getElementById('msc-schema-jsonld')) return;
