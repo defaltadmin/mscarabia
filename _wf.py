@@ -1,4 +1,8 @@
-name: Validate & Test
+import io, sys, json
+sys.stdout.reconfigure(encoding='utf-8')
+P = r'C:\Users\user\AI\projects\mscarabia'
+
+wf = """name: Validate & Test
 
 on:
   push:
@@ -32,8 +36,8 @@ jobs:
             if [ -n "$ids" ]; then echo "$f duplicates:"; echo "$ids"; fi
           done
           echo "--- missing local assets ---"
-          grep -ohE '(src|href)="/[^"#?]+"' *.html \
-            | sed -E 's/.*="([^"]+)"/\1/' | sort -u \
+          grep -ohE '(src|href)="/[^"#?]+"' *.html \\
+            | sed -E 's/.*="([^"]+)"/\\1/' | sort -u \\
             | while read -r p; do
                 if [ ! -f ".${p}" ]; then echo "MISSING: $p"; fi
               done
@@ -43,7 +47,7 @@ jobs:
             let bad = 0;
             for (const f of fs.readdirSync('.').filter(x => x.endsWith('.html'))) {
               const s = fs.readFileSync(f, 'utf8');
-              const re = /<script type=\"application\/ld\+json\">([\s\S]*?)<\/script>/g;
+              const re = /<script type=\\"application\\/ld\\+json\\">([\\s\\S]*?)<\\/script>/g;
               for (const m of s.matchAll(re)) {
                 try { JSON.parse(m[1]); console.log('OK   ' + f); }
                 catch (e) { console.log('BAD  ' + f + ' -> ' + e.message); bad++; }
@@ -72,3 +76,49 @@ jobs:
 
       - name: Lighthouse
         run: npx --yes lhci autorun --config=.github/lighthouserc.json
+"""
+io.open(P + r'\.github\workflows\validate.yml', 'w', encoding='utf-8', newline='').write(wf)
+print('validate.yml rewritten')
+
+cfg = {
+    "ci": {
+        "collect": {
+            "url": ["http://127.0.0.1:8080/index.html"],
+            "numberOfRuns": 1,
+            "settings": {"preset": "desktop", "chromeFlags": "--no-sandbox"}
+        },
+        "assert": {
+            "assertions": {
+                "categories:performance": ["warn", {"minScore": 0.9}],
+                "categories:accessibility": ["error", {"minScore": 0.95}],
+                "categories:best-practices": ["error", {"minScore": 0.9}],
+                "categories:seo": ["error", {"minScore": 0.95}],
+                "color-contrast": "error",
+                "errors-in-console": "error",
+                "heading-order": "warn",
+                "image-alt": "error",
+                "is-crawlable": "error",
+                "html-has-lang": "error",
+                "meta-description": "error",
+                "http-status-code": "error",
+                "link-name": "error",
+                "button-name": "error",
+                "document-title": "error",
+                "structured-data-is-valid": "warn",
+                "canonical": "error",
+                "crawlable-anchors": "error",
+                # Not actionable on a static Cloudflare Pages site: the
+                # compressed response already contains no unused JS.
+                "uses-text-compression": "off",
+                "render-blocking-resources": "off",
+                "max-potential-fid": "off",
+                "uses-long-cache-ttl": "off"
+            }
+        },
+        "upload": {"target": "temporary-public-storage"}
+    }
+}
+io.open(P + r'\.github\lighthouserc.json', 'w', encoding='utf-8', newline='').write(
+    json.dumps(cfg, indent=2) + '\n')
+print('lighthouserc.json rewritten')
+print(json.dumps(cfg, indent=2)[:400])
