@@ -1220,8 +1220,12 @@
   window.closeA11y = closeA11y;
   window.underlines = underlines;
   window.letterSpacing = letterSpacing;
-  window.loadGA = loadGA;
-  window.denyGA = denyGA;
+  // Analytics was removed from this site. These no-ops replace a former
+  // `window.loadGA = loadGA` assignment that referenced functions which no
+  // longer exist here — it threw ReferenceError and aborted the rest of
+  // this IIFE, which is why initNav / i18n / modals silently stopped working.
+  window.loadGA = window.loadGA || function () {};
+  window.denyGA = window.denyGA || function () {};
 
   // ============================================
   // Hero Particles (removed — container doesn't exist)
