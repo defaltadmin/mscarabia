@@ -1,0 +1,65 @@
+name: Deploy to Cloudflare Pages
+
+# Why this exists: this repo previously had NO deploy path. `deploy.yml` was
+# deleted in bfdeb91 and the Pages project was never reconnected to Git, so
+# every push since has sat on GitHub without ever reaching mscarabia.com.
+# This restores a deploy that runs on every push to main.
+#
+# REQUIRED: two repository secrets under Settings > Secrets and variables >
+# Actions. Without them this workflow fails immediately and nothing deploys.
+#   CLOUDFLARE_API_TOKEN  - Cloudflare > My Profile > API Tokens > Create Token
+#                           (template "Edit Cloudflare Workers", scoped to
+#                            this account). Not the global API key.
+#   CLOUDFLARE_ACCOUNT_ID - Cloudflare dashboard > any account overview page,
+#                           right-hand sidebar.
+#
+# Verify the project name below is correct (Cloudflare > Workers & Pages >
+# <project>). A wrong name fails with "project not found".
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: pages-deploy
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      # Static site, no build step, output directory is the repo root.
+      # .cfignore excludes .git, .github and *.md from the upload.
+      - name: Deploy
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy . --project-name=mscarabia --branch=main --commit-dirty=true
+
+      # Fail the job if the edge is still serving the previous build.
+      # Without this, a broken _headers file fails the Pages build SILENTLY
+      # and the old site keeps serving, which looks exactly like a slow deploy.
+      - name: Verify the new build is live
+        run: |
+          for i in $(seq 1 20); do
+            if curl -s "https://mscarabia.com/?cb=$GITHUB_SHA" | grep -q 'accent-solid'; then
+              echo "Deployed and verified."
+              exit 0
+            fi
+            echo "attempt $i: not live yet, waiting..."
+            sleep 15
+          done
+          echo "::error::Pushed, but mscarabia.com is still serving an older build."
+          echo "Check the _headers file - a comment or bad syntax there fails the"
+          echo "Cloudflare Pages build silently while the previous build keeps serving."
+          exit 1
