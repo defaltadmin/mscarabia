@@ -116,9 +116,14 @@ All CSS and JavaScript is inlined in `index.html` for:
 
 ## Related Projects
 
+Built and deployed by MSC Arabia. Maazaia carries a "Made with care by MSC Arabia" credit in its footer linking back here.
+
 | Project | URL | Repo |
 |---------|-----|------|
 | Don't Touch Purple (game) | [game.mscarabia.com](https://game.mscarabia.com) | [defaltadmin/donttouchpurple](https://github.com/defaltadmin/donttouchpurple) |
+| Prayer Times | [prayer.mscarabia.com](https://prayer.mscarabia.com) | [defaltadmin/world-prayer-times](https://github.com/defaltadmin/world-prayer-times) |
+| HalalGames Guide | [halalgames.mscarabia.com](https://halalgames.mscarabia.com) | [defaltadmin/halalgames](https://github.com/defaltadmin/halalgames) |
+| Maazaia (manpower & recruitment) | [maazaia.com](https://maazaia.com) | [defaltadmin/maazaia](https://github.com/defaltadmin/maazaia) |
 
 ## Contributing
 
