@@ -21,7 +21,7 @@
   <link rel="alternate" hreflang="en" href="https://mscarabia.com/">
   <link rel="alternate" hreflang="ar" href="https://mscarabia.com/?lang=ar">
   <link rel="alternate" hreflang="x-default" href="https://mscarabia.com/">
-  <link rel="icon" type="image/svg+xml" href="/assets/logo.svg">
+  <link rel="icon" type="image/svg+xml" href="/assets/brand/favicon.svg">
   <!-- Structured data — static because CSP blocks inline script injection -->
   <script type="application/ld+json">
   {
@@ -39,7 +39,7 @@
           "width": 120,
           "height": 120
         },
-        "image": "https://mscarabia.com/assets/og-image.jpg",
+        "image": "https://mscarabia.com/assets/og-image.svg",
         "description": "Managed IT Services, MDM Licensing, Fire Safety Engineering, Manpower Solutions, and IT Hardware Procurement in Riyadh, Saudi Arabia.",
         "foundingDate": "2024",
         "founders": [
@@ -247,14 +247,14 @@
   }
   </script>
 
-  <link rel="preload" as="image" href="/assets/logo.svg" type="image/svg+xml">
+  <link rel="preload" as="image" href="/assets/brand/favicon.svg" type="image/svg+xml">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://mscarabia.com/">
   <meta property="og:title" content="MSC Arabia — IT Services, Fire Safety & Manpower Solutions">
   <meta property="og:description" content="Riyadh's leading provider of Managed IT Services, Fire Safety Engineering, Manpower Solutions, and IT Hardware Procurement.">
-  <meta property="og:image" content="https://mscarabia.com/assets/og-image.jpg">
+  <meta property="og:image" content="https://mscarabia.com/assets/og-image.svg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
 
@@ -262,7 +262,7 @@
   <meta name="twitter:title" content="MSC Arabia — IT Services, Fire Safety & Manpower Solutions">
   <meta name="twitter:description" content="Riyadh's leading provider of Managed IT Services, Fire Safety Engineering, and Manpower Solutions.">
   <meta name="twitter:url" content="https://mscarabia.com/">
-  <meta name="twitter:image" content="https://mscarabia.com/assets/og-image.jpg">
+  <meta name="twitter:image" content="https://mscarabia.com/assets/og-image.svg">
 
   <!-- Self-hosted fonts (eliminates external DNS + render-blocking) -->
   <link rel="stylesheet" href="/assets/fonts/fonts.css" media="print" id="self-fonts">
@@ -330,8 +330,11 @@
 --text-muted: #7682a0;
 --border: rgba(255, 255, 255, 0.06);
 --border-hover: rgba(255, 255, 255, 0.12);
---glass: rgba(255, 255, 255, 0.03);
---glass-solid: rgba(16, 19, 28, 0.85);
+--glass: rgba(255, 255, 255, 0.06);
+--glass-solid: rgba(16, 19, 28, 0.9);
+--glass-blur: 24px;
+--glass-border: rgba(255, 255, 255, 0.1);
+--glass-border-hover: rgba(255, 255, 255, 0.2);
 --font-display: 'Space Grotesk', 'Plus Jakarta Sans', sans-serif;
 --font-body: 'Plus Jakarta Sans', 'IBM Plex Sans Arabic', sans-serif;
 --font-mono: 'DM Mono', 'Fira Code', monospace;
@@ -853,8 +856,8 @@ gap: 1rem;
 .hero-card-main {
 position: relative;
 background: var(--glass);
-backdrop-filter: blur(20px);
-border: 1px solid var(--glass);
+backdrop-filter: blur(var(--glass-blur));
+border: 1px solid var(--glass-border);
 border-radius: var(--radius-lg);
 padding: 2rem;
 overflow: hidden;
@@ -910,8 +913,8 @@ display: flex;
 align-items: center;
 gap: 1rem;
 background: var(--glass);
-backdrop-filter: blur(20px);
-border: 1px solid var(--border);
+backdrop-filter: blur(var(--glass-blur));
+border: 1px solid var(--glass-border);
 border-radius: var(--radius-md);
 padding: 0.85rem 1.25rem;
 align-self: flex-start;
@@ -1559,8 +1562,8 @@ line-height: 1.4;
 .sec-title { font-family: var(--font-display); font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 700; color: #fff; margin-bottom: 3rem; }
 .cases-grid { display: grid; grid-template-columns: 1fr; gap: 1.25rem; }
 @media (min-width: 768px) { .cases-grid { grid-template-columns: repeat(3, 1fr); } }
-.case-card { background: var(--glass); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 2rem; transition: transform var(--normal) var(--ease), border-color var(--normal) var(--ease), box-shadow var(--normal) var(--ease); }
-.case-card:hover { transform: translateY(-4px); border-color: var(--border-hover); box-shadow: 0 20px 40px rgba(0,0,0,.3), 0 0 30px rgba(230,57,70,.06); }
+.case-card { background: var(--glass); backdrop-filter: blur(var(--glass-blur)); border: 1px solid var(--glass-border); border-radius: var(--radius-lg); padding: 2rem; transition: transform var(--normal) var(--ease), border-color var(--normal) var(--ease), box-shadow var(--normal) var(--ease); }
+.case-card:hover { transform: translateY(-4px); border-color: var(--glass-border-hover); box-shadow: 0 20px 40px rgba(0,0,0,.3), 0 0 30px rgba(230,57,70,.08); }
 .case-tag { display: inline-block; font-family: var(--font-mono); font-size: .6rem; letter-spacing: .12em; text-transform: uppercase; color: var(--accent-soft); background: var(--accent-glow); border: 1px solid rgba(230,57,70,.2); border-radius: var(--radius-sm); padding: .3rem .7rem; margin-bottom: 1.25rem; }
 .case-card h3 { font-family: var(--font-display); font-size: 1.15rem; color: #fff; margin-bottom: .75rem; }
 .case-card p { color: var(--text-secondary); font-size: .9rem; line-height: 1.7; margin-bottom: 1.5rem; }
@@ -1915,7 +1918,8 @@ gap: 0.4rem;
 font-size: 0.65rem;
 color: var(--text-muted);
 background: var(--glass);
-border: 1px solid var(--border);
+backdrop-filter: blur(var(--glass-blur));
+border: 1px solid var(--glass-border);
 border-radius: var(--radius-sm);
 padding: 0.4rem 0.65rem;
 }
@@ -1948,7 +1952,8 @@ width: 34px;
 height: 34px;
 border-radius: var(--radius-sm);
 background: var(--glass);
-border: 1px solid var(--border);
+backdrop-filter: blur(var(--glass-blur));
+border: 1px solid var(--glass-border);
 color: var(--text-muted);
 transition: all var(--fast);
 }
